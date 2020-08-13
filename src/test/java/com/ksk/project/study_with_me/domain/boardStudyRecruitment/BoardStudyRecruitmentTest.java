@@ -1,4 +1,4 @@
-package com.ksk.project.study_with_me.domain;
+package com.ksk.project.study_with_me.domain.boardStudyRecruitment;
 
 import com.ksk.project.study_with_me.domain.board.Board;
 import com.ksk.project.study_with_me.domain.board.BoardRepository;
