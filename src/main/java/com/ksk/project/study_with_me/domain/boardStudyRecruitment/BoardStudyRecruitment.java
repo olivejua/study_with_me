@@ -10,19 +10,16 @@ import java.util.Date;
 
 @Getter
 @NoArgsConstructor
-@IdClass(BoardStudyRecruitmentId.class)
 @Entity
 public class BoardStudyRecruitment {
-    /** Board는 식별관계, User는 비식별관계 */
+    /** Board, User 비식별관계 */
 
     @Id
-    private String boardCode;
-
-    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postNo;
 
     @ManyToOne
-    @JoinColumn(name = "boardCode", updatable = false, insertable = false)
+    @JoinColumn(name = "boardCode")
     private Board board;
 
     @Column(nullable = false)
@@ -55,12 +52,11 @@ public class BoardStudyRecruitment {
     @Column(nullable = false)
     private int replyCount;
 
-
     @Builder
-    public BoardStudyRecruitment(String boardCode, Long userCode, String title, String conditionLanguages,
+    public BoardStudyRecruitment(Board board, Long userCode, String title, String conditionLanguages,
                                  String conditionRegion, Date conditionStartDate, Date conditionEndDate, int conditionCapacity,
                                  String conditionExplanation, int viewCount, int replyCount) {
-        this.boardCode = boardCode;
+        this.board = board;
         this.userCode = userCode;
         this.title = title;
         this.conditionLanguages = conditionLanguages;

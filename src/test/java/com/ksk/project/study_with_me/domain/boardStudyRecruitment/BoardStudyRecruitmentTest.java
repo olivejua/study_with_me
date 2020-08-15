@@ -38,10 +38,12 @@ public class BoardStudyRecruitmentTest {
         String boardCode = "BSR";
         String boardName = "스터디모집게시판";
 
-        boardRepository.save(Board.builder()
+        Board board = Board.builder()
                 .boardCode(boardCode)
                 .boardName(boardName)
-                .build());
+                .build();
+
+        boardRepository.save(board);
 
 
         Long userCode = 1L;
@@ -56,7 +58,7 @@ public class BoardStudyRecruitmentTest {
         int replyCount = 2;
 
         boardStudyRecruitmentRepository.save(BoardStudyRecruitment.builder()
-                .boardCode(boardCode)
+                .board(board)
                 .userCode(userCode)
                 .title(title)
                 .conditionLanguages(conditionLanguages)
@@ -74,7 +76,7 @@ public class BoardStudyRecruitmentTest {
 
         //then
         BoardStudyRecruitment boardStudyRecruitment = boardStudyRecruitmentList.get(0);
-        assertThat(boardStudyRecruitment.getBoardCode()).isEqualTo(boardCode);
+        assertThat(boardStudyRecruitment.getBoard().getBoardCode()).isEqualTo(boardCode);
         assertThat(boardStudyRecruitment.getConditionLanguages()).isEqualTo(conditionLanguages);
         assertThat(boardStudyRecruitment.getConditionCapacity()).isEqualTo(conditionCapacity);
     }
