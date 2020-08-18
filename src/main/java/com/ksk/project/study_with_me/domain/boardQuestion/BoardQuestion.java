@@ -29,7 +29,7 @@ public class BoardQuestion {
     @Column(length = 2000, nullable = false)
     private String content;
 
-    // TODO 구현 어떻게 해야하는지 고민해보기
+    // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경
     @Column
     private Long imageCodes;
 

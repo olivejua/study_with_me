@@ -28,7 +28,7 @@ public class Reply {
     @Column(nullable = false)
     private String content;
 
-    // TODO: 2020-08-12 양방향할건지 테이블을 어떻게 할건지 고민해보기
+    // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경
     private Long imageCode;
 
     @Builder
