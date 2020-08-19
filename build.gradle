@@ -30,9 +30,12 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('com.h2database:h2')
+    compile('org.springframework.boot:spring-boot-devtools')
 
     compile('org.springframework.boot:spring-boot-starter-oauth2-client')
     compile('org.springframework.session:spring-session-jdbc')
+
+    implementation('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.springframework.security:spring-security-test")

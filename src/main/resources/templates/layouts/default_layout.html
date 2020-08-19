@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout"
+>
+    <head th:replace="fragment/config :: configFragment"></head>
+    <body>
+        <header th:replace="fragment/header :: headerFragment"></header>
+        <div layout:fragment="content"></div>
+        <div th:replace="fragment/footer :: footerFragment"></div>
+    </body>
+</html>

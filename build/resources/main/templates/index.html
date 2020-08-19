@@ -1,25 +1,21 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Study With Me</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-    <h1>Study With Me</h1>
-    <div>
-        <th:block th:if="${userName}">
-            Logged in as: <span id="user">[[${userName}]]</span>
-            <a href="/logout" class="btn btn-info active" role="button">Logout</a>
-        </th:block>
-        <th:block th:unless="${userName}">
-            <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
-            <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
-        </th:block>
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorator="layouts/default_layout"
+>
+    <div layout:fragment="content">
+        <div>
+            <th:block th:if="${userName}">
+                Logged in as: <span id="user">[[${userName}]]</span>
+                <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+            </th:block>
+            <th:block th:unless="${userName}">
+                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+            </th:block>
+        </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
 </html>
+
+
