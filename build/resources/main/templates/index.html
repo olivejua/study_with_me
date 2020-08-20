@@ -2,7 +2,7 @@
 <html
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorator="layouts/default_layout"
+        layout:decorate="layouts/default_layout"
 >
     <div layout:fragment="content">
         <div>
@@ -11,7 +11,7 @@
                 <a href="/logout" class="btn btn-info active" role="button">Logout</a>
             </th:block>
             <th:block th:unless="${userName}">
-                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a> <br>
                 <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
             </th:block>
         </div>
