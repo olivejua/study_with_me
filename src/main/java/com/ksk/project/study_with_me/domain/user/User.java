@@ -5,13 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -20,32 +14,35 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String name;
+    private Long userCode;
 
     @Column(nullable = false)
     private String email;
 
-    @Column
-    private String picture;
+    @Column(length = 50, nullable = false)
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
+    //TODO 프로필 기능 추가 여부 : 필드 추가
+    /*@Column(length = 50, nullable = false)
+    private String userNickname;
+
+    @Column
+    private String picture;*/
+
     @Builder
-    public User(String name, String email, String picture, Role role) {
-        this.name = name;
+    public User(String email, String name, Role role) {
         this.email = email;
-        this.picture = picture;
+        this.name = name;
         this.role = role;
     }
 
-    public User update(String name, String picture) {
+    //TODO 프로필 기능 추가 여부 : Update() 수정
+    public User update(String name) {
         this.name = name;
-        this.picture = picture;
 
         return this;
     }
