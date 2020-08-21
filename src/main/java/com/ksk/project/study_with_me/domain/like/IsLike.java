@@ -1,6 +1,5 @@
 package com.ksk.project.study_with_me.domain.like;
 
-import com.ksk.project.study_with_me.domain.board.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,19 +16,15 @@ public class IsLike {
     private Long userCode;
 
     @Id
-    private String boardCode;
+    private Long postNo;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isLike;
 
-    @ManyToOne
-    @JoinColumn(name = "boardCode", updatable = false, insertable = false)
-    private Board board;
-
     @Builder
-    public IsLike(Long userCode, String boardCode, boolean isLike) {
+    public IsLike(Long userCode, Long postNo, boolean isLike) {
         this.userCode = userCode;
-        this.boardCode = boardCode;
+        this.postNo = postNo;
         this.isLike = isLike;
     }
 }

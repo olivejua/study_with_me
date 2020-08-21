@@ -1,6 +1,6 @@
 package com.ksk.project.study_with_me.domain.boardNoticeOfSeminar;
 
-import com.ksk.project.study_with_me.domain.board.Board;
+import com.ksk.project.study_with_me.config.MatchNames;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +16,8 @@ public class BoardNoticeOfSeminar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postNo;
 
-    @ManyToOne
-    @JoinColumn(name = "boardCode")
-    private Board board;
+    @Column(nullable = false)
+    private String boardName;
 
     @Column(nullable = false)
     private Long userCode;
@@ -37,9 +36,9 @@ public class BoardNoticeOfSeminar {
     private int viewCount;
 
     @Builder
-    public BoardNoticeOfSeminar(Board board, Long userCode, String title, String address,
+    public BoardNoticeOfSeminar(Long userCode, String title, String address,
                                 Long imageCodes, int viewCount) {
-        this.board = board;
+        this.boardName = MatchNames.BOARD_NOTICE_OF_SEMINAR.getBoardName();
         this.userCode = userCode;
         this.title = title;
         this.address = address;

@@ -1,6 +1,6 @@
 package com.ksk.project.study_with_me.domain.boardPlaceRecommendation;
 
-import com.ksk.project.study_with_me.domain.board.Board;
+import com.ksk.project.study_with_me.config.MatchNames;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +15,8 @@ public class BoardPlaceRecommendation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postNo;
 
-    @ManyToOne
-    @JoinColumn(name = "boardCode")
-    private Board board;
+    @Column(nullable = false)
+    private String boardName;
 
     @Column(nullable = false)
     private Long userCode;
@@ -46,9 +45,9 @@ public class BoardPlaceRecommendation {
     private int viewCount;
 
     @Builder
-    public BoardPlaceRecommendation(Board board, Long userCode, String title, String address, Long imageCodes
+    public BoardPlaceRecommendation(Long userCode, String title, String address, Long imageCodes
                                     , Long thumbnailImageCode, int likeCount, int dislikeCount, int viewCount) {
-        this.board = board;
+        this.boardName = MatchNames.BOARD_PLACE_RECOMMENDATION.getBoardName();
         this.userCode = userCode;
         this.title = title;
         this.address = address;

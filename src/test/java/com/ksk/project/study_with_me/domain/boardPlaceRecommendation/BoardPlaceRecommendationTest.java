@@ -1,7 +1,6 @@
 package com.ksk.project.study_with_me.domain.boardPlaceRecommendation;
 
-import com.ksk.project.study_with_me.domain.board.Board;
-import com.ksk.project.study_with_me.domain.board.BoardRepository;
+import com.ksk.project.study_with_me.config.MatchNames;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,30 +17,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BoardPlaceRecommendationTest {
 
     @Autowired
-    BoardRepository boardRepository;
-
-    @Autowired
     BoardPlaceRecommendationRepository boardPlaceRecommendationRepository;
 
     @After
     public void cleanup() {
         boardPlaceRecommendationRepository.deleteAll();
-        boardRepository.deleteAll();
     }
 
     @Test
     public void 스터디장소추천게시글저장_불러오기() {
         //given
-        String boardCode = "BPR";
-        String boardName = "스터디장소 추천게시판";
-
-        Board board = Board.builder()
-                .boardCode(boardCode)
-                .boardName(boardName)
-                .build();
-
-        boardRepository.save(board);
-
         Long userCode = 1L;
         String title = "스터디장소 추천 제목";
         String address = "서울특별시 강남구";
@@ -53,7 +38,6 @@ public class BoardPlaceRecommendationTest {
 
         boardPlaceRecommendationRepository.save(
                 BoardPlaceRecommendation.builder()
-                .board(board)
                 .userCode(userCode)
                 .title(title)
                 .address(address)
@@ -67,7 +51,7 @@ public class BoardPlaceRecommendationTest {
 
         //then
         BoardPlaceRecommendation boardPlaceRecommendation = boardPlaceRecommendationList.get(0);
-        assertThat(boardPlaceRecommendation.getBoard().getBoardCode()).isEqualTo(boardCode);
+        assertThat(boardPlaceRecommendation.getBoardName()).isEqualTo(MatchNames.BOARD_PLACE_RECOMMENDATION.getBoardName());
         assertThat(boardPlaceRecommendation.getUserCode()).isEqualTo(userCode);
         assertThat(boardPlaceRecommendation.getAddress()).isEqualTo(address);
         assertThat(boardPlaceRecommendation.getLikeCount()).isEqualTo(likeCount);

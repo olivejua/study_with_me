@@ -1,6 +1,6 @@
 package com.ksk.project.study_with_me.domain.boardQuestion;
 
-import com.ksk.project.study_with_me.domain.board.Board;
+import com.ksk.project.study_with_me.config.MatchNames;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +16,8 @@ public class BoardQuestion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postNo;
 
-    @ManyToOne
-    @JoinColumn(name = "boardCode")
-    private Board board;
+    @Column(nullable = false)
+    private String boardName;
 
     @Column(nullable = false)
     private Long userCode;
@@ -40,9 +39,9 @@ public class BoardQuestion {
     private int replyCount;
 
     @Builder
-    public BoardQuestion(Board board, Long userCode, String title, String content,
+    public BoardQuestion(Long userCode, String title, String content,
                          Long imageCodes, int viewCount, int replyCount) {
-        this.board = board;
+        this.boardName = MatchNames.BOARD_QUESTION.getBoardName();
         this.userCode = userCode;
         this.title = title;
         this.content = content;

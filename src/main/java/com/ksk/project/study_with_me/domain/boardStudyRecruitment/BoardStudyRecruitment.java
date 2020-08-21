@@ -1,6 +1,6 @@
 package com.ksk.project.study_with_me.domain.boardStudyRecruitment;
 
-import com.ksk.project.study_with_me.domain.board.Board;
+import com.ksk.project.study_with_me.config.MatchNames;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,9 +18,8 @@ public class BoardStudyRecruitment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postNo;
 
-    @ManyToOne
-    @JoinColumn(name = "boardCode")
-    private Board board;
+    @Column(nullable = false)
+    private String boardName;
 
     @Column(nullable = false)
     private Long userCode;
@@ -53,10 +52,10 @@ public class BoardStudyRecruitment {
     private int replyCount;
 
     @Builder
-    public BoardStudyRecruitment(Board board, Long userCode, String title, String conditionLanguages,
+    public BoardStudyRecruitment(Long userCode, String title, String conditionLanguages,
                                  String conditionRegion, Date conditionStartDate, Date conditionEndDate, int conditionCapacity,
                                  String conditionExplanation, int viewCount, int replyCount) {
-        this.board = board;
+        this.boardName = MatchNames.BOARD_STUDY_RECRUITMENT.getBoardName();
         this.userCode = userCode;
         this.title = title;
         this.conditionLanguages = conditionLanguages;

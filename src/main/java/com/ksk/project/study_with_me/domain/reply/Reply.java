@@ -1,6 +1,5 @@
 package com.ksk.project.study_with_me.domain.reply;
 
-import com.ksk.project.study_with_me.domain.board.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,7 @@ public class Reply {
     private Long replyNo;
 
     @Column(nullable = false)
-    private String boardCode;
+    private String boardName;
 
     @Column(nullable = false)
     private Long postNo;
@@ -32,8 +31,8 @@ public class Reply {
     private Long imageCode;
 
     @Builder
-    public Reply(String boardCode, Long postNo, Long userCode, String content, Long imageCode) {
-        this.boardCode = boardCode;
+    public Reply(String boardName, Long postNo, Long userCode, String content, Long imageCode) {
+        this.boardName = boardName;
         this.postNo = postNo;
         this.userCode = userCode;
         this.content = content;

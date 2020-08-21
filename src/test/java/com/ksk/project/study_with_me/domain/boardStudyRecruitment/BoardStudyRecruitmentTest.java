@@ -1,9 +1,6 @@
 package com.ksk.project.study_with_me.domain.boardStudyRecruitment;
 
-import com.ksk.project.study_with_me.domain.board.Board;
-import com.ksk.project.study_with_me.domain.board.BoardRepository;
-import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitment;
-import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitmentRepository;
+import com.ksk.project.study_with_me.config.MatchNames;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,31 +18,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BoardStudyRecruitmentTest {
 
     @Autowired
-    BoardRepository boardRepository;
-
-    @Autowired
     BoardStudyRecruitmentRepository boardStudyRecruitmentRepository;
 
     @After
     public void cleanup() {
         boardStudyRecruitmentRepository.deleteAll();
-        boardRepository.deleteAll();
     }
 
     @Test
     public void 스터디모집게시글저장_불러오기() {
         //given
-        String boardCode = "BSR";
-        String boardName = "스터디모집게시판";
-
-        Board board = Board.builder()
-                .boardCode(boardCode)
-                .boardName(boardName)
-                .build();
-
-        boardRepository.save(board);
-
-
         Long userCode = 1L;
         String title = "스터디 모집 제목";
         String conditionLanguages = "java";
@@ -58,7 +40,6 @@ public class BoardStudyRecruitmentTest {
         int replyCount = 2;
 
         boardStudyRecruitmentRepository.save(BoardStudyRecruitment.builder()
-                .board(board)
                 .userCode(userCode)
                 .title(title)
                 .conditionLanguages(conditionLanguages)
@@ -76,7 +57,7 @@ public class BoardStudyRecruitmentTest {
 
         //then
         BoardStudyRecruitment boardStudyRecruitment = boardStudyRecruitmentList.get(0);
-        assertThat(boardStudyRecruitment.getBoard().getBoardCode()).isEqualTo(boardCode);
+        assertThat(boardStudyRecruitment.getBoardName()).isEqualTo(MatchNames.BOARD_STUDY_RECRUITMENT.getBoardName());
         assertThat(boardStudyRecruitment.getConditionLanguages()).isEqualTo(conditionLanguages);
         assertThat(boardStudyRecruitment.getConditionCapacity()).isEqualTo(conditionCapacity);
     }
