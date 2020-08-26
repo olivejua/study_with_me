@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layouts/default_layout">
+>
+<th:block layout:fragment="custom-css">
+    <link rel="stylesheet" th:href="@{/css/page/user/login.css}">
+</th:block>
+<th:block layout:fragment="content">
+    <h2>Login Page</h2>
+    <a href="/oauth2/authorization/google" id="login-google" class="btn btn-success active" role="button">Google Login</a>
+    <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+</th:block>
+<th:block layout:fragment="custom-script">
+    <script th:src="@{/js/page/user/login.js}"></script>
+</th:block>
+</html>
