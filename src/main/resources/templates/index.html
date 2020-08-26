@@ -1,25 +1,46 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Study With Me</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layouts/default_layout">
+>
+    <th:block layout:fragment="content">
+        <th:block th:if="${userName}">
+            Logged in as: <span id="user">[[${userName}]]</span>
+            <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+        </th:block>
+        <th:block th:unless="${userName}">
+            <a href="/user/login" class="btn btn-success active" role="button">Login</a>
+        </th:block>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-<h1>Study With Me</h1>
-<div>
-    <th:block th:if="${userName}">
-        Logged in as: <span id="user">[[${userName}]]</span>
-        <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+        <div class="modal fade" id="modal-messageToGuest" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog"><div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        손님이시네요. 회원이 되시겠습니까?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            아니요.
+                        </button>
+                        <a href="/user/signup" id="button-answer-yes" class="btn btn-primary active">
+                            네, 될래요!
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
     </th:block>
-    <th:block th:unless="${userName}">
-        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
-        <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
-    </th:block>
-</div>
+    <th:block layout:fragment="custom-script">
+        <script th:inline="javascript">
+            var messageToGuest = [[${messageToGuest}]];
+            if (messageToGuest) {
+                $('#modal-messageToGuest').modal('show');
+            } else {
+                $('#modal-messageToGuest').modal('hide');
+            }
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
+        </script>
+    </th:block>
 </html>

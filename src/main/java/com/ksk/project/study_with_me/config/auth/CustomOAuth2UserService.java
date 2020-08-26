@@ -36,13 +36,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes
                 .of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        //TODO 소셜 회원가입&로그인 : 회원가입과 로그인을 구분하려면 여기서 수정해야함
-        /**
-         * 회원가입 시 : DB에 email이 존재하는지 확인 후 추가정보(프로필) 설정
-         * 로그인 시  : DB에 email이 존재하는지 확인 후 정보 가져옴.
-         */
-
-        User user = saveOrUpdate(attributes);
+        User user = verifyUser(attributes);
 
         httpSession.setAttribute("user", new SessionUser(user));
 
@@ -52,11 +46,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getNameAttributeKey());
     }
 
-    private User saveOrUpdate(OAuthAttributes attributes) {
+    private User verifyUser(OAuthAttributes attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName()))
                 .orElse(attributes.toEntity());
 
-        return userRepository.save(user);
+        return user;
     }
 }

@@ -10,9 +10,13 @@ import java.io.Serializable;
 public class SessionUser implements Serializable {
     private String name;
     private String email;
+    private String role;
+    private String socialCode;
 
     public SessionUser(User user) {
         this.name = user.getName();
         this.email = user.getEmail();
+        this.role = user.getRoleKey();
+        this.socialCode = user.getSocialCode();
     }
 }
