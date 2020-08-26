@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layouts/default_layout">
+>
+    <th:block layout:fragment="content">
+        <h2>스터디모집 게시판 목록 page</h2>
+        <a href="/board/study/posts/save" role="button" class="btn btn-primary">글 등록</a>
+        <table class="table table-horizontal table-bordered">
+            <thead class="thead-strong">
+            <tr>
+                <th>게시글 번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>최종 수정일</th>
+                <th>조회 수</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            <tr th:each="post : ${posts}">
+                <td th:text="${post.postNo}"></td>
+                <td><a th:href="@{/board/study/posts/read(postNo=${post.postNo})}">[[${post.title}]]</a></td>
+                <td th:text="${post.userName}"></td>
+                <td th:text="${post.modifiedDate}"></td>
+                <td th:text="${post.viewCount}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+</html>

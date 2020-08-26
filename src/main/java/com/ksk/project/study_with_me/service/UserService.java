@@ -1,7 +1,5 @@
 package com.ksk.project.study_with_me.service;
 
-import com.ksk.project.study_with_me.domain.user.Role;
-import com.ksk.project.study_with_me.domain.user.User;
 import com.ksk.project.study_with_me.domain.user.UserRepository;
 import com.ksk.project.study_with_me.web.dto.UserResponseDto;
 import com.ksk.project.study_with_me.web.dto.UserSignupRequestDto;
@@ -26,7 +24,6 @@ public class UserService {
 
     @Transactional
     public UserResponseDto save(UserSignupRequestDto requestDto) {
-        User entity = requestDto.toEntity().becomeUser(Role.USER);
-        return new UserResponseDto(userRepository.save(entity));
+        return new UserResponseDto(userRepository.save(requestDto.toEntity()));
     }
 }

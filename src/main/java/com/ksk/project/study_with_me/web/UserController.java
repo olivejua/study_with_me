@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
-@RequestMapping("/user")
 @RequiredArgsConstructor
+@RequestMapping("/user")
 @Controller
 public class UserController {
 
