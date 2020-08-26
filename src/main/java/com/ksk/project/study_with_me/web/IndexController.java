@@ -2,6 +2,7 @@ package com.ksk.project.study_with_me.web;
 
 import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
+import com.ksk.project.study_with_me.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user) {
+        System.out.println(Role.USER.name());
 
         if(user != null) {
             model.addAttribute("userName", user.getName());

@@ -24,7 +24,7 @@ public class UserSignupRequestDto {
         return User.builder()
                 .name(name)
                 .email(email)
-                .role(Role.GUEST)
+                .role(Role.USER)
                 .nickname(nickname)
                 .socialCode(socialCode)
                 .build();

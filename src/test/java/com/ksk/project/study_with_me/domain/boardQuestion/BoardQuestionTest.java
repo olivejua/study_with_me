@@ -48,7 +48,7 @@ public class BoardQuestionTest {
 
         //then
         BoardQuestion boardQuestion = boardQuestionList.get(0);
-        assertThat(boardQuestion.getBoardName()).isEqualTo(MatchNames.BOARD_QUESTION.getBoardName());
+        assertThat(boardQuestion.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_QUESTION.getName());
         assertThat(boardQuestion.getUserCode()).isEqualTo(userCode);
         assertThat(boardQuestion.getTitle()).isEqualTo(title);
         assertThat(boardQuestion.getContent()).isEqualTo(content);

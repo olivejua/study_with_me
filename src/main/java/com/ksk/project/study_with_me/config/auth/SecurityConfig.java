@@ -12,6 +12,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    //TODO 권한에 맞춰서 URL 설정하기 (지금 유저만 가능하게 하는 거 안됨)
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -19,8 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/board/study/list", "/user/login", "/user/signup", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
-                    .antMatchers("/board/study/post/**").hasRole(Role.USER.name())
+                    .antMatchers("/", "/board/study/posts/list", "/user/login", "/user/signup", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
+                    .antMatchers("/board/study/posts/save").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
                 .and()
                     .logout()

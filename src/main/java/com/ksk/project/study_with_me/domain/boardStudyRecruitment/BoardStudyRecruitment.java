@@ -1,6 +1,8 @@
 package com.ksk.project.study_with_me.domain.boardStudyRecruitment;
 
 import com.ksk.project.study_with_me.config.MatchNames;
+import com.ksk.project.study_with_me.domain.BaseTimeEntity;
+import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @Entity
-public class BoardStudyRecruitment {
+public class BoardStudyRecruitment extends BaseTimeEntity {
     /** Board, User 비식별관계 */
 
     @Id
@@ -21,8 +23,9 @@ public class BoardStudyRecruitment {
     @Column(nullable = false)
     private String boardName;
 
-    @Column(nullable = false)
-    private Long userCode;
+    @ManyToOne
+    @JoinColumn(name = "userCode")
+    private User user;
 
     @Column(length = 500, nullable = false)
     private String title;
@@ -52,11 +55,11 @@ public class BoardStudyRecruitment {
     private int replyCount;
 
     @Builder
-    public BoardStudyRecruitment(Long userCode, String title, String conditionLanguages,
+    public BoardStudyRecruitment(User user, String title, String conditionLanguages,
                                  String conditionRegion, Date conditionStartDate, Date conditionEndDate, int conditionCapacity,
                                  String conditionExplanation, int viewCount, int replyCount) {
-        this.boardName = MatchNames.BOARD_STUDY_RECRUITMENT.getBoardName();
-        this.userCode = userCode;
+        this.boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getName();
+        this.user = user;
         this.title = title;
         this.conditionLanguages = conditionLanguages;
         this.conditionRegion = conditionRegion;

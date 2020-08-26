@@ -46,7 +46,7 @@ public class ReplyTest {
         String content = "질문게시판 댓글";
 
         replyRepository.save(Reply.builder()
-                .boardName(MatchNames.BOARD_QUESTION.getBoardName())
+                .boardName(MatchNames.Boards.BOARD_QUESTION.getName())
                 .userCode(userCode)
                 .postNo(postNo)
                 .content(content)
@@ -57,7 +57,7 @@ public class ReplyTest {
 
         //then
         Reply reply = replyList.get(0);
-        assertThat(reply.getBoardName()).isEqualTo(MatchNames.BOARD_QUESTION.getBoardName());
+        assertThat(reply.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_QUESTION.getName());
         assertThat(reply.getPostNo()).isEqualTo(postNo);
         assertThat(reply.getUserCode()).isEqualTo(userCode);
         assertThat(reply.getContent()).isEqualTo(content);
