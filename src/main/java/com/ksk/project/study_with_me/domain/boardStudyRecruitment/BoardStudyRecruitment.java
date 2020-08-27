@@ -1,6 +1,5 @@
 package com.ksk.project.study_with_me.domain.boardStudyRecruitment;
 
-import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.BaseTimeEntity;
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Builder;
@@ -20,9 +19,6 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postNo;
 
-    @Column(nullable = false)
-    private String boardName;
-
     @ManyToOne
     @JoinColumn(name = "userCode")
     private User user;
@@ -34,7 +30,7 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
     private String conditionLanguages;
 
     @Column(nullable = false)
-    private String conditionRegion;
+    private String conditionPlace;
 
     @Column(nullable = false)
     private Date conditionStartDate;
@@ -56,13 +52,12 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
 
     @Builder
     public BoardStudyRecruitment(User user, String title, String conditionLanguages,
-                                 String conditionRegion, Date conditionStartDate, Date conditionEndDate, int conditionCapacity,
+                                 String conditionPlace, Date conditionStartDate, Date conditionEndDate, int conditionCapacity,
                                  String conditionExplanation, int viewCount, int replyCount) {
-        this.boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getName();
         this.user = user;
         this.title = title;
         this.conditionLanguages = conditionLanguages;
-        this.conditionRegion = conditionRegion;
+        this.conditionPlace = conditionPlace;
         this.conditionStartDate = conditionStartDate;
         this.conditionEndDate = conditionEndDate;
         this.conditionCapacity = conditionCapacity;

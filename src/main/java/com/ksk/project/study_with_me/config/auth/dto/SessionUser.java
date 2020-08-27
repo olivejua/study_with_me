@@ -8,6 +8,7 @@ import java.io.Serializable;
 // TODO 프로필 기능 추가 여부 : 필드 추가, 생성자 수정
 @Getter
 public class SessionUser implements Serializable {
+    private Long userCode;
     private String name;
     private String email;
     private String nickname;
@@ -15,6 +16,7 @@ public class SessionUser implements Serializable {
     private String socialCode;
 
     public SessionUser(User user) {
+        this.userCode = user.getUserCode();
         this.name = user.getName();
         this.email = user.getEmail();
         this.nickname = user.getNickname();
