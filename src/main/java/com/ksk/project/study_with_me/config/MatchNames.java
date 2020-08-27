@@ -18,6 +18,28 @@ public class MatchNames {
         private final String name;
     }
 
+    @Getter
+    @RequiredArgsConstructor
+    public enum ConditionLanguages implements EnumModel{
 
+        JAVA("JAVA"),
+        SPRING_BOOT("Spring boot"),
+        JPA("JPA"),
+        DATA_STRUCTURE("자료구조"),
+        NODEJS("Node.js"),
+        JS("Java Script"),
+        AWS("Amazon Web Service");
 
+        private final String value;
+
+        @Override
+        public String getKey() {
+            return name();
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package com.ksk.project.study_with_me.config.auth;
 
-import com.ksk.project.study_with_me.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/", "/board/study/posts/list", "/user/login", "/user/signup", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
-                    .antMatchers("/board/study/posts/save").hasRole(Role.USER.name())
+//                    .antMatchers("/board/study/posts/save").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
                 .and()
                     .logout()

@@ -46,7 +46,7 @@ public class BoardStudyRecruitmentTest {
 
         String title = "스터디 모집 제목";
         String conditionLanguages = "java";
-        String conditionRegion = "강남";
+        String conditionPlace = "강남";
         Date conditionStartDate = new Date();
         Date conditionEndDate = new Date();
         int conditionCapacity = 5;
@@ -60,7 +60,7 @@ public class BoardStudyRecruitmentTest {
                 .user(user)
                 .title(title)
                 .conditionLanguages(conditionLanguages)
-                .conditionRegion(conditionRegion)
+                .conditionPlace(conditionPlace)
                 .conditionStartDate(conditionStartDate)
                 .conditionEndDate(conditionEndDate)
                 .conditionCapacity(conditionCapacity)
