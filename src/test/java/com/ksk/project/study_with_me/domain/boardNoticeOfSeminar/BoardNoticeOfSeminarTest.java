@@ -46,7 +46,7 @@ public class BoardNoticeOfSeminarTest {
 
         //then
         BoardNoticeOfSeminar boardNoticeOfSeminar = boardNoticeOfSeminarList.get(0);
-        assertThat(boardNoticeOfSeminar.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_NOTICE_OF_SEMINAR.getName());
+        assertThat(boardNoticeOfSeminar.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_NOTICE_OF_SEMINAR.getCalledName());
         assertThat(boardNoticeOfSeminar.getPostNo()).isEqualTo(1);
         assertThat(boardNoticeOfSeminar.getTitle()).isEqualTo(title);
         assertThat(boardNoticeOfSeminar.getAddress()).isEqualTo(address);

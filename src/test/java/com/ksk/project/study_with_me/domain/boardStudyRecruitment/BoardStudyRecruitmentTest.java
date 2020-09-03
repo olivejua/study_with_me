@@ -1,6 +1,5 @@
 package com.ksk.project.study_with_me.domain.boardStudyRecruitment;
 
-import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.user.Role;
 import com.ksk.project.study_with_me.domain.user.User;
 import com.ksk.project.study_with_me.domain.user.UserRepository;
@@ -74,7 +73,6 @@ public class BoardStudyRecruitmentTest {
 
         //then
         BoardStudyRecruitment boardStudyRecruitment = boardStudyRecruitmentList.get(0);
-        assertThat(boardStudyRecruitment.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getName());
         assertThat(boardStudyRecruitment.getConditionLanguages()).isEqualTo(conditionLanguages);
         assertThat(boardStudyRecruitment.getConditionCapacity()).isEqualTo(conditionCapacity);
     }

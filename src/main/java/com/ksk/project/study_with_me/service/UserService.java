@@ -1,8 +1,8 @@
 package com.ksk.project.study_with_me.service;
 
 import com.ksk.project.study_with_me.domain.user.UserRepository;
-import com.ksk.project.study_with_me.web.dto.UserResponseDto;
-import com.ksk.project.study_with_me.web.dto.UserSignupRequestDto;
+import com.ksk.project.study_with_me.web.dto.user.UserResponseDto;
+import com.ksk.project.study_with_me.web.dto.user.UserSignupRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

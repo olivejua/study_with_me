@@ -1,5 +1,6 @@
 package com.ksk.project.study_with_me.config.auth.dto;
 
+import com.ksk.project.study_with_me.domain.user.Role;
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Getter;
 
@@ -22,5 +23,16 @@ public class SessionUser implements Serializable {
         this.nickname = user.getNickname();
         this.role = user.getRoleKey();
         this.socialCode = user.getSocialCode();
+    }
+
+    public User toEntity() {
+        return User.builder()
+                .userCode(userCode)
+                .name(name)
+                .email(email)
+                .role(Role.USER)
+                .nickname(nickname)
+                .socialCode(socialCode)
+                .build();
     }
 }

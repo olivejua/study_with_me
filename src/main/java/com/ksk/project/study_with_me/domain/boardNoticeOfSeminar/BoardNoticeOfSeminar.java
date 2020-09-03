@@ -38,7 +38,7 @@ public class BoardNoticeOfSeminar {
     @Builder
     public BoardNoticeOfSeminar(Long userCode, String title, String address,
                                 Long imageCodes, int viewCount) {
-        this.boardName = MatchNames.Boards.BOARD_NOTICE_OF_SEMINAR.getName();
+        this.boardName = MatchNames.Boards.BOARD_NOTICE_OF_SEMINAR.getCalledName();
         this.userCode = userCode;
         this.title = title;
         this.address = address;

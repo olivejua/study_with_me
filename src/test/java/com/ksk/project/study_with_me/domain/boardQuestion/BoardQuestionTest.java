@@ -1,6 +1,5 @@
 package com.ksk.project.study_with_me.domain.boardQuestion;
 
-import com.ksk.project.study_with_me.config.MatchNames;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +47,6 @@ public class BoardQuestionTest {
 
         //then
         BoardQuestion boardQuestion = boardQuestionList.get(0);
-        assertThat(boardQuestion.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_QUESTION.getName());
         assertThat(boardQuestion.getUserCode()).isEqualTo(userCode);
         assertThat(boardQuestion.getTitle()).isEqualTo(title);
         assertThat(boardQuestion.getContent()).isEqualTo(content);

@@ -17,7 +17,7 @@ public class StudyPostsListResponseDto {
     public StudyPostsListResponseDto(BoardStudyRecruitment entity) {
         this.postNo = entity.getPostNo();
         this.userName = entity.getUser().getName();
-        this.title = getTitle();
+        this.title = entity.getTitle();
         this.viewCount = entity.getViewCount();
         this.replyCount = entity.getReplyCount();
         this.modifiedDate = entity.getModifiedDate();

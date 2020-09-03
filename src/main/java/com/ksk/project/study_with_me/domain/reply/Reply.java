@@ -1,5 +1,7 @@
 package com.ksk.project.study_with_me.domain.reply;
 
+import com.ksk.project.study_with_me.domain.BaseTimeEntity;
+import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Reply {
+public class Reply extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +23,9 @@ public class Reply {
     @Column(nullable = false)
     private Long postNo;
 
-    @Column(nullable = false)
-    private Long userCode;
+    @ManyToOne
+    @JoinColumn(name = "userCode")
+    private User user;
 
     @Column(nullable = false)
     private String content;
@@ -31,10 +34,10 @@ public class Reply {
     private Long imageCode;
 
     @Builder
-    public Reply(String boardName, Long postNo, Long userCode, String content, Long imageCode) {
+    public Reply(String boardName, Long postNo, User user, String content, Long imageCode) {
         this.boardName = boardName;
         this.postNo = postNo;
-        this.userCode = userCode;
+        this.user = user;
         this.content = content;
         this.imageCode = imageCode;
     }

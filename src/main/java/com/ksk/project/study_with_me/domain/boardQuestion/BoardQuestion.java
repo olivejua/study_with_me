@@ -41,7 +41,7 @@ public class BoardQuestion {
     @Builder
     public BoardQuestion(Long userCode, String title, String content,
                          Long imageCodes, int viewCount, int replyCount) {
-        this.boardName = MatchNames.Boards.BOARD_QUESTION.getName();
+        this.boardName = MatchNames.Boards.BOARD_QUESTION.getCalledName();
         this.userCode = userCode;
         this.title = title;
         this.content = content;

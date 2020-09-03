@@ -3,6 +3,7 @@ package com.ksk.project.study_with_me.domain.reply;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestion;
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestionRepository;
+import com.ksk.project.study_with_me.domain.user.User;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,24 +43,24 @@ public class ReplyTest {
                 .build());
 
         Long postNo = 1L;
-        Long userCode = 2L;
+        User.builder()
+                .userCode(1L)
         String content = "질문게시판 댓글";
 
-        replyRepository.save(Reply.builder()
-                .boardName(MatchNames.Boards.BOARD_QUESTION.getName())
-                .userCode(userCode)
-                .postNo(postNo)
-                .content(content)
-                .build());
-
-        //when
-        List<Reply> replyList = replyRepository.findAll();
-
-        //then
-        Reply reply = replyList.get(0);
-        assertThat(reply.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_QUESTION.getName());
-        assertThat(reply.getPostNo()).isEqualTo(postNo);
-        assertThat(reply.getUserCode()).isEqualTo(userCode);
-        assertThat(reply.getContent()).isEqualTo(content);
+//        replyRepository.save(Reply.builder()
+//                .boardName(MatchNames.Boards.BOARD_QUESTION.getCalledName())
+//                .user(userCode)
+//                .postNo(postNo)
+//                .content(content)
+//                .build());
+//
+//        //when
+//        List<Reply> replyList = replyRepository.findAll();
+//
+//        //then
+//        Reply reply = replyList.get(0);
+//        assertThat(reply.getPostNo()).isEqualTo(postNo);
+//        assertThat(reply.getUserCode()).isEqualTo(userCode);
+//        assertThat(reply.getContent()).isEqualTo(content);
     }
 }

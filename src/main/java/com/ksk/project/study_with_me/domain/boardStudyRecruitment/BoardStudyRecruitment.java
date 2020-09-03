@@ -65,4 +65,8 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
         this.viewCount = viewCount;
         this.replyCount = replyCount;
     }
+
+    public void addViewCount() {
+        this.viewCount += 1;
+    }
 }
