@@ -34,7 +34,8 @@ public class Reply extends BaseTimeEntity {
     private Long imageCode;
 
     @Builder
-    public Reply(String boardName, Long postNo, User user, String content, Long imageCode) {
+    public Reply (Long replyNo, String boardName, Long postNo, User user, String content, Long imageCode) {
+        this.replyNo = replyNo;
         this.boardName = boardName;
         this.postNo = postNo;
         this.user = user;

@@ -4,12 +4,14 @@ var main = {
         $('#btn-reply-save').on('click', function () {
             _this.save();
         });
+
+        $('.div-rereply-save').hide();
     },
     save: function () {
         var data = {
             postNo: $('#postNo').val(),
             boardName: $('#boardName').val(),
-            content: $('#reply_content').val()
+            content: $('#reply-content').val()
         };
 
         $.ajax({
@@ -27,3 +29,20 @@ var main = {
 };
 
 main.init();
+
+
+function rereply_open(target) {
+    var div = $(target).closest('div').next();
+
+    if(div.css("display") === "none") {
+        div.show()
+    } else {
+        div.hide();
+    }
+}
+
+function rereply_save(target) {
+    var replyId = $(target).id;
+
+
+}

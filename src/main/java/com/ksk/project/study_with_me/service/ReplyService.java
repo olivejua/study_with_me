@@ -21,7 +21,7 @@ public class ReplyService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReplyListResponseDto> findAllByPostNo(Long postNo, String boardName) {
+    public List<ReplyListResponseDto> findAllByPostNoAndBoardName(Long postNo, String boardName) {
         return replyRepository.findByPostNoAndBoardNameOrderByReplyNoAsc(postNo, boardName).stream()
                 .map(ReplyListResponseDto::new)
                 .collect(Collectors.toList());

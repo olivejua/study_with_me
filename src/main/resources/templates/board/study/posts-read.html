@@ -39,21 +39,32 @@
 
         <div>
             <h3>댓글</h3>
-            <table>
-                <tbody>
-                    <tr th:each="reply : ${replyList}">
-                        <td th:text="${reply.user.nickname}"></td>
-                        <td th:text="${reply.content}"></td>
-                        <td th:text="${reply.modifiedDate}"></td>
-                    </tr>
-                </tbody>
-            </table>
             <div>
-                <textarea id="reply_content"></textarea>
-                <button id="btn-reply-save">등록</button>
+                <div th:each="reply : ${replyList}">
+                    <div>
+                        <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
+                        <label>[[${reply.user.nickname}]]</label>
+                        <label>[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
+                        <button onclick="rereply_open(this)">답글달기</button>
+                        <p>
+                            <label>[[${reply.content}]]</label>
+                        </p>
+                        <div>
+
+                        </div>
+<!--                        답글 textarea-->
+                    </div>
+                    <div class="div-rereply-save">
+                        <textarea></textarea>
+                        <button th:id="${reply.replyNo}">답글 등록</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <textarea id="reply-content"></textarea>
+                <button id="btn-reply-save">댓글 등록</button>
             </div>
         </div>
-
         <a href="/board/study/posts/list" role="button">목록</a>
     </th:block>
     <th:block layout:fragment="custom-script">
