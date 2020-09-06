@@ -51,7 +51,7 @@ public class BoardPlaceRecommendationTest {
 
         //then
         BoardPlaceRecommendation boardPlaceRecommendation = boardPlaceRecommendationList.get(0);
-        assertThat(boardPlaceRecommendation.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getName());
+        assertThat(boardPlaceRecommendation.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getCalledName());
         assertThat(boardPlaceRecommendation.getUserCode()).isEqualTo(userCode);
         assertThat(boardPlaceRecommendation.getAddress()).isEqualTo(address);
         assertThat(boardPlaceRecommendation.getLikeCount()).isEqualTo(likeCount);

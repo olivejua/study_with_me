@@ -1,6 +1,5 @@
 package com.ksk.project.study_with_me.domain.reply;
 
-import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestion;
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestionRepository;
 import org.junit.After;
@@ -9,10 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -42,24 +37,22 @@ public class ReplyTest {
                 .build());
 
         Long postNo = 1L;
-        Long userCode = 2L;
         String content = "질문게시판 댓글";
 
-        replyRepository.save(Reply.builder()
-                .boardName(MatchNames.Boards.BOARD_QUESTION.getName())
-                .userCode(userCode)
-                .postNo(postNo)
-                .content(content)
-                .build());
-
-        //when
-        List<Reply> replyList = replyRepository.findAll();
-
-        //then
-        Reply reply = replyList.get(0);
-        assertThat(reply.getBoardName()).isEqualTo(MatchNames.Boards.BOARD_QUESTION.getName());
-        assertThat(reply.getPostNo()).isEqualTo(postNo);
-        assertThat(reply.getUserCode()).isEqualTo(userCode);
-        assertThat(reply.getContent()).isEqualTo(content);
+//        replyRepository.save(Reply.builder()
+//                .boardName(MatchNames.Boards.BOARD_QUESTION.getCalledName())
+//                .user(userCode)
+//                .postNo(postNo)
+//                .content(content)
+//                .build());
+//
+//        //when
+//        List<Reply> replyList = replyRepository.findAll();
+//
+//        //then
+//        Reply reply = replyList.get(0);
+//        assertThat(reply.getPostNo()).isEqualTo(postNo);
+//        assertThat(reply.getUserCode()).isEqualTo(userCode);
+//        assertThat(reply.getContent()).isEqualTo(content);
     }
 }

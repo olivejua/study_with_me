@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layouts/default_layout">
 >
-    <th:block layout:fragment="content">
+    <th:block layout:fragment="custom-content">
         <th:block th:if="${userName}">
             Logged in as: <span id="user">[[${userName}]]</span>
             <a href="/logout" class="btn btn-info active" role="button">Logout</a>
@@ -42,7 +42,6 @@
             } else {
                 $('#modal-messageToGuest').modal('hide');
             }
-
         </script>
     </th:block>
 </html>

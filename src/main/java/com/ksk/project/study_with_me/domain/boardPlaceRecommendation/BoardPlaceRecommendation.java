@@ -47,7 +47,7 @@ public class BoardPlaceRecommendation {
     @Builder
     public BoardPlaceRecommendation(Long userCode, String title, String address, Long imageCodes
                                     , Long thumbnailImageCode, int likeCount, int dislikeCount, int viewCount) {
-        this.boardName = MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getName();
+        this.boardName = MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getCalledName();
         this.userCode = userCode;
         this.title = title;
         this.address = address;

@@ -2,15 +2,14 @@ package com.ksk.project.study_with_me.web.dto.study;
 
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitment;
 import com.ksk.project.study_with_me.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 public class StudyPostsSaveRequestDto {
-    private Long userCode;
     private User user;
     private String title;
     private String conditionLanguages;
@@ -24,12 +23,12 @@ public class StudyPostsSaveRequestDto {
     private int viewCount;
     private int replyCount;
 
-    public StudyPostsSaveRequestDto(Long userCode, String title, List<String> conditionLanguages, String conditionPlace, Date conditionStartDate
+    @Builder
+    public StudyPostsSaveRequestDto(String title, String conditionLanguages, String conditionPlace, Date conditionStartDate
                                     , Date conditionEndDate, int conditionCapacity, String conditionExplanation, User user) {
-        this.userCode = userCode;
         this.user = user;
         this.title = title;
-        this.conditionLanguages = conditionLanguages.toString();
+        this.conditionLanguages = conditionLanguages;
         this.conditionPlace = conditionPlace;
         this.conditionStartDate = conditionStartDate;
         this.conditionEndDate = conditionEndDate;
@@ -43,11 +42,16 @@ public class StudyPostsSaveRequestDto {
         return 0;
     }
 
+    public StudyPostsSaveRequestDto setUser(User user) {
+        this.user = user;
+        return this;
+    }
+
     public BoardStudyRecruitment toEntity() {
         return BoardStudyRecruitment.builder()
                 .user(user)
                 .title(title)
-//                .conditionLanguages(conditionLanguages)
+                .conditionLanguages(conditionLanguages)
                 .conditionPlace(conditionPlace)
                 .conditionStartDate(conditionStartDate)
                 .conditionEndDate(conditionEndDate)

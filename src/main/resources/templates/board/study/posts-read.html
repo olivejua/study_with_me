@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layouts/default_layout">
+>
+    <th:block layout:fragment="custom-content">
+        <h2>스터디모집 게시글 읽기 페이지 page</h2>
+
+        <form>
+            <input type="hidden" id="postNo" th:value="${post.postNo}">
+            <input type="hidden" id="boardName" value="study">
+            <div class="form-group">
+                <label>제목</label>
+                <label>[[${post.title}]]</label>
+            </div>
+            <div class="form-group">
+                <label>언어</label>
+                <label>[[${post.conditionLanguages}]]</label>
+            </div>
+            <div class="form-group">
+                <label>장소</label>
+                <label>[[${post.conditionPlace}]]</label>
+            </div>
+            <div class="form-group">
+                <label>기간</label>
+                <label>[[${#dates.format(post.conditionStartDate, 'yy.MM.dd E')}]] ~
+                    [[${#dates.format(post.conditionEndDate, 'yy.MM.dd E')}]]
+                </label>
+            </div>
+            <div class="form-group">
+                <label>정원 수</label>
+                <label>[[${post.conditionCapacity}]]</label>
+            </div>
+            <div class="form-group">
+                <label>설명</label>
+                <p th:utext="${post.conditionExplanation}"></p>
+            </div>
+        </form>
+
+        <div>
+            <h3>댓글</h3>
+            <div>
+                <div th:each="reply : ${replyList}" class="div-reply">
+                    <div>
+                        <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
+                        <label>[[${reply.user.nickname}]]</label>
+                        <label>[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
+                        <button onclick="rereply_open(this)">답글달기</button>
+                        <p>
+                            <label>[[${reply.content}]]</label>
+                        </p>
+                    </div>
+                    <div th:each="rereply : ${rereplyList}" th:if="${rereply.reply.replyNo==reply.replyNo}">
+                        <input type="hidden" name="rereplyNo" th:value="${rereply.rereplyNo}">
+                        <label>[[${rereply.user.nickname}]]</label>
+                        <label>[[${#dates.format(rereply.modifiedDate, 'yy.MM.dd')}]]</label>
+                        <p>
+                            <label>[[${rereply.content}]]</label>
+                        </p>
+                    </div>
+                    <div class="div-rereply-save" th:id="${reply.replyNo}">
+                        <textarea name="rereply-content"></textarea>
+                        <button onclick="rereply_save(this)">답글 등록</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <textarea id="reply-content"></textarea>
+                <button id="btn-reply-save">댓글 등록</button>
+            </div>
+        </div>
+        <a href="/board/study/posts/list" role="button">목록</a>
+    </th:block>
+    <th:block layout:fragment="custom-script">
+        <script th:src="@{/js/page/board/study/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
+    </th:block>
+</html>
