@@ -18,4 +18,13 @@ public class MatchNames {
         private final String calledName;
         private final String dbName;
     }
+
+    @Getter
+    @RequiredArgsConstructor
+    public enum MessageType {
+        Message("message"),
+        Reply("reply");
+
+        private final String type;
+    }
 }

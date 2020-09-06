@@ -1,3 +1,19 @@
-<header th:fragment="headerFragment"  xmlns:th="http://www.thymeleaf.org">
-    <h1>Study With Me</h1>
+<header th:fragment="headerFragment" xmlns:th="http://www.thymeleaf.org" id="header">
+    <div class="inner">
+        <a href="index.html" class="logo">Study With Me</a>
+        <nav id="nav">
+            <a href="index.html">Home</a>
+            <a href="generic.html">스터디 모집 게시판</a>
+
+            <th:block th:if="${userName}">
+                Logged in as: <span id="user">[[${userName}]]</span>
+                <a href="/logout">Logout</a>
+            </th:block>
+            <th:block th:unless="${userName}">
+                <a href="/user/login">Login</a>
+            </th:block>
+        </nav>
+
+        <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+    </div>
 </header>

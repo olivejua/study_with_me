@@ -44,6 +44,7 @@ public class StudyController {
 
         model.addAttribute("post", responseDto);
         model.addAttribute("replyList", replyResponseDtoList);
+        model.addAttribute("rereplyList", rereplyResponseDtoList);
 
         return "/board/study/posts-read";
     }

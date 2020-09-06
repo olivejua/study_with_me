@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layouts/default_layout">
 >
-    <th:block layout:fragment="content">
+    <th:block layout:fragment="custom-content">
         <h2>스터디모집 게시글 읽기 페이지 page</h2>
 
         <form>
@@ -40,7 +40,7 @@
         <div>
             <h3>댓글</h3>
             <div>
-                <div th:each="reply : ${replyList}">
+                <div th:each="reply : ${replyList}" class="div-reply">
                     <div>
                         <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
                         <label>[[${reply.user.nickname}]]</label>
@@ -49,14 +49,18 @@
                         <p>
                             <label>[[${reply.content}]]</label>
                         </p>
-                        <div>
-
-                        </div>
-<!--                        답글 textarea-->
                     </div>
-                    <div class="div-rereply-save">
-                        <textarea></textarea>
-                        <button th:id="${reply.replyNo}">답글 등록</button>
+                    <div th:each="rereply : ${rereplyList}" th:if="${rereply.reply.replyNo==reply.replyNo}">
+                        <input type="hidden" name="rereplyNo" th:value="${rereply.rereplyNo}">
+                        <label>[[${rereply.user.nickname}]]</label>
+                        <label>[[${#dates.format(rereply.modifiedDate, 'yy.MM.dd')}]]</label>
+                        <p>
+                            <label>[[${rereply.content}]]</label>
+                        </p>
+                    </div>
+                    <div class="div-rereply-save" th:id="${reply.replyNo}">
+                        <textarea name="rereply-content"></textarea>
+                        <button onclick="rereply_save(this)">답글 등록</button>
                     </div>
                 </div>
             </div>
