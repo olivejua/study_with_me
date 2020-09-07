@@ -1,0 +1,22 @@
+.col-md-4 {
+    max-width: 100%;
+}
+
+.col-sm-4 {
+    max-width: 100%;
+}
+
+#reply-content {
+    width: 70%;
+    min-height: 70px;
+    margin-bottom: 10px;
+
+}
+
+.btn-customset {
+    float: right;
+}
+
+.bottom-line {
+    margin-top: 20px;
+}

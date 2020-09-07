@@ -41,7 +41,7 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
     @Column(nullable = false)
     private int conditionCapacity;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String conditionExplanation;
 
     @Column(nullable = false)

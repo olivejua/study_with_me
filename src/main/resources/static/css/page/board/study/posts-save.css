@@ -1,3 +1,20 @@
-div.form-group {
-    width: 1000px;
+.col-md-4 {
+    max-width: 100%;
+}
+
+#smart_editor2 {
+    width: 100%;
+}
+
+col-form-label {
+    vertical-align: middle;
+}
+
+.ui-datepicker-trigger {
+    display: none;
+}
+
+#btn-save #btn-cancel {
+    float: right;
+    margin-top: 5%;
 }

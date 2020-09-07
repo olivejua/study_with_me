@@ -1,6 +1,8 @@
 package com.ksk.project.study_with_me.web;
 
 import com.ksk.project.study_with_me.config.MatchNames;
+import com.ksk.project.study_with_me.config.auth.LoginUser;
+import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
 import com.ksk.project.study_with_me.service.ReplyService;
 import com.ksk.project.study_with_me.service.RereplyService;
 import com.ksk.project.study_with_me.service.StudyService;
@@ -37,11 +39,12 @@ public class StudyController {
     }
 
     @GetMapping("/posts/read")
-    public String read(Model model, Long postNo) {
+    public String read(Model model, Long postNo, @LoginUser SessionUser user) {
         StudyPostsReadResponseDto responseDto = studyService.findById(postNo);
         List<ReplyListResponseDto> replyResponseDtoList = replyService.findAllByPostNoAndBoardName(postNo, MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getDbName());
         List<RereplyListResponseDto> rereplyResponseDtoList = rereplyService.findAllByPostNoAndBoardName(postNo, MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getDbName());
 
+        model.addAttribute("userNickname", user.getNickname());
         model.addAttribute("post", responseDto);
         model.addAttribute("replyList", replyResponseDtoList);
         model.addAttribute("rereplyList", rereplyResponseDtoList);

@@ -3,75 +3,107 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layouts/default_layout">
 >
-    <th:block layout:fragment="custom-content">
-        <h2>스터디모집 게시글 읽기 페이지 page</h2>
+<th:block layout:fragment="custom-css">
+    <link rel="stylesheet" th:href="@{/css/page/board/study/study.css}">
+    <link rel="stylesheet" th:href="@{/css/page/board/study/posts-read.css}">
+</th:block>
+<th:block layout:fragment="custom-header">
+    <div class="page-header">
+        <h1>스터디 모집 게시판 <small>게시글 읽기</small></h1>
+    </div>
+</th:block>
+<th:block layout:fragment="custom-content">
+    <div class="container">
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <form id="form-post">
+                    <input type="hidden" id="postNo" th:value="${post.postNo}">
+                    <input type="hidden" id="boardName" value="study">
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-2 col-form-label">제목</label>
+                        <div class="col-sm-9">
+                            <label id="title">[[${post.title}]]</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="conditionLanguages" class="col-sm-2 col-form-label">개발 언어</label>
+                        <div class="col-sm-9">
+                            <label id="conditionLanguages">[[${post.conditionLanguages}]]</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="conditionPlace" class="col-sm-2 col-form-label">장소</label>
+                        <div class="col-sm-9">
+                            <label id="conditionPlace">[[${post.conditionPlace}]]</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="period" class="col-sm-2 col-form-label">기간</label>
+                        <div id="period" class="col-sm-9">
+                            <label>
+                                [[${#dates.format(post.conditionStartDate, 'yy.MM.dd E')}]] ~
+                                [[${#dates.format(post.conditionEndDate, 'yy.MM.dd E')}]]
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="conditionCapacity" class="col-sm-2 col-form-label">정원 수</label>
+                        <div class="col-sm-9">
+                            <label id="conditionCapacity">
+                                [[${post.conditionCapacity}==0 ? '정원 수 제한 없음' : ${post.conditionCapacity}]]
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="conditionExplanation" class="col-sm-2 col-form-label">설명</label>
+                        <div class="col-sm-9">
+                            <p id="conditionExplanation" th:utext="${post.conditionExplanation}"></p>
+                        </div>
+                    </div>
+                </form>
 
-        <form>
-            <input type="hidden" id="postNo" th:value="${post.postNo}">
-            <input type="hidden" id="boardName" value="study">
-            <div class="form-group">
-                <label>제목</label>
-                <label>[[${post.title}]]</label>
-            </div>
-            <div class="form-group">
-                <label>언어</label>
-                <label>[[${post.conditionLanguages}]]</label>
-            </div>
-            <div class="form-group">
-                <label>장소</label>
-                <label>[[${post.conditionPlace}]]</label>
-            </div>
-            <div class="form-group">
-                <label>기간</label>
-                <label>[[${#dates.format(post.conditionStartDate, 'yy.MM.dd E')}]] ~
-                    [[${#dates.format(post.conditionEndDate, 'yy.MM.dd E')}]]
-                </label>
-            </div>
-            <div class="form-group">
-                <label>정원 수</label>
-                <label>[[${post.conditionCapacity}]]</label>
-            </div>
-            <div class="form-group">
-                <label>설명</label>
-                <p th:utext="${post.conditionExplanation}"></p>
-            </div>
-        </form>
-
-        <div>
-            <h3>댓글</h3>
-            <div>
-                <div th:each="reply : ${replyList}" class="div-reply">
+                <div>
+                    <h4>댓글</h4>
                     <div>
-                        <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
-                        <label>[[${reply.user.nickname}]]</label>
-                        <label>[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
-                        <button onclick="rereply_open(this)">답글달기</button>
-                        <p>
-                            <label>[[${reply.content}]]</label>
-                        </p>
+                        <div th:each="reply : ${replyList}" class="div-reply">
+                            <div>
+                                <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
+                                <label>[[${reply.user.nickname}]]</label>
+                                <label>[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
+                                <button onclick="rereply_open(this)">답글달기</button>
+                                <p>
+                                    <label>[[${reply.content}]]</label>
+                                </p>
+                            </div>
+                            <div th:each="rereply : ${rereplyList}" th:if="${rereply.reply.replyNo==reply.replyNo}">
+                                <input type="hidden" name="rereplyNo" th:value="${rereply.rereplyNo}">
+                                <label>[[${rereply.user.nickname}]]</label>
+                                <label>[[${#dates.format(rereply.modifiedDate, 'yy.MM.dd')}]]</label>
+                                <p>
+                                    <label>[[${rereply.content}]]</label>
+                                </p>
+                            </div>
+                            <div class="div-rereply-save" th:id="${reply.replyNo}">
+                                <textarea name="rereply-content"></textarea>
+                                <button onclick="rereply_save(this)">답글 등록</button>
+                            </div>
+                        </div>
                     </div>
-                    <div th:each="rereply : ${rereplyList}" th:if="${rereply.reply.replyNo==reply.replyNo}">
-                        <input type="hidden" name="rereplyNo" th:value="${rereply.rereplyNo}">
-                        <label>[[${rereply.user.nickname}]]</label>
-                        <label>[[${#dates.format(rereply.modifiedDate, 'yy.MM.dd')}]]</label>
-                        <p>
-                            <label>[[${rereply.content}]]</label>
-                        </p>
-                    </div>
-                    <div class="div-rereply-save" th:id="${reply.replyNo}">
-                        <textarea name="rereply-content"></textarea>
-                        <button onclick="rereply_save(this)">답글 등록</button>
+                    <div class="form-group">
+                        <label for="reply-content">[[${userNickname}]]</label>
+                        <textarea id="reply-content" class="form-control"></textarea>
+                        <button id="btn-reply-save" class="btn-customset btn btn-outline-primary btn-sm">댓글 등록</button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <textarea id="reply-content"></textarea>
-                <button id="btn-reply-save">댓글 등록</button>
+                <div class="bottom-line">
+                    <a href="/board/study/posts/list" class="btn btn-info btn-lg btn-customset" id="btn-list" role="button">목록</a>
+                </div>
             </div>
         </div>
-        <a href="/board/study/posts/list" role="button">목록</a>
-    </th:block>
-    <th:block layout:fragment="custom-script">
-        <script th:src="@{/js/page/board/study/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
-    </th:block>
+    </div>
+</th:block>
+<th:block layout:fragment="custom-script">
+    <script th:src="@{/js/page/board/study/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
+</th:block>
 </html>
+

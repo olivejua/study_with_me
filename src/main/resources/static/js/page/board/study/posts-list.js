@@ -13,7 +13,7 @@ var main = {
             conditionPlace: $('#conditionPlace').val(),
             conditionStartDate: $('#startDate').val(),
             conditionEndDate: $('#endDate').val(),
-            conditionCapacity: $('#conditionCapacity').val(),
+            conditionCapacity: $('#checkbox-nolimit').is(':checked') ? 0 : $('#conditionCapacity').val(),
             conditionExplanation: $('#conditionExplanation').val()
         };
 

@@ -1,5 +1,10 @@
 //TODO Date Picker 수정하기 (너무 길음...)
 $(function() {
+
+    // 정원수
+    $('#checkbox-nolimit').prop('checked', false);
+    $('#conditionCapacity').prop('disabled', false);
+
     //모든 datepicker에 대한 공통 옵션 설정
     $.datepicker.setDefaults({
         dateFormat: 'yy-mm-dd' //Input Display Format 변경
@@ -31,7 +36,7 @@ $(function() {
 });
 
 
-//smart editor
+// //smart editor
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
     oAppRef: oEditors,
@@ -58,7 +63,7 @@ function handleFileUpload(e) {
         reader.onload = function (e) {
             var html_img = "<span><img src=\"" + e.target.result + "\" data-file=\"" + file.name + "\"></span>";
 
-            $('#div-fileupload').append(html_img);
+            // $('#div-fileupload').append(html_img);
 
             pasteHTML(html_img);
         };
@@ -69,6 +74,10 @@ function pasteHTML(html_img){
     oEditors.getById["conditionExplanation"].exec("PASTE_HTML", [html_img]);
 }
 
-function isCallFunc() {
-    console.log('isCallFunc');
-}
+$('#checkbox-nolimit').on('click', function () {
+    if($('#checkbox-nolimit').is(':checked')) {
+        $('#conditionCapacity').prop('disabled', true);
+    } else {
+        $('#conditionCapacity').prop('disabled', false);
+    }
+});

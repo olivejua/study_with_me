@@ -25,7 +25,7 @@ public class BoardQuestion {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(length = 2000, nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경

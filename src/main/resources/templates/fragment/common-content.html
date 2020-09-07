@@ -1,6 +1,24 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="layouts/default_layout">
->
-</html>
+<div th:fragment="common-content" xmlns:th="http://www.thymeleaf.org">
+
+    <!--  회원가입 요청 모달  -->
+    <div class="modal" id="modal-messageToGuest" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog"><div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    손님이시네요. 회원이 되시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        아니요.
+                    </button>
+                    <a href="/user/signup" id="button-answer-yes" class="btn btn-primary active">
+                        네, 될래요!
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+</th:block>

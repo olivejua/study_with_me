@@ -3,45 +3,24 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layouts/default_layout">
 >
-    <th:block layout:fragment="custom-content">
-        <th:block th:if="${userName}">
-            Logged in as: <span id="user">[[${userName}]]</span>
-            <a href="/logout" class="btn btn-info active" role="button">Logout</a>
-        </th:block>
-        <th:block th:unless="${userName}">
-            <a href="/user/login" class="btn btn-success active" role="button">Login</a>
-        </th:block>
+    <th:block layout:fragment="custom-css">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/page/index.css}">
+    </th:block>
 
-        <a href="/board/study/posts/list" class="btn btn-info active" role="button">스터디 모집 게시판</a>
-
-        <div class="modal fade" id="modal-messageToGuest" tabindex="-1" role="dialog"
-             aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog"><div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        손님이시네요. 회원이 되시겠습니까?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                            아니요.
-                        </button>
-                        <a href="/user/signup" id="button-answer-yes" class="btn btn-primary active">
-                            네, 될래요!
-                        </a>
-                    </div>
-                </div>
-            </div>
-            </div>
+    <th:block layout:fragment="custom-header">
+        <div class="jumbotron">
+            <h1>Study With Me</h1>
+            <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+            <p>
+                <a class="btn btn-lg btn-primary" href="http://bootstrapk.com/components/#navbar" role="button">View navbar docs »</a>
+            </p>
         </div>
     </th:block>
+
+    <th:block layout:fragment="custom-content">
+
+    </th:block>
     <th:block layout:fragment="custom-script">
-        <script th:inline="javascript">
-            var messageToGuest = [[${messageToGuest}]];
-            if (messageToGuest) {
-                $('#modal-messageToGuest').modal('show');
-            } else {
-                $('#modal-messageToGuest').modal('hide');
-            }
-        </script>
+
     </th:block>
 </html>
