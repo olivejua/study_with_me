@@ -1,3 +1,7 @@
+.page-header {
+    margin: 20px 0 50px 0;
+}
+
 .col-md-4 {
     max-width: 100%;
 }
@@ -6,17 +10,89 @@
     max-width: 100%;
 }
 
+.form-group>label, .form-group>label>div>label{
+    font-size: 20px;
+}
+
+.label-name {
+    font-weight: 500;
+}
+
+.div-bottom-line {
+    float: right;
+    margin: 10px 20% 10px 0;
+    padding-top: 20px;
+}
+
+.div-reply {
+    margin-top: 150px;
+}
+
+h4 {
+    margin-bottom: 30px;
+}
+
 #reply-content {
+    display: inline-block;
     width: 70%;
     min-height: 70px;
     margin-bottom: 10px;
-
-}
-
-.btn-customset {
-    float: right;
 }
 
 .bottom-line {
     margin-top: 20px;
+}
+
+.label-reply-info {
+    margin-right: 7px;
+}
+
+.label-reply-name {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.div-img-reply {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-right: 0;
+    padding-left: 5%;
+}
+
+.img-reply {
+    width: auto;
+    height: auto;
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.div-rereply-content {
+    display: flex;
+}
+
+#rereply-content {
+    display: inline-block;
+    width: 100%;
+    min-height: 70px;
+    margin-bottom: 10px;
+}
+
+
+.div-reply-save {
+    margin-top: 50px;
+}
+
+.div-reply-content {
+    display: flex;
+}
+
+.btn-reply-save {
+    height: 70px;
+    margin-left: 10px;
+}
+
+#btn-list {
+    float: right;
+    margin-top: 50px;
+    margin-right: 20%;
 }

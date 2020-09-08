@@ -91,7 +91,7 @@ public class StudyControllerTest {
                 .user(user)
                 .build();
 
-        String url = "http://localhost:" + port + "/board/study/posts/save";
+        String url = "http://localhost:" + port + "/board/study/posts";
 /*
         //when
         mvc.perform(post(url)

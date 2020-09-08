@@ -14,6 +14,8 @@ var main = {
             content: $('#reply-content').val()
         };
 
+        console.log(data);
+
         $.ajax({
             type: 'POST',
             url: '/board/study/posts/reply/save',
@@ -46,7 +48,7 @@ function rereply_save(target) {
 
     var data = {
         replyNo : $(div_reply).find('input[name=replyNo]')[0].value,
-        content : $(div_reply).find('textarea[name=rereply-content]')[0].value,
+        content : $(div_reply).find('#rereply-content')[0].value,
         postNo : $('#postNo').val(),
         boardName : $('#boardName').val()
     };

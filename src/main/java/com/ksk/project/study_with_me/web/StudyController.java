@@ -44,11 +44,19 @@ public class StudyController {
         List<ReplyListResponseDto> replyResponseDtoList = replyService.findAllByPostNoAndBoardName(postNo, MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getDbName());
         List<RereplyListResponseDto> rereplyResponseDtoList = rereplyService.findAllByPostNoAndBoardName(postNo, MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getDbName());
 
-        model.addAttribute("userNickname", user.getNickname());
+        model.addAttribute("user", user);
         model.addAttribute("post", responseDto);
         model.addAttribute("replyList", replyResponseDtoList);
         model.addAttribute("rereplyList", rereplyResponseDtoList);
 
         return "/board/study/posts-read";
+    }
+
+    @GetMapping("/posts/update")
+    public String update(Model model, Long postNo) {
+        StudyPostsReadResponseDto responseDto = studyService.findById(postNo);
+        model.addAttribute("post", responseDto);
+
+        return "/board/study/posts-update";
     }
 }

@@ -20,25 +20,25 @@
                     <input type="hidden" id="postNo" th:value="${post.postNo}">
                     <input type="hidden" id="boardName" value="study">
                     <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label">제목</label>
+                        <label for="title" class="col-sm-2 col-form-label label-name">제목</label>
                         <div class="col-sm-9">
                             <label id="title">[[${post.title}]]</label>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="conditionLanguages" class="col-sm-2 col-form-label">개발 언어</label>
+                        <label for="conditionLanguages" class="col-sm-2 col-form-label label-name">개발 언어</label>
                         <div class="col-sm-9">
                             <label id="conditionLanguages">[[${post.conditionLanguages}]]</label>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="conditionPlace" class="col-sm-2 col-form-label">장소</label>
+                        <label for="conditionPlace" class="col-sm-2 col-form-label label-name">장소</label>
                         <div class="col-sm-9">
                             <label id="conditionPlace">[[${post.conditionPlace}]]</label>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="period" class="col-sm-2 col-form-label">기간</label>
+                        <label for="period" class="col-sm-2 col-form-label label-name">기간</label>
                         <div id="period" class="col-sm-9">
                             <label>
                                 [[${#dates.format(post.conditionStartDate, 'yy.MM.dd E')}]] ~
@@ -47,56 +47,83 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="conditionCapacity" class="col-sm-2 col-form-label">정원 수</label>
+                        <label for="conditionCapacity" class="col-sm-2 col-form-label label-name">정원 수</label>
                         <div class="col-sm-9">
                             <label id="conditionCapacity">
-                                [[${post.conditionCapacity}==0 ? '정원 수 제한 없음' : ${post.conditionCapacity}]]
+                                [[${post.conditionCapacity}==0 ? '정원 수 제한 없음' : ${post.conditionCapacity}]] 명
                             </label>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="conditionExplanation" class="col-sm-2 col-form-label">설명</label>
+                        <label for="conditionExplanation" class="col-sm-2 col-form-label label-name">설명</label>
                         <div class="col-sm-9">
                             <p id="conditionExplanation" th:utext="${post.conditionExplanation}"></p>
                         </div>
                     </div>
                 </form>
+                <div th:if="${user.userCode} == ${post.user.userCode}" class="div-bottom-line">
+                    <a th:href="@{/board/study/posts/update(postNo=${post.postNo})}" class="btn btn-success" role="button">수정</a>
+                    <button class="btn btn-danger" id="btn-delete">삭제</button>
+                </div>
 
-                <div>
+                <div class="div-reply">
                     <h4>댓글</h4>
                     <div>
-                        <div th:each="reply : ${replyList}" class="div-reply">
+                        <div th:each="reply : ${replyList}" class="div-reply-list">
                             <div>
                                 <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
-                                <label>[[${reply.user.nickname}]]</label>
-                                <label>[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
-                                <button onclick="rereply_open(this)">답글달기</button>
+                                <label class="label-reply-info label-reply-name">[[${reply.user.nickname}]]</label>
+                                <label class="label-reply-info">[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
+                                <th:block th:if="${user.userCode}==${reply.user.userCode}">
+                                    <button class="btn btn-outline-success btn-sm">수정</button>
+                                    <button class="btn btn-outline-danger btn-sm">삭제</button>
+                                </th:block>
+                                <button onclick="rereply_open(this)" class="btn btn-outline-info btn-sm">답글달기</button>
                                 <p>
                                     <label>[[${reply.content}]]</label>
                                 </p>
                             </div>
-                            <div th:each="rereply : ${rereplyList}" th:if="${rereply.reply.replyNo==reply.replyNo}">
-                                <input type="hidden" name="rereplyNo" th:value="${rereply.rereplyNo}">
-                                <label>[[${rereply.user.nickname}]]</label>
-                                <label>[[${#dates.format(rereply.modifiedDate, 'yy.MM.dd')}]]</label>
-                                <p>
-                                    <label>[[${rereply.content}]]</label>
-                                </p>
+                            <div th:each="rereply : ${rereplyList}" th:if="${rereply.reply.replyNo==reply.replyNo}"  class="div-rereply-list row">
+                                <div class="col-md-1 div-img-reply">
+                                    <img th:src="@{/img/reply/sign-reply.png}" class="img-reply">
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="hidden" name="rereplyNo" th:value="${rereply.rereplyNo}">
+                                    <label class="label-reply-info label-reply-name">[[${rereply.user.nickname}]]</label>
+                                    <label class="label-reply-info">[[${#dates.format(rereply.modifiedDate, 'yy.MM.dd')}]]</label>
+                                    <th:block th:if="${user.userCode}==${reply.user.userCode}">
+                                        <button class="btn btn-outline-success btn-sm">수정</button>
+                                        <button class="btn btn-outline-danger btn-sm">삭제</button>
+                                    </th:block>
+                                    <p>
+                                        <label>[[${rereply.content}]]</label>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="div-rereply-save" th:id="${reply.replyNo}">
-                                <textarea name="rereply-content"></textarea>
-                                <button onclick="rereply_save(this)">답글 등록</button>
+                            <div class="div-rereply-save row" th:id="${reply.replyNo}">
+                                <div class="col-md-1 div-img-reply">
+                                    <img th:src="@{/img/reply/sign-reply.png}" class="img-reply">
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="rereply-content">[[${user.nickname}]]</label>
+                                    <div class="div-rereply-content">
+                                        <textarea id="rereply-content" class="form-control"></textarea>
+                                        <button onclick="rereply_save(this)" class="btn btn-outline-primary btn-sm btn-reply-save">등록</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="reply-content">[[${userNickname}]]</label>
-                        <textarea id="reply-content" class="form-control"></textarea>
-                        <button id="btn-reply-save" class="btn-customset btn btn-outline-primary btn-sm">댓글 등록</button>
+                    <div class="div-reply-save">
+                        <label for="reply-content">[[${user.nickname}]]</label><br>
+                        <div class="div-reply-content">
+                            <textarea id="reply-content" class="form-control"></textarea>
+                            <button id="btn-reply-save" class="btn btn-outline-primary btn-reply-save">등록</button>
+                        </div>
                     </div>
                 </div>
                 <div class="bottom-line">
-                    <a href="/board/study/posts/list" class="btn btn-info btn-lg btn-customset" id="btn-list" role="button">목록</a>
+                    <a href="/board/study/posts/list" class="btn btn-info btn-lg" id="btn-list" role="button">목록</a>
                 </div>
             </div>
         </div>
@@ -104,6 +131,7 @@
 </th:block>
 <th:block layout:fragment="custom-script">
     <script th:src="@{/js/page/board/study/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
+    <script th:src="@{/js/page/board/study/posts-list.js}" th:inline="javascript" type="text/javascript"></script>
 </th:block>
 </html>
 

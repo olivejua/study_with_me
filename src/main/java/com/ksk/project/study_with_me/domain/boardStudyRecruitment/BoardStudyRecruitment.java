@@ -69,4 +69,16 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
     public void addViewCount() {
         this.viewCount += 1;
     }
+
+    public void update(String title, String conditionLanguages,
+                       String conditionPlace, Date conditionStartDate, Date conditionEndDate, int conditionCapacity,
+                       String conditionExplanation) {
+        this.title = title;
+        this.conditionLanguages = conditionLanguages;
+        this.conditionPlace = conditionPlace;
+        this.conditionStartDate = conditionStartDate;
+        this.conditionEndDate = conditionEndDate;
+        this.conditionCapacity = conditionCapacity;
+        this.conditionExplanation = conditionExplanation;
+    }
 }

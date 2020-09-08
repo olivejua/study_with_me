@@ -8,11 +8,9 @@ import com.ksk.project.study_with_me.service.StudyService;
 import com.ksk.project.study_with_me.web.dto.reply.ReplySaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.rereply.RereplySaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.StudyPostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/board/study")
@@ -23,9 +21,20 @@ public class StudyApiController {
     private final ReplyService replyService;
     private final RereplyService rereplyService;
 
-    @PostMapping("/posts/save")
+    @PostMapping("/posts")
     public Long save(@RequestBody StudyPostsSaveRequestDto requestDto, @LoginUser SessionUser user) {
         return studyService.save(requestDto.getUser() == null ? requestDto.setUser(user.toEntity()) : requestDto );
+    }
+
+    @PutMapping("/posts/{postNo}")
+    public Long update(@PathVariable Long postNo, @RequestBody StudyPostsUpdateRequestDto requestDto) {
+        return studyService.update(postNo, requestDto);
+    }
+
+    @DeleteMapping("/posts/{postNo}")
+    public Long delete(@PathVariable Long postNo) {
+        studyService.delete(postNo);
+        return postNo;
     }
 
     @PostMapping("/posts/reply/save")
