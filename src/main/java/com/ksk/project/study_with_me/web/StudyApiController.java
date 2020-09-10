@@ -23,7 +23,7 @@ public class StudyApiController {
 
     @PostMapping("/posts")
     public Long save(@RequestBody StudyPostsSaveRequestDto requestDto, @LoginUser SessionUser user) {
-        return studyService.save(requestDto.getUser() == null ? requestDto.setUser(user.toEntity()) : requestDto );
+        return studyService.save(requestDto.setUser(user.toEntity()));
     }
 
     @PutMapping("/posts/{postNo}")
