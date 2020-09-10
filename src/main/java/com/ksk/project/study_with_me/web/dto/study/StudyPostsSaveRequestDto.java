@@ -36,11 +36,29 @@ public class StudyPostsSaveRequestDto {
         this.conditionExplanation = conditionExplanation;
         this.viewCount = setInitialNumber();
         this.replyCount = setInitialNumber();
+
+//        this.findImage(conditionExplanation);
     }
 
     private int setInitialNumber() {
         return 0;
     }
+
+//    private List<String> findImage(String explanation) {
+//        List<String> imgPathList = new ArrayList<>();
+//
+//        Document doc = Jsoup.parse(explanation);
+//        Elements imgs = doc.getElementsByTag("img");
+//        if(imgs.size() > 0) {
+//            for(int i=0; i<imgs.size(); i++) {
+//                String src = imgs.get(i).attr("src");
+//                System.out.println(src);
+//                imgPathList.add(src);
+//            }
+//        }
+//
+//        return imgPathList;
+//    }
 
     public StudyPostsSaveRequestDto setUser(User user) {
         this.user = user;

@@ -1,6 +1,7 @@
 package com.ksk.project.study_with_me.web;
 
-import com.ksk.project.study_with_me.web.vo.PhotoVo;
+import com.ksk.project.study_with_me.util.FileUtils;
+import com.ksk.project.study_with_me.web.dto.image.ImageDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,42 +15,48 @@ import java.util.UUID;
 public class FileUploadController {
     //단일파일업로드
     @RequestMapping("/photoUpload")
-    public String photoUpload(HttpServletRequest request, PhotoVo vo){
-        String callback = vo.getCallback();
-        String callback_func = vo.getCallback_func();
+    public String imageUpload(HttpServletRequest request, ImageDto dto){
+        String callback = dto.getCallback();
+        String callback_func = dto.getCallback_func();
         String file_result = "";
         try {
-            if(vo.getFiledata() != null && vo.getFiledata().getOriginalFilename() != null && !vo.getFiledata().getOriginalFilename().equals("")){
+            if(dto.getFileData() != null && dto.getFileData().getOriginalFilename() != null && !dto.getFileData().getOriginalFilename().equals("")){
                 //파일이 존재하면
-                String original_name = vo.getFiledata().getOriginalFilename();
+                String original_name = dto.getFileData().getOriginalFilename();
                 String ext = original_name.substring(original_name.lastIndexOf(".")+1);
                 //파일 기본경로
                 String defaultPath = request.getSession().getServletContext().getRealPath("/");
                 //파일 기본경로 _ 상세경로
                 String path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;
                 File file = new File(path);
+                System.out.println("defaultPath:"+defaultPath);
                 System.out.println("path:"+path);
+                FileUtils.IMAGE_TEMP_PATH = path;
                 //디렉토리 존재하지 않을경우 디렉토리 생성
                 if(!file.exists()) {
                     file.mkdirs();
                 }
+
                 //서버에 업로드 할 파일명(한글문제로 인해 원본파일은 올리지 않는것이 좋음)
                 String realname = UUID.randomUUID().toString() + "." + ext;
                 ///////////////// 서버에 파일쓰기 /////////////////
-                vo.getFiledata().transferTo(new File(path+realname));
+                dto.getFileData().transferTo(new File(path+realname));
+
                 file_result += "&bNewLine=true&sFileName="+original_name+"&sFileURL=/resource/photo_upload/"+realname;
+//                file_result += "&bNewLine=true&sFileName="+original_name+"&sFileURL="+realname;
             } else {
                 file_result += "&errstr=error";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return "redirect:" + callback + "?callback_func="+callback_func+file_result;
     }
 
     //다중파일업로드
     @RequestMapping("/multiplePhotoUpload")
-    public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response){
+    public void multipleImageUpload(HttpServletRequest request, HttpServletResponse response){
         try {
             //파일정보
             String sFileInfo = "";
