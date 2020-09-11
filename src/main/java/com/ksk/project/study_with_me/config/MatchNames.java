@@ -16,7 +16,7 @@ public class MatchNames {
         BOARD_STUDY_RECRUITMENT("스터디모집 게시판", "study");
 
         private final String calledName;
-        private final String dbName;
+        private final String shortName;
     }
 
     @Getter

@@ -1,6 +1,6 @@
 package com.ksk.project.study_with_me.web;
 
-import com.ksk.project.study_with_me.util.FileUtils;
+import com.ksk.project.study_with_me.util.ImageUtils;
 import com.ksk.project.study_with_me.web.dto.image.ImageDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +26,12 @@ public class FileUploadController {
                 String ext = original_name.substring(original_name.lastIndexOf(".")+1);
                 //파일 기본경로
                 String defaultPath = request.getSession().getServletContext().getRealPath("/");
+
                 //파일 기본경로 _ 상세경로
                 String path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;
                 File file = new File(path);
-                System.out.println("defaultPath:"+defaultPath);
                 System.out.println("path:"+path);
-                FileUtils.IMAGE_TEMP_PATH = path;
+                ImageUtils.TEMP_PATH = path;
                 //디렉토리 존재하지 않을경우 디렉토리 생성
                 if(!file.exists()) {
                     file.mkdirs();
@@ -43,7 +43,6 @@ public class FileUploadController {
                 dto.getFileData().transferTo(new File(path+realname));
 
                 file_result += "&bNewLine=true&sFileName="+original_name+"&sFileURL=/resource/photo_upload/"+realname;
-//                file_result += "&bNewLine=true&sFileName="+original_name+"&sFileURL="+realname;
             } else {
                 file_result += "&errstr=error";
             }
