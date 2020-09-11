@@ -33,12 +33,12 @@ public class StudyController {
     public String list(Model model) {
         model.addAttribute("posts", studyService.findAllDesc());
 
-        return "/board/study/posts-list";
+        return "board/study/posts-list";
     }
 
     @GetMapping("/posts/save")
     public String save() {
-        return "/board/study/posts-save";
+        return "board/study/posts-save";
     }
 
     @GetMapping("/posts/read")
@@ -63,7 +63,7 @@ public class StudyController {
                      sourcePath, copy_path);
         }
 
-        return "/board/study/posts-read";
+        return "board/study/posts-read";
     }
 
     @GetMapping("/posts/update")
@@ -71,6 +71,6 @@ public class StudyController {
         StudyPostsReadResponseDto responseDto = studyService.findById(postNo);
         model.addAttribute("post", responseDto);
 
-        return "/board/study/posts-update";
+        return "board/study/posts-update";
     }
 }
