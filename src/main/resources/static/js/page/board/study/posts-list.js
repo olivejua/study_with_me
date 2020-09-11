@@ -12,6 +12,10 @@ var main = {
         $('#btn-delete').on('click', function () {
             _this.delete();
         });
+        $('#btn-search').on('click', function (e) {
+            e.preventDefault();
+            _this.search();
+        });
     },
     save : function () {
         var data = {
@@ -79,6 +83,21 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
+    search : function () {
+        var category = $('#search-category option:selected').val();
+        var keyword = $('#search-keyword').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/board/study/search/'+ category + '/' + keyword,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function () {
+            window.location.href='/board/study/posts/list';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
 };
 
 main.init();

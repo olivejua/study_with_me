@@ -7,11 +7,10 @@ import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -19,10 +18,44 @@ public class StudyService {
     private final BoardStudyRecruitmentRepository boardStudyRecruitmentRepository;
 
     @Transactional(readOnly = true)
-    public List<StudyPostsListResponseDto> findAllDesc() {
-        return boardStudyRecruitmentRepository.findAllByOrderByPostNoDesc().stream()
-                .map(StudyPostsListResponseDto::new)
-                .collect(Collectors.toList());
+    public Page<StudyPostsListResponseDto> findPosts(Pageable pageable) {
+        return boardStudyRecruitmentRepository.findAll(pageable)
+                .map(entity -> new StudyPostsListResponseDto(
+                        entity.getPostNo(), entity.getUser(),
+                        entity.getTitle(), entity.getViewCount(),
+                        entity.getReplyCount(), entity.getCreatedDate()
+                ));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<StudyPostsListResponseDto> searchPosts(Pageable pageable, String searchType, String keyword) {
+        Page<BoardStudyRecruitment> results = null;
+        switch (searchType) {
+            case "title" :
+                results = boardStudyRecruitmentRepository.findByTitleContaining(keyword, pageable);
+                break;
+            case "conditionLanguages" :
+                results = boardStudyRecruitmentRepository.findByConditionLanguagesContaining(keyword, pageable);
+                break;
+            case "conditionPlace" :
+                results = boardStudyRecruitmentRepository.findByConditionPlaceContaining(keyword, pageable);
+                break;
+            case "conditionCapacity" :
+                results = boardStudyRecruitmentRepository.findByConditionCapacityContaining(keyword, pageable);
+                break;
+            case "conditionExplanation" :
+                results = boardStudyRecruitmentRepository.findByConditionExplanationContaining(keyword, pageable);
+                break;
+            default:
+                results = boardStudyRecruitmentRepository.findAll(pageable);
+                break;
+        }
+
+        return results.map(entity -> new StudyPostsListResponseDto(
+                        entity.getPostNo(), entity.getUser(),
+                        entity.getTitle(), entity.getViewCount(),
+                        entity.getReplyCount(), entity.getCreatedDate()
+                ));
     }
 
     @Transactional
