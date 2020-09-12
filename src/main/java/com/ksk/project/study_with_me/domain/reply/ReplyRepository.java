@@ -7,4 +7,6 @@ import java.util.List;
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     public List<Reply> findByPostNoAndBoardNameOrderByReplyNoAsc(Long postNo, String boardName);
+
+    public int countByPostNoAndBoardName(Long postNo, String boardName);
 }

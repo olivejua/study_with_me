@@ -69,19 +69,23 @@
                 <div class="div-reply">
                     <h4>댓글</h4>
                     <div>
-                        <div th:each="reply : ${replyList}" class="div-reply-list">
-                            <div>
+                        <div th:each="reply : ${replyList}" name="wrapped-each-reply" class="div-reply-list">
+                            <div name="div-one-reply">
                                 <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
                                 <label class="label-reply-info label-reply-name">[[${reply.user.nickname}]]</label>
                                 <label class="label-reply-info">[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
                                 <th:block th:if="${user.userCode}==${reply.user.userCode}">
-                                    <button class="btn btn-outline-success btn-sm">수정</button>
+                                    <button name="open-reply-modify" class="btn btn-outline-success btn-sm">수정</button>
                                     <button class="btn btn-outline-danger btn-sm">삭제</button>
                                 </th:block>
-                                <button onclick="rereply_open(this)" class="btn btn-outline-info btn-sm">답글달기</button>
-                                <p>
+                                <button name="open-rereply-save" class="btn btn-outline-info btn-sm">답글달기</button>
+                                <p name="p-reply-modify">
                                     <label>[[${reply.content}]]</label>
                                 </p>
+                                <div name="div-reply-modify" class="div-reply-content" style="display: none;">
+                                    <textarea name="reply-content-modify" class="form-control reply-content">[[${reply.content}]]</textarea>
+                                    <button name="btn-reply-modify" class="btn btn-outline-success btn-reply-save">수정</button>
+                                </div>
                             </div>
                             <div th:each="rereply : ${rereplyList}" th:if="${rereply.reply.replyNo==reply.replyNo}"  class="div-rereply-list row">
                                 <div class="col-md-1 div-img-reply">
@@ -92,12 +96,16 @@
                                     <label class="label-reply-info label-reply-name">[[${rereply.user.nickname}]]</label>
                                     <label class="label-reply-info">[[${#dates.format(rereply.modifiedDate, 'yy.MM.dd')}]]</label>
                                     <th:block th:if="${user.userCode}==${reply.user.userCode}">
-                                        <button class="btn btn-outline-success btn-sm">수정</button>
+                                        <button name="open-reply-modify" class="btn btn-outline-success btn-sm">수정</button>
                                         <button class="btn btn-outline-danger btn-sm">삭제</button>
                                     </th:block>
-                                    <p>
+                                    <p name="p-reply-modify">
                                         <label>[[${rereply.content}]]</label>
                                     </p>
+                                    <div name="div-reply-modify" class="div-rereply-content" style="display: none;">
+                                        <textarea class="form-control rereply-content">[[${rereply.content}]]</textarea>
+                                        <button id="btn-rereply-modify" class="btn btn-outline-success btn-sm btn-reply-save">수정</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="div-rereply-save row" th:id="${reply.replyNo}">
@@ -105,10 +113,10 @@
                                     <img th:src="@{/img/reply/sign-reply.png}" class="img-reply">
                                 </div>
                                 <div class="col-md-8">
-                                    <label for="rereply-content">[[${user.nickname}]]</label>
+                                    <label >[[${user.nickname}]]</label>
                                     <div class="div-rereply-content">
-                                        <textarea id="rereply-content" class="form-control"></textarea>
-                                        <button onclick="rereply_save(this)" class="btn btn-outline-primary btn-sm btn-reply-save">등록</button>
+                                        <textarea name="rereply-content" class="form-control rereply-content"></textarea>
+                                        <button name="btn-rereply-save" class="btn btn-outline-primary btn-sm btn-reply-save">등록</button>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +125,7 @@
                     <div class="div-reply-save">
                         <label for="reply-content">[[${user.nickname}]]</label><br>
                         <div class="div-reply-content">
-                            <textarea id="reply-content" class="form-control"></textarea>
+                            <textarea id="reply-content" class="form-control reply-content"></textarea>
                             <button id="btn-reply-save" class="btn btn-outline-primary btn-reply-save">등록</button>
                         </div>
                     </div>
@@ -130,6 +138,9 @@
     </div>
 </th:block>
 <th:block layout:fragment="custom-script">
+    <script>
+
+    </script>
     <script th:src="@{/js/page/board/study/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
     <script th:src="@{/js/page/board/study/posts-list.js}" th:inline="javascript" type="text/javascript"></script>
 </th:block>

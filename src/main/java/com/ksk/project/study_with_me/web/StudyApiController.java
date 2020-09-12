@@ -8,6 +8,7 @@ import com.ksk.project.study_with_me.service.RereplyService;
 import com.ksk.project.study_with_me.service.StudyService;
 import com.ksk.project.study_with_me.util.ImageUtils;
 import com.ksk.project.study_with_me.web.dto.reply.ReplySaveRequestDto;
+import com.ksk.project.study_with_me.web.dto.reply.ReplyUpdateRequestDto;
 import com.ksk.project.study_with_me.web.dto.rereply.RereplySaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsUpdateRequestDto;
@@ -74,6 +75,11 @@ public class StudyApiController {
     @PostMapping("/posts/reply/save")
     public Long replySave(@RequestBody ReplySaveRequestDto dto, @LoginUser SessionUser user) {
         return replyService.save(dto.setUser(user.toEntity()));
+    }
+
+    @PostMapping("/posts/reply/update")
+    public Long replyUpdate(@RequestBody ReplyUpdateRequestDto dto) {
+        return replyService.update(dto.getReplyNo(), dto);
     }
 
     @PostMapping("/posts/rereply/save")

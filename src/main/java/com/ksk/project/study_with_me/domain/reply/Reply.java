@@ -42,4 +42,8 @@ public class Reply extends BaseTimeEntity {
         this.content = content;
         this.imageCode = imageCode;
     }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

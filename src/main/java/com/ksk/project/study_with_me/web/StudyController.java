@@ -10,6 +10,7 @@ import com.ksk.project.study_with_me.util.ImageUtils;
 import com.ksk.project.study_with_me.web.dto.reply.ReplyListResponseDto;
 import com.ksk.project.study_with_me.web.dto.rereply.RereplyListResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
+import com.ksk.project.study_with_me.web.dto.study.StudySearchResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,13 +34,6 @@ public class StudyController {
     private final ReplyService replyService;
     private final RereplyService rereplyService;
 
-//    @GetMapping("/posts/list")
-//    public String list(Model model) {
-//        model.addAttribute("posts", studyService.findAllDesc());
-//
-//        return "/board/study/posts-list";
-//    }
-
     @GetMapping("/posts/list")
     public String  findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest, Model model) {
         model.addAttribute("list", studyService.findPosts(pageRequest));
@@ -47,10 +41,12 @@ public class StudyController {
         return "/board/study/posts-list";
     }
 
-    @GetMapping("/search/{searchType}/{keyword}")
-    public String search(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
-                                                  @PathVariable String searchType, @PathVariable String keyword, Model model) {
+    @GetMapping("/search/{searchType}/{keyword}/list")
+    public String findPosts( @PathVariable String searchType, @PathVariable String keyword,
+                             @PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
+                                                 Model model) {
         model.addAttribute("list", studyService.searchPosts(pageRequest, searchType, keyword));
+        model.addAttribute("search", new StudySearchResponseDto(searchType, keyword));
 
         return "/board/study/posts-list";
     }

@@ -26,4 +26,9 @@ public class RereplyService {
                 .map(RereplyListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public int countByPostNoAndBoardName(Long postNo, String boardName) {
+        return rereplyRepository.countByPostNoAndBoardName(postNo, boardName);
+    }
 }

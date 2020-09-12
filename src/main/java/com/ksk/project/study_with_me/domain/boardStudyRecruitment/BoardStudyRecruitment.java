@@ -70,6 +70,11 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
         this.viewCount += 1;
     }
 
+    public BoardStudyRecruitment updateReplyCount(int replyCount) {
+        this.replyCount = replyCount;
+        return this;
+    }
+
     public void update(String title, String conditionLanguages,
                        String conditionPlace, Date conditionStartDate, Date conditionEndDate, int conditionCapacity,
                        String conditionExplanation) {

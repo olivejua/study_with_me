@@ -87,17 +87,9 @@ var main = {
         var category = $('#search-category option:selected').val();
         var keyword = $('#search-keyword').val();
 
-        $.ajax({
-            type: 'GET',
-            url: '/board/study/search/'+ category + '/' + keyword,
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8'
-        }).done(function () {
-            window.location.href='/board/study/posts/list';
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        });
-    }
+        $('#form-search').attr('action', '/board/study/search/' + category + '/' + keyword + '/list');
+        $('#form-search').submit();
+    },
 };
 
 main.init();

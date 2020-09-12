@@ -1,7 +1,10 @@
 package com.ksk.project.study_with_me.service;
 
+import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitment;
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitmentRepository;
+import com.ksk.project.study_with_me.domain.reply.ReplyRepository;
+import com.ksk.project.study_with_me.domain.rereply.RereplyRepository;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsListResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
@@ -16,15 +19,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StudyService {
     private final BoardStudyRecruitmentRepository boardStudyRecruitmentRepository;
+    private final ReplyRepository replyRepository;
+    private final RereplyRepository rereplyRepository;
 
     @Transactional(readOnly = true)
     public Page<StudyPostsListResponseDto> findPosts(Pageable pageable) {
-        return boardStudyRecruitmentRepository.findAll(pageable)
-                .map(entity -> new StudyPostsListResponseDto(
-                        entity.getPostNo(), entity.getUser(),
-                        entity.getTitle(), entity.getViewCount(),
-                        entity.getReplyCount(), entity.getCreatedDate()
-                ));
+        Page<BoardStudyRecruitment> posts = boardStudyRecruitmentRepository.findAll(pageable);
+
+        String boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
+        return posts.map(entity -> {
+            int replyCount = replyRepository.countByPostNoAndBoardName(entity.getPostNo(), boardName) +
+                    rereplyRepository.countByPostNoAndBoardName(entity.getPostNo(), boardName);
+
+            entity.updateReplyCount(replyCount);
+
+            return new StudyPostsListResponseDto(
+                    entity.getPostNo(), entity.getUser(),
+                    entity.getTitle(), entity.getViewCount(),
+                    entity.getReplyCount(), entity.getCreatedDate()
+            );});
     }
 
     @Transactional(readOnly = true)
