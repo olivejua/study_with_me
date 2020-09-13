@@ -38,7 +38,7 @@ public class StudyController {
     public String  findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest, Model model) {
         model.addAttribute("list", studyService.findPosts(pageRequest));
 
-        return "/board/study/posts-list";
+        return "board/study/posts-list";
     }
 
     @GetMapping("/search/{searchType}/{keyword}/list")
