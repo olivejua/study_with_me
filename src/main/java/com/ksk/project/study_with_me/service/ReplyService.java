@@ -43,4 +43,12 @@ public class ReplyService {
     public int countByPostNoAndBoardName(Long postNo, String boardName) {
         return replyRepository.countByPostNoAndBoardName(postNo, boardName);
     }
+
+    @Transactional
+    public void delete(Long replyNo) {
+        Reply entity = replyRepository.findById(replyNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다. replyNo=" + replyNo));
+
+        replyRepository.delete(entity);
+    }
 }

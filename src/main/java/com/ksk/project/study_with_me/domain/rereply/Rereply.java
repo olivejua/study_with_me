@@ -43,4 +43,8 @@ public class Rereply extends BaseTimeEntity {
         this.postNo = postNo;
         this.boardName = boardName;
     }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

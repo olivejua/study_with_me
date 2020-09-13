@@ -3,8 +3,6 @@ package com.ksk.project.study_with_me.service;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitment;
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitmentRepository;
-import com.ksk.project.study_with_me.domain.reply.ReplyRepository;
-import com.ksk.project.study_with_me.domain.rereply.RereplyRepository;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsListResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
@@ -19,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StudyService {
     private final BoardStudyRecruitmentRepository boardStudyRecruitmentRepository;
-    private final ReplyRepository replyRepository;
-    private final RereplyRepository rereplyRepository;
+    private final ReplyService replyService;
+    private final RereplyService rereplyService;
 
     @Transactional(readOnly = true)
     public Page<StudyPostsListResponseDto> findPosts(Pageable pageable) {
@@ -28,8 +26,8 @@ public class StudyService {
 
         String boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
         return posts.map(entity -> {
-            int replyCount = replyRepository.countByPostNoAndBoardName(entity.getPostNo(), boardName) +
-                    rereplyRepository.countByPostNoAndBoardName(entity.getPostNo(), boardName);
+            int replyCount = replyService.countByPostNoAndBoardName(entity.getPostNo(), boardName) +
+                    rereplyService.countByPostNoAndBoardName(entity.getPostNo(), boardName);
 
             entity.updateReplyCount(replyCount);
 

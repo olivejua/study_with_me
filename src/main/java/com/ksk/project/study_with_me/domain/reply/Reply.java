@@ -1,12 +1,15 @@
 package com.ksk.project.study_with_me.domain.reply;
 
 import com.ksk.project.study_with_me.domain.BaseTimeEntity;
+import com.ksk.project.study_with_me.domain.rereply.Rereply;
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -32,6 +35,10 @@ public class Reply extends BaseTimeEntity {
 
     // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경
     private Long imageCode;
+
+    @OneToMany(mappedBy = "reply", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Rereply> rereplies;
 
     @Builder
     public Reply (Long replyNo, String boardName, Long postNo, User user, String content, Long imageCode) {

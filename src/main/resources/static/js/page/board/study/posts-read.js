@@ -10,16 +10,25 @@ var main = {
         });
 
 
-        $('#btn-reply-save').on('click', function () {
+        $('button[name=btn-reply-save]').on('click', function () {
             _this.replySave();
         });
         $('button[name=btn-reply-modify]').on('click', function (e) {
             _this.replyModify(e.target);
         });
+        $('button[name=btn-reply-delete]').on('click', function (e) {
+            _this.replyDelete(e.target);
+        });
 
 
         $('button[name=btn-rereply-save]').on('click', function (e) {
             _this.rereplySave(e.target);
+        });
+        $('button[name=btn-rereply-modify]').on('click', function (e) {
+            _this.rereplyModify(e.target);
+        });
+        $('button[name=btn-rereply-delete]').on('click', function (e) {
+            _this.rereplyDelete(e.target);
         });
 
 
@@ -36,7 +45,7 @@ var main = {
 
         $.ajax({
             type: 'POST',
-            url: '/board/study/posts/reply/save',
+            url: '/board/posts/reply',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
@@ -55,13 +64,28 @@ var main = {
         };
 
         $.ajax({
-            type: 'POST',
-            url: '/board/study/posts/reply/update',
+            type: 'PUT',
+            url: '/board/posts/reply/'+data.replyNo,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            window.location.href='/board/study/posts/read?postNo='+data.postNo;
+            window.location.href='/board/study/posts/read?postNo='+$('#postNo').val();
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    replyDelete : function (target) {
+        var div = $(target).closest('div[name=div-one-reply]')[0];
+        var replyNo = $(div).children('input[name=replyNo]')[0].value;
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/board/posts/reply/'+replyNo,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function () {
+            window.location.href='/board/study/posts/read?postNo='+$('#postNo').val();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -78,12 +102,47 @@ var main = {
 
         $.ajax({
             type: 'POST',
-            url: '/board/study/posts/rereply/save',
+            url: '/board/posts/rereply',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
             window.location.href='/board/study/posts/read?postNo='+data.postNo;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    rereplyModify : function (target) {
+        var div = $(target).closest('div[name=wrapped-each-rereply]');
+
+        var data = {
+            rereplyNo : $(div).find('input[name=rereplyNo]')[0].value,
+            content : $(div).find('textarea[name=textarea-rereply-modify]')[0].value
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/board/posts/rereply/' + data.rereplyNo,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function () {
+            window.location.href='/board/study/posts/read?postNo='+$('#postNo').val();
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    rereplyDelete : function (target) {
+        var div = $(target).closest('div[name=wrapped-each-rereply]');
+        var rereplyNo = $(div).find('input[name=rereplyNo]')[0].value;
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/board/posts/rereply/'+ rereplyNo,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function () {
+            window.location.href='/board/study/posts/read?postNo='+$('#postNo').val();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
