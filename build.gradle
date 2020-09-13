@@ -1,16 +1,13 @@
 buildscript {
     ext {
         springBootVersion = '2.1.9.RELEASE'
-        querydslPluginVersion = '1.0.10'
     }
     repositories {
         mavenCentral()
         jcenter()
-        maven { url "https://plugins.gradle.org/m2/" } // 플러그인 저장소
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}") // querydsl 플러그인 의존성 등록
     }
 }
 
@@ -30,9 +27,6 @@ repositories {
 }
 
 dependencies {
-    compile('com.querydsl:querydsl-jpa')
-    compile('com.querydsl:querydsl-apt')
-
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.projectlombok:lombok')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -55,22 +49,4 @@ dependencies {
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.springframework.security:spring-security-test")
-}
-
-// qeurydsl 적용
-apply plugin: "com.ewerk.gradle.plugins.querydsl" // Plugin 적용
-def querydslSrcDir = 'src/main/generated' // QClass 생성 위치
-
-querydsl {
-    library = "com.querydsl:querydsl-apt"
-    jpa = true
-    querydslSourcesDir = querydslSrcDir
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', querydslSrcDir]
-        }
-    }
 }

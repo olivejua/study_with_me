@@ -1,6 +1,7 @@
 package com.ksk.project.study_with_me.domain.boardPlaceRecommendation;
 
-import com.ksk.project.study_with_me.config.MatchNames;
+import com.ksk.project.study_with_me.domain.BaseTimeEntity;
+import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,16 +11,14 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class BoardPlaceRecommendation {
+public class BoardPlaceRecommendation extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postNo;
 
-    @Column(nullable = false)
-    private String boardName;
-
-    @Column(nullable = false)
-    private Long userCode;
+    @ManyToOne
+    @JoinColumn(name = "userCode")
+    private User user;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -27,13 +26,12 @@ public class BoardPlaceRecommendation {
     @Column(length = 100, nullable = false)
     private String address;
 
-    // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경
-    @Column
-    private Long imageCodes;
+    // TODO: Image 와 board 의 Entity 관계 설정 : 필드 타입 변경
+    @Column(nullable = false)
+    private boolean existThumbnail;
 
-    // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경
     @Column
-    private Long thumbnailImageCode;
+    private String links;
 
     @Column(nullable = false)
     private int likeCount;
@@ -45,16 +43,36 @@ public class BoardPlaceRecommendation {
     private int viewCount;
 
     @Builder
-    public BoardPlaceRecommendation(Long userCode, String title, String address, Long imageCodes
-                                    , Long thumbnailImageCode, int likeCount, int dislikeCount, int viewCount) {
-        this.boardName = MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getCalledName();
-        this.userCode = userCode;
+    public BoardPlaceRecommendation(User user, String title, String address, boolean existThumbnail,
+                                    String links, int likeCount, int dislikeCount, int viewCount) {
+        this.user = user;
         this.title = title;
         this.address = address;
-        this.imageCodes = imageCodes;
-        this.thumbnailImageCode = thumbnailImageCode;
+        this.existThumbnail = existThumbnail;
+        this.links = links;
         this.likeCount = likeCount;
         this.dislikeCount = dislikeCount;
         this.viewCount = viewCount;
+    }
+
+    public void addViewCount() {
+        this.viewCount++;
+    }
+
+    public void updateLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+    public void updateDislikeCount(int dislikeCount) {
+        this.dislikeCount = dislikeCount;
+    }
+
+    public void update(String title, String address, boolean existThumbnail,
+                       String links, int likeCount, int dislikeCount) {
+        this.title = title;
+        this.address = address;
+        this.existThumbnail = existThumbnail;
+        this.links = links;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
     }
 }

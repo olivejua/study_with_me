@@ -12,17 +12,7 @@ public class StudyPostsListResponseDto {
     private String title;
     private int viewCount;
     private int replyCount;
-//    private LocalDateTime modifiedDate;
     private LocalDateTime createdDate;
-
-//    public StudyPostsListResponseDto(BoardStudyRecruitment entity) {
-//        this.postNo = entity.getPostNo();
-//        this.user = entity.getUser();
-//        this.title = entity.getTitle();
-//        this.viewCount = entity.getViewCount();
-//        this.replyCount = entity.getReplyCount();
-//        this.modifiedDate = entity.getModifiedDate();
-//    }
 
     public StudyPostsListResponseDto(Long postNo, User user, String title,
                                      int viewCount, int replyCount, LocalDateTime createdDate) {
