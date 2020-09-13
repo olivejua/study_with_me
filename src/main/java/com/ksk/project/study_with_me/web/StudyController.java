@@ -10,10 +10,15 @@ import com.ksk.project.study_with_me.util.ImageUtils;
 import com.ksk.project.study_with_me.web.dto.reply.ReplyListResponseDto;
 import com.ksk.project.study_with_me.web.dto.rereply.RereplyListResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
+import com.ksk.project.study_with_me.web.dto.study.StudySearchResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +35,18 @@ public class StudyController {
     private final RereplyService rereplyService;
 
     @GetMapping("/posts/list")
-    public String list(Model model) {
-        model.addAttribute("posts", studyService.findAllDesc());
+    public String  findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest, Model model) {
+        model.addAttribute("list", studyService.findPosts(pageRequest));
+
+        return "board/study/posts-list";
+    }
+
+    @GetMapping("/search/{searchType}/{keyword}/list")
+    public String findPosts( @PathVariable String searchType, @PathVariable String keyword,
+                             @PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest,
+                                                 Model model) {
+        model.addAttribute("list", studyService.searchPosts(pageRequest, searchType, keyword));
+        model.addAttribute("search", new StudySearchResponseDto(searchType, keyword));
 
         return "board/study/posts-list";
     }

@@ -32,7 +32,7 @@ h4 {
     margin-bottom: 30px;
 }
 
-#reply-content {
+.reply-content {
     display: inline-block;
     width: 70%;
     min-height: 70px;
@@ -70,7 +70,7 @@ h4 {
     display: flex;
 }
 
-#rereply-content {
+.rereply-content {
     display: inline-block;
     width: 100%;
     min-height: 70px;

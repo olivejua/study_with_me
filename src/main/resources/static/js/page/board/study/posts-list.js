@@ -12,6 +12,10 @@ var main = {
         $('#btn-delete').on('click', function () {
             _this.delete();
         });
+        $('#btn-search').on('click', function (e) {
+            e.preventDefault();
+            _this.search();
+        });
     },
     save : function () {
         var data = {
@@ -78,6 +82,13 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
+    },
+    search : function () {
+        var category = $('#search-category option:selected').val();
+        var keyword = $('#search-keyword').val();
+
+        $('#form-search').attr('action', '/board/study/search/' + category + '/' + keyword + '/list');
+        $('#form-search').submit();
     },
 };
 
