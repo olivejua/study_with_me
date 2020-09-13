@@ -1,5 +1,6 @@
 package com.ksk.project.study_with_me.web.dto.place;
 
+import com.ksk.project.study_with_me.domain.boardPlaceRecommendation.BoardPlaceRecommendation;
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Getter;
 
@@ -20,17 +21,16 @@ public class PlacePostsListResponseDto {
     private int viewCount;
     private LocalDateTime createdDate;
 
-    public PlacePostsListResponseDto(Long postNo, User user, String title, String address, boolean existThumbnail,
-                                     String links, int likeCount, int dislikeCount, int viewCount, LocalDateTime createdDate) {
-        this.postNo = postNo;
-        this.user = user;
-        this.title = title;
-        this.address = address;
-        this.existThumbnail = existThumbnail;
-        this.links = Arrays.asList(links.split(","));
-        this.likeCount = likeCount;
-        this.dislikeCount = dislikeCount;
-        this.viewCount = viewCount;
-        this.createdDate = createdDate;
+    public PlacePostsListResponseDto(BoardPlaceRecommendation entity) {
+        this.postNo = entity.getPostNo();
+        this.user = entity.getUser();
+        this.title = entity.getTitle();
+        this.address = entity.getAddress();
+        this.existThumbnail = entity.isExistThumbnail();
+        this.links = Arrays.asList(entity.getLinks().split(","));
+        this.likeCount = entity.getLikeCount();
+        this.dislikeCount = entity.getDislikeCount();
+        this.viewCount = entity.getViewCount();
+        this.createdDate = entity.getCreatedDate();
     }
 }

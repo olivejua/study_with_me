@@ -1,0 +1,16 @@
+.col-md-4 {
+    max-width: 100%;
+}
+
+#smart_editor2 {
+    width: 100%;
+}
+
+col-form-label {
+    vertical-align: middle;
+}
+
+#btn-save #btn-cancel {
+    float: right;
+    margin-top: 5%;
+}
