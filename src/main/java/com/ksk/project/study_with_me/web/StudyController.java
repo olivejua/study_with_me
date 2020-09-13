@@ -48,12 +48,12 @@ public class StudyController {
         model.addAttribute("list", studyService.searchPosts(pageRequest, searchType, keyword));
         model.addAttribute("search", new StudySearchResponseDto(searchType, keyword));
 
-        return "/board/study/posts-list";
+        return "board/study/posts-list";
     }
 
     @GetMapping("/posts/save")
     public String save() {
-        return "/board/study/posts-save";
+        return "board/study/posts-save";
     }
 
     @GetMapping("/posts/read")
@@ -78,7 +78,7 @@ public class StudyController {
                      sourcePath, copy_path);
         }
 
-        return "/board/study/posts-read";
+        return "board/study/posts-read";
     }
 
     @GetMapping("/posts/update")
@@ -86,6 +86,6 @@ public class StudyController {
         StudyPostsReadResponseDto responseDto = studyService.findById(postNo);
         model.addAttribute("post", responseDto);
 
-        return "/board/study/posts-update";
+        return "board/study/posts-update";
     }
 }
