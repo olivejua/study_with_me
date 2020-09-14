@@ -25,6 +25,8 @@
                     <th>작성자</th>
                     <th>최종 수정일</th>
                     <th>조회 수</th>
+                    <th>추천 수</th>
+                    <th>비추 수</th>
                 </tr>
                 </thead>
                 <tbody id="tbody">
@@ -32,11 +34,12 @@
                     <td th:text="${post.postNo}"></td>
                     <td>
                         <a th:href="@{/board/place/posts/read(postNo=${post.postNo})}">[[${post.title}]]</a>
-                        <span class="badge badge-primary">[[${post.replyCount}]]</span>
                     </td>
                     <td th:text="${post.user.nickname}"></td>
                     <td th:text="${post.createdDate}"></td>
                     <td th:text="${post.viewCount}"></td>
+                    <td th:text="${post.likeCount}"></td>
+                    <td th:text="${post.dislikeCount}"></td>
                 </tr>
                 </tbody>
             </table>

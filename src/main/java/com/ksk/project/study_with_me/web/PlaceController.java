@@ -1,5 +1,7 @@
 package com.ksk.project.study_with_me.web;
 
+import com.ksk.project.study_with_me.config.auth.LoginUser;
+import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
 import com.ksk.project.study_with_me.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +28,9 @@ public class PlaceController {
     }
 
     @GetMapping("/posts/write")
-    public String write() {
+    public String write(@LoginUser SessionUser user, Model model) {
+        model.addAttribute("user", user);
+
         return "board/place/posts-save";
     }
 }

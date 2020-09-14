@@ -26,9 +26,15 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String address;
 
+    @Column(length = 100, nullable = false)
+    private String addressDetail;
+
     // TODO: Image 와 board 의 Entity 관계 설정 : 필드 타입 변경
     @Column(nullable = false)
     private boolean existThumbnail;
+
+    @Column(nullable = false)
+    private String content;
 
     @Column
     private String links;
@@ -43,12 +49,14 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
     private int viewCount;
 
     @Builder
-    public BoardPlaceRecommendation(User user, String title, String address, boolean existThumbnail,
-                                    String links, int likeCount, int dislikeCount, int viewCount) {
+    public BoardPlaceRecommendation(User user, String title, String address, String addressDetail, boolean existThumbnail,
+                                    String content, String links, int likeCount, int dislikeCount, int viewCount) {
         this.user = user;
         this.title = title;
         this.address = address;
+        this.addressDetail = addressDetail;
         this.existThumbnail = existThumbnail;
+        this.content = content;
         this.links = links;
         this.likeCount = likeCount;
         this.dislikeCount = dislikeCount;
@@ -66,11 +74,13 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
         this.dislikeCount = dislikeCount;
     }
 
-    public void update(String title, String address, boolean existThumbnail,
-                       String links, int likeCount, int dislikeCount) {
+    public void update(String title, String address, String addressDetail, boolean existThumbnail,
+                       String content, String links, int likeCount, int dislikeCount) {
         this.title = title;
         this.address = address;
+        this.addressDetail = addressDetail;
         this.existThumbnail = existThumbnail;
+        this.content = content;
         this.links = links;
         this.likeCount = likeCount;
         this.dislikeCount = dislikeCount;

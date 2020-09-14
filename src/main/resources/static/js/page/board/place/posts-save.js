@@ -8,15 +8,12 @@ var save_main = {
         $('#btn-add-link').on('click', function () {
             _this.addLink();
         });
-        $('#btn-remove-link').on('click', function (e) {
-            _this.removeLink(e.target);
-        })
      },
     loadEditorFrame : function () {
         //스마트에디터 프레임생성
         nhn.husky.EZCreator.createInIFrame({
             oAppRef: oEditor,
-            elPlaceHolder: "conditionExplanation",
+            elPlaceHolder: "content",
             sSkinURI: "/api/se2/SmartEditor2Skin.html",
             htParams : {
                 // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
@@ -34,19 +31,19 @@ var save_main = {
     },
     addLink : function () {
         var addedLink = $('#add-link').val();
-        var $addedNode = $('<div name="div-link"><button name="btn-remove-link">-</button><label>'+ addedLink +'</label></div>');
+        var addedNode = $('<div name="div-link"><button type="button" onclick="removeLink(this)">-</button><label name="link">'+ addedLink +'</label></div>');
 
-        $('#div-linksBox').prepend($addedNode);
+        $('#div-linksBox').prepend(addedNode);
         $('#add-link').val("");
-    },
-    removeLink : function (target) {
-        var removedLink = $(target).closest('div[name=div-link]');
-        $(removedLink).remove();
     }
 };
 
 var setConditionExplanation = function () {
-    oEditor.getById["conditionExplanation"].exec("UPDATE_CONTENTS_FIELD", []);
+    oEditor.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+};
+
+var removeLink = function (target) {
+    $(target).closest('div[name=div-link]').remove();
 };
 
 save_main.init();
