@@ -3,15 +3,22 @@ package com.ksk.project.study_with_me.web;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
+import com.ksk.project.study_with_me.service.ReplyService;
+import com.ksk.project.study_with_me.service.RereplyService;
 import com.ksk.project.study_with_me.service.StudyService;
-import com.ksk.project.study_with_me.util.ImageUtils;
+import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsUpdateRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.StudySearchResponseDto;
+import com.ksk.project.study_with_me.web.file.TransferFiles;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RequestMapping("/board/study")
@@ -19,20 +26,15 @@ import java.util.List;
 public class StudyApiController {
 
     private final StudyService studyService;
+    private final ReplyService replyService;
+    private final RereplyService rereplyService;
 
     @PostMapping("/posts")
     public Long save(@RequestBody StudyPostsSaveRequestDto requestDto, @LoginUser SessionUser user) {
         Long savedPostNo = studyService.save(requestDto.setUser(user.toEntity()));
 
-        //이미지 업로드
-        if(ImageUtils.existImages(requestDto.getConditionExplanation())) {
-            System.out.println("post save() FileUtils.IMAGE_TEMP_PATH : "+ ImageUtils.TEMP_PATH);
-
-            List<String> imageList = ImageUtils.findImageInHTMLCode(requestDto.getConditionExplanation());
-            if (imageList.size() > 0) {
-                ImageUtils.saveImages(imageList, MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName(), savedPostNo);
-            }
-        }
+        TransferFiles.saveImagesByHtmlCode(requestDto.getConditionExplanation()
+                , MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName(), savedPostNo);
 
         return savedPostNo;
     }
@@ -40,17 +42,8 @@ public class StudyApiController {
     @PutMapping("/posts/{postNo}")
     public Long update(@PathVariable Long postNo, @RequestBody StudyPostsUpdateRequestDto requestDto) {
 
-        ImageUtils.deleteDirectory(
-                new File(ImageUtils.DEFAULT_PATH + MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName() + File.separator + postNo));
-
-        if(ImageUtils.existImages(requestDto.getConditionExplanation())) {
-            System.out.println("post save() FileUtils.IMAGE_TEMP_PATH : "+ ImageUtils.TEMP_PATH);
-
-            List<String> imageList = ImageUtils.findImageInHTMLCode(requestDto.getConditionExplanation());
-            if (imageList.size() > 0) {
-                ImageUtils.saveImages(imageList, MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName(), postNo);
-            }
-        }
+        TransferFiles.updateImagesByHtmlCode(requestDto.getConditionExplanation()
+                , MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName(), postNo);
 
         return studyService.update(postNo, requestDto);
     }
@@ -59,9 +52,69 @@ public class StudyApiController {
     public Long delete(@PathVariable Long postNo) {
         studyService.delete(postNo);
 
-        ImageUtils.deleteDirectory(
-                new File(ImageUtils.DEFAULT_PATH + MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName() + File.separator + postNo));
+        TransferFiles.deleteAllImagesInDirectory(MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName(), postNo);
 
         return postNo;
+    }
+
+
+    @GetMapping("/posts/list")
+    public ModelAndView findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("board/study/posts-list");
+
+        mav.addObject("list", studyService.findPosts(pageRequest));
+
+        return mav;
+    }
+
+    @GetMapping("/search/{searchType}/{keyword}/list")
+    public ModelAndView findPosts( @PathVariable String searchType, @PathVariable String keyword,
+                             @PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("board/study/posts-list");
+
+        mav.addObject("list", studyService.searchPosts(pageRequest, searchType, keyword));
+        mav.addObject("search", new StudySearchResponseDto(searchType, keyword));
+
+        return mav;
+    }
+
+    @GetMapping("/posts/save")
+    public ModelAndView save() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("board/study/posts-save");
+
+        return mav;
+    }
+
+    @GetMapping("/posts/read")
+    public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("board/study/posts-read");
+
+        StudyPostsReadResponseDto responseDto = studyService.findById(postNo);
+        String boardName =  MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
+
+        mav.addObject("user", user);
+        mav.addObject("post", responseDto);
+        mav.addObject("replyList", replyService.findAllByPostNoAndBoardName(postNo, boardName));
+        mav.addObject("rereplyList", rereplyService.findAllByPostNoAndBoardName(postNo, boardName));
+
+        TransferFiles.readImagesByHtmlCode(responseDto.getConditionExplanation()
+                , request.getSession().getServletContext().getRealPath("/"), boardName, postNo);
+
+        return mav;
+    }
+
+    @GetMapping("/posts/update")
+    public ModelAndView update(Long postNo) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("board/study/posts-update");
+
+        mav.addObject("post", studyService.findById(postNo));
+
+        return mav;
     }
 }
