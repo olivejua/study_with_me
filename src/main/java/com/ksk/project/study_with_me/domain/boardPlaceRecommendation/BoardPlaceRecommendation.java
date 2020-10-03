@@ -33,7 +33,7 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean existThumbnail;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Column
