@@ -2,11 +2,12 @@ package com.ksk.project.study_with_me.web.dto.place;
 
 import com.ksk.project.study_with_me.domain.boardPlaceRecommendation.BoardPlaceRecommendation;
 import com.ksk.project.study_with_me.domain.user.User;
+import lombok.Getter;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class PlacePostsSaveRequestDto {
+@Getter
+public class PostsSaveRequestDto {
     private String title;
     private Long userCode;
     private String address;
@@ -18,8 +19,8 @@ public class PlacePostsSaveRequestDto {
     private int dislikeCount;
     private int viewCount;
 
-    public PlacePostsSaveRequestDto(Long userCode, String title, String address, String addressDetail,
-                                    List<String> links, boolean existThumbnail, String content) {
+    public PostsSaveRequestDto(Long userCode, String title, String address, String addressDetail,
+                               List<String> links, boolean existThumbnail, String content) {
         this.userCode = userCode;
         this.title = title;
         this.address = address;
@@ -30,8 +31,6 @@ public class PlacePostsSaveRequestDto {
         this.likeCount = this.initialCount();
         this.dislikeCount = this.initialCount();
         this.viewCount = this.initialCount();
-
-        System.out.println(Arrays.asList(this.links));
     }
 
     private int initialCount() {

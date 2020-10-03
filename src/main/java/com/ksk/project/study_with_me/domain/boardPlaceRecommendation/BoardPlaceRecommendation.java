@@ -49,8 +49,9 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
     private int viewCount;
 
     @Builder
-    public BoardPlaceRecommendation(User user, String title, String address, String addressDetail, boolean existThumbnail,
+    public BoardPlaceRecommendation(Long postNo, User user, String title, String address, String addressDetail, boolean existThumbnail,
                                     String content, String links, int likeCount, int dislikeCount, int viewCount) {
+        this.postNo = postNo;
         this.user = user;
         this.title = title;
         this.address = address;
