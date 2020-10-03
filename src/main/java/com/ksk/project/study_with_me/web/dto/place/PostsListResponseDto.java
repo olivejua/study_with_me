@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public class PlacePostsListResponseDto {
+public class PostsListResponseDto {
     private Long postNo;
     private User user;
     private String title;
@@ -21,7 +21,7 @@ public class PlacePostsListResponseDto {
     private int viewCount;
     private LocalDateTime createdDate;
 
-    public PlacePostsListResponseDto(BoardPlaceRecommendation entity) {
+    public PostsListResponseDto(BoardPlaceRecommendation entity) {
         this.postNo = entity.getPostNo();
         this.user = entity.getUser();
         this.title = entity.getTitle();

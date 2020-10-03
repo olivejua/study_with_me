@@ -1,0 +1,55 @@
+.page-header {
+    margin: 20px 0 50px 0;
+}
+
+.col-md-4 {
+    max-width: 100%;
+}
+
+.col-sm-4 {
+    max-width: 100%;
+}
+
+.form-group>label, .form-group>label>div>label{
+    font-size: 20px;
+}
+
+.label-name {
+    font-weight: 500;
+}
+
+.btn-like {
+    background-color: transparent;
+    border-color: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.btn-like:hover {
+    opacity: 50%;
+}
+
+.btn-like:active {
+    opacity: 100%;
+}
+
+.btn-like:focus {
+    outline: none;
+}
+
+.btn-like>img {
+    width: 50px;
+    height: 50px;
+}
+
+.div-bottom-line {
+    float: right;
+    margin: 10px 20% 10px 0;
+    padding-top: 20px;
+}
+
+#btn-list {
+    float: right;
+    margin-top: 50px;
+    margin-right: 20%;
+}

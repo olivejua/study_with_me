@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layouts/default_layout">
+>
+<th:block layout:fragment="custom-css">
+    <link rel="stylesheet" th:href="@{/css/page/board/place/place.css}">
+    <link rel="stylesheet" th:href="@{/css/page/board/place/posts-read.css}">
+</th:block>
+<th:block layout:fragment="custom-header">
+    <div class="page-header">
+        <h1>스터디 장소 추천 게시판 <small>게시글 읽기</small></h1>
+    </div>
+</th:block>
+<th:block layout:fragment="custom-content">
+    <div class="container">
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <form id="form-post">
+                    <input type="hidden" id="postNo" th:value="${post.postNo}">
+                    <input type="hidden" id="boardName" value="place">
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-2 col-form-label label-name">제목</label>
+                        <div class="col-sm-9">
+                            <label id="title">[[${post.title}]]</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="address" class="col-sm-2 col-form-label label-name">주소</label>
+                        <div class="col-sm-9">
+                            <div id="map" style="width:100%;height:350px;"></div>
+                            <label id="address">[[${post.address}]]</label>
+                            <label id="addressDetail">[[${post.addressDetail}]]</label>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.size(post.links) > 0}" class="form-group row">
+                        <label for="links" class="col-sm-2 col-form-label label-name">추천링크</label>
+                        <div class="col-sm-9" id="links" >
+                            <div th:each="link : ${post.links}">
+                                <label><a th:href="@{link}" target="_blank">[[${link}]]</a></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="content" class="col-sm-2 col-form-label label-name">설명</label>
+                        <div class="col-sm-9">
+                            <p id="content" th:utext="${post.content}"></p>
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <input type="hidden" id="like-status" th:value="${post.like}">
+                    <button type="button" class="btn-like" name="btn-like-chosen" style="display: none;">
+                        <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533913.svg">
+                    </button>
+                    <button type="button" class="btn-like" name="btn-like">
+                        <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533907.svg"
+                             onmouseover="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533913.svg'"
+                             onmouseout="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533907.svg'">
+                    </button>
+                    <label>[[${post.likeCount}]]</label>
+                    <button type="button" class="btn-like" name="btn-dislike-chosen" style="display: none;">
+                        <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533919.svg">
+                    </button>
+                    <button type="button" class="btn-like" name="btn-dislike">
+                        <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533915.svg"
+                             onmouseover="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533919.svg'"
+                             onmouseout="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533915.svg'">
+                    </button>
+                    <label>[[${post.dislikeCount}]]</label>
+                </div>
+                <div th:if="${user.userCode} == ${post.user.userCode}" class="div-bottom-line">
+                    <a th:href="@{/board/place/posts/update(postNo=${post.postNo})}" class="btn btn-success" role="button">수정</a>
+                    <button class="btn btn-danger" id="btn-delete">삭제</button>
+                </div>
+                <div class="bottom-line">
+                    <a href="/board/place/posts/list" class="btn btn-info btn-lg" id="btn-list" role="button">목록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+<th:block layout:fragment="custom-script">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d78e00834ae7e7fdc8944152d4767b61&libraries=services"></script>
+    <script th:src="@{/js/page/board/place/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
+
+<!--    <script th:src="@{/js/page/board/place/posts-list.js}" th:inline="javascript" type="text/javascript"></script>-->
+</th:block>
+</html>
+
