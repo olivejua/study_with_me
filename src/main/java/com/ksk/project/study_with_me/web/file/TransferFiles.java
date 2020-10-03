@@ -24,6 +24,18 @@ public class TransferFiles {
         return true;
     }
 
+    public static boolean updateImagesByHtmlCode(String htmlCode, String boardName, Long postNo) {
+        ImageUtils.deleteDirectory(
+                new File(ImageUtils.DEFAULT_PATH + boardName + File.separator + postNo));
+
+        return saveImagesByHtmlCode(htmlCode, boardName, postNo);
+    }
+
+    public static void deleteAllImagesInDirectory(String boardName, Long postNo) {
+        ImageUtils.deleteDirectory(
+                new File(ImageUtils.DEFAULT_PATH + boardName + File.separator + postNo));
+    }
+
     public static boolean readImagesByHtmlCode(String htmlCode, String defaultPath, String boardName, Long postNo) {
         if(!ImageUtils.existImages(htmlCode)) {
             return false;
