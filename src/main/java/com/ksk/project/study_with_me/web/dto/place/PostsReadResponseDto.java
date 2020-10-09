@@ -15,7 +15,7 @@ public class PostsReadResponseDto {
     private String title;
     private String address;
     private String addressDetail;
-    private boolean existThumbnail;
+    private String thumbnailPath;
     private String content;
     private List<String> links;
     private int likeCount;
@@ -29,7 +29,7 @@ public class PostsReadResponseDto {
         this.title = entity.getTitle();
         this.address = entity.getAddress();
         this.addressDetail = entity.getAddressDetail();
-        this.existThumbnail = entity.isExistThumbnail();
+        this.thumbnailPath = entity.getThumbnailPath();
         this.content = entity.getContent();
         this.links = Arrays.asList(entity.getLinks().replace("[","").replace("]","").split(","));
         this.likeCount = entity.getLikeCount();
@@ -51,7 +51,7 @@ public class PostsReadResponseDto {
                 .address(address)
                 .addressDetail(addressDetail)
                 .links(links.toString())
-                .existThumbnail(existThumbnail)
+                .thumbnailPath(thumbnailPath)
                 .content(content)
                 .likeCount(likeCount)
                 .dislikeCount(dislikeCount)

@@ -1,6 +1,7 @@
 package com.ksk.project.study_with_me.web.file;
 
 import com.ksk.project.study_with_me.util.ImageUtils;
+import com.ksk.project.study_with_me.web.dto.place.PostsListResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -44,31 +45,40 @@ public class TransferFiles {
         String copy_path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;
         String sourcePath = ImageUtils.DEFAULT_PATH + boardName + File.separator + postNo;
 
-        ImageUtils.copyAllImagesInDir(
-                sourcePath, copy_path);
+        ImageUtils.copyAllImagesInDir(sourcePath, copy_path);
 
         return true;
     }
 
+
     //TODO Util하고 기능 나누기
-    public static boolean savedThumbnail(MultipartFile thumbnail, String boardName, Long postNo) {
+    public static boolean savedThumbnail(MultipartFile thumbnail, String thumbnailPath) {
         try {
-            String originalFileName = thumbnail.getOriginalFilename();
-            String ext = originalFileName.substring(originalFileName.lastIndexOf(".")+1);
-            String path = ImageUtils.DEFAULT_PATH + boardName + File.separator + postNo + File.separator;
-
-            File file_path = new File(path);
-
-            if(!file_path.exists()) {
-                file_path.mkdirs();
-            }
-
-            File dest = new File(path + "thumbnail" + "." + ext);
+            File dest = new File(thumbnailPath);
             thumbnail.transferTo(dest);
 
             return true;
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public static boolean listThumbnails(String defaultPath, String boardName, List<PostsListResponseDto> posts) {
+        if(posts.size() == 0) {
+            return false;
+        }
+
+        for(PostsListResponseDto post : posts) {
+            String[] paths = post.getThumbnailPath().split("/");
+
+            if(paths.length > 3) {
+                String copy_path = defaultPath + paths[1] + File.separator + paths[2] + File.separator + paths[3];
+                String sourcePath = ImageUtils.DEFAULT_PATH + boardName + File.separator + post.getPostNo() + File.separator + paths[3];
+
+                ImageUtils.copyAllImagesInDir(sourcePath, copy_path);
+            }
+        }
+
+        return true;
     }
 }

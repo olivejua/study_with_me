@@ -13,8 +13,8 @@ import java.util.List;
 public class ImageUtils {
     public static String TEMP_PATH = "";
 
-//    public static final String DEFAULT_PATH = "/home/ec2-user/app/step1/upload/";
-    public static final String DEFAULT_PATH = "C:\\Users\\tmfrl\\Desktop\\studywithme_upload\\";
+    public static final String DEFAULT_PATH = "/home/ec2-user/app/step1/upload/";
+//    public static final String DEFAULT_PATH = "C:\\Users\\tmfrl\\Desktop\\studywithme_upload\\";
 
 
     public static void saveImages(List<String> imageNames, String categoryName, Long id) {

@@ -18,7 +18,7 @@ var main = {
             address : $('#address').val(),
             addressDetail : $('#address-detail').val(),
             links : links,
-            existThumbnail : $('#thumbnail').val() !== "",
+            thumbnailPath : $('#thumbnail').val(),
             content : $('#content').val(),
         };
 
@@ -28,13 +28,13 @@ var main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
-        }).done(function (postNo) {
-            console.log('saved!!! postNo: ' + postNo);
+        }).done(function (responseData) {
+            console.log('saved!!! postNo: ' + responseData.postNo);
 
             $.ajax({
                 type: 'POST',
                 enctype: 'multipart/form-data',
-                url: '/board/place/posts/upload/' + postNo,
+                url: '/board/place/posts/upload/' + responseData.postNo + '/' + responseData.thumbnailName,
                 data: new FormData(document.getElementById('form-post')),
                 processData: false,
                 contentType: false,
