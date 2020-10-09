@@ -14,7 +14,7 @@ public class PostsListResponseDto {
     private User user;
     private String title;
     private String address;
-    private boolean existThumbnail;
+    private String thumbnailPath;
     private List<String> links;
     private int likeCount;
     private int dislikeCount;
@@ -26,7 +26,7 @@ public class PostsListResponseDto {
         this.user = entity.getUser();
         this.title = entity.getTitle();
         this.address = entity.getAddress();
-        this.existThumbnail = entity.isExistThumbnail();
+        this.thumbnailPath = entity.getThumbnailPath();
         this.links = Arrays.asList(entity.getLinks().split(","));
         this.likeCount = entity.getLikeCount();
         this.dislikeCount = entity.getDislikeCount();

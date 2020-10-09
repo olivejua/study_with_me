@@ -12,4 +12,8 @@ public enum Role {
 
     private final String key;
     private final String title;
+
+    public static Role findRole(String key) {
+        return key.equals(USER.key) ? USER : GUEST;
+    }
 }

@@ -30,8 +30,8 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
     private String addressDetail;
 
     // TODO: Image 와 board 의 Entity 관계 설정 : 필드 타입 변경
-    @Column(nullable = false)
-    private boolean existThumbnail;
+    @Column(length = 100, nullable = false)
+    private String thumbnailPath;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
@@ -49,14 +49,14 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
     private int viewCount;
 
     @Builder
-    public BoardPlaceRecommendation(Long postNo, User user, String title, String address, String addressDetail, boolean existThumbnail,
+    public BoardPlaceRecommendation(Long postNo, User user, String title, String address, String addressDetail, String thumbnailPath,
                                     String content, String links, int likeCount, int dislikeCount, int viewCount) {
         this.postNo = postNo;
         this.user = user;
         this.title = title;
         this.address = address;
         this.addressDetail = addressDetail;
-        this.existThumbnail = existThumbnail;
+        this.thumbnailPath = thumbnailPath;
         this.content = content;
         this.links = links;
         this.likeCount = likeCount;
@@ -75,12 +75,12 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
         this.dislikeCount = dislikeCount;
     }
 
-    public void update(String title, String address, String addressDetail, boolean existThumbnail,
+    public void update(String title, String address, String addressDetail, String thumbnailPath,
                        String content, String links, int likeCount, int dislikeCount) {
         this.title = title;
         this.address = address;
         this.addressDetail = addressDetail;
-        this.existThumbnail = existThumbnail;
+        this.thumbnailPath = thumbnailPath;
         this.content = content;
         this.links = links;
         this.likeCount = likeCount;

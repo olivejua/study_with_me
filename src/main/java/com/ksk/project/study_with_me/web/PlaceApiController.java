@@ -5,10 +5,13 @@ import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
 import com.ksk.project.study_with_me.service.LikeService;
 import com.ksk.project.study_with_me.service.PlaceService;
+import com.ksk.project.study_with_me.web.dto.place.PostsListResponseDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsSaveRequestDto;
+import com.ksk.project.study_with_me.web.dto.place.PostsSaveResponseDto;
 import com.ksk.project.study_with_me.web.file.TransferFiles;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -26,25 +29,35 @@ public class PlaceApiController {
     private final LikeService likeService;
 
     @PostMapping("/posts")
-    public Long save(@RequestBody PostsSaveRequestDto requestDto) {
+    public PostsSaveResponseDto save(@RequestBody PostsSaveRequestDto requestDto) {
         Long savedPostNo = placeService.save(requestDto);
 
         TransferFiles.saveImagesByHtmlCode(requestDto.getContent(), MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), savedPostNo);
 
-        return savedPostNo;
+        return PostsSaveResponseDto.builder()
+                .postNo(savedPostNo)
+                .thumbnailPath(requestDto.getThumbnailPath())
+                .build();
     }
 
-    @PostMapping("/posts/upload/{id}")
-    public boolean upload(@RequestParam("thumbnail") MultipartFile thumbnail, @PathVariable Long id) {
-        return TransferFiles.savedThumbnail(thumbnail, MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), id);
+    @PostMapping("/posts/upload/{thumbnail}")
+    public boolean upload(@RequestParam("thumbnail") MultipartFile uploadFile, @PathVariable String thumbnail) {
+        //thumbnail 명 받아서 그대로 옮기면 될것같음
+
+        return TransferFiles.savedThumbnail(uploadFile, thumbnail);
     }
 
     @GetMapping("/posts/list")
-    public ModelAndView findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
+    public ModelAndView findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest
+            , HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/place/posts-list");
 
-        mav.addObject("list", placeService.findPosts(pageRequest));
+        Page<PostsListResponseDto> list = placeService.findPosts(pageRequest);
+
+        mav.addObject("list", list);
+//        TransferFiles.listThumbnails(request.getSession().getServletContext().getRealPath("/")
+//                , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), list.getContent());
 
         return mav;
     }

@@ -30,7 +30,7 @@ public class SessionUser implements Serializable {
                 .userCode(userCode)
                 .name(name)
                 .email(email)
-                .role(Role.USER)
+                .role(Role.findRole(role))
                 .nickname(nickname)
                 .socialCode(socialCode)
                 .build();
