@@ -28,17 +28,13 @@ public class ImageUtils {
             String imageName = imageNames.get(i);
 
             String savedPath = DEFAULT_PATH + categoryName + File.separator + id + File.separator;
-            File file = new File(savedPath);
             System.out.println("=========FileUtils : save path: " + savedPath);
 
-            if(!file.exists()) {
-                file.mkdirs();
-            }
+            makeDirectory(savedPath);
 
             if(copy(TEMP_PATH+imageName, savedPath+imageName)) {
                 deleteFile(TEMP_PATH+imageName);
             }
-
         }
     }
 
@@ -61,17 +57,17 @@ public class ImageUtils {
 
         //사전 체크
         if(source == null) {
-            throw new IllegalArgumentException("=========FileUtils : source must be specified");
+            System.out.println("=========FileUtils : source must be specified");
         }
 
         if(target == null) {
-            throw new IllegalArgumentException("=========FileUtils : target must be specified");
+            System.out.println("=========FileUtils : target must be specified");
         }
 
 
         //소스파일이 실제로 존재하는지 체크
         if(!Files.exists(source, new LinkOption[]{})) {
-            throw new IllegalArgumentException("=========FileUtils : Source file doesn't exist: " + source.toString());
+            System.out.println("=========FileUtils : Source file doesn't exist: " + source.toString());
         }
 
         //소스경로와 복사 후 경로가 일치하면 리턴 (일단 주석처리)
@@ -93,6 +89,16 @@ public class ImageUtils {
             System.out.println("=========FileUtils : File Copy Failed");
             return false;
         }
+    }
+
+    public static boolean makeDirectory(String path) {
+        File file = new File(path);
+
+        if(file.exists()) {
+            return false;
+        }
+
+        return file.mkdirs();
     }
 
     public static boolean deleteDirectory(File path) {

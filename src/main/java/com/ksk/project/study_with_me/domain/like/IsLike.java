@@ -33,4 +33,8 @@ public class IsLike {
         this.boardPlaceRecommendation = boardPlaceRecommendation;
         this.isLike = isLike;
     }
+
+    public void update(boolean isLike) {
+        this.isLike = isLike;
+    }
 }

@@ -6,8 +6,8 @@ var read_main = {
         _this.loadLikeStatus();
 
         $('.btn-like').on('click', function (e) {
-            _this.clickLike(e.target);
-        })
+            _this.clickLike($(e.target).attr('name'));
+        });
     },
     loadMapApi : function () {
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
@@ -42,36 +42,103 @@ var read_main = {
         });
     },
     loadLikeStatus : function () {
-        var likeStatus = $('#like-status').val();
-        console.log(likeStatus);
+        var _this = this;
 
-        if(likeStatus !== "") {
-            if(likeStatus) {
-                $('button[name=btn-like]').css('display', 'none');
-                $('button[name=btn-like-chosen]').css('display', 'inline-block');
+        var existLike = $('#existLike').val();
+        var isLike = $('#isLike').val();
+
+        if(parseInt(existLike)) {
+            if(parseInt(isLike)) {
+                _this.setLike_like();
             } else {
-                $('button[name=btn-dislike]').css('display', 'none');
-                $('button[name=btn-dislike-chosen]').css('display', 'inline-block');
+                _this.setLike_dislike();
             }
+        } else {
+            _this.setLike_none();
         }
     },
-    clickLike : function (target) {
-        var name = $(target).attr('name');
-        console.log(target);
-        switch (name) {
+    clickLike : function (clickButton) {
+        var _this = this;
+
+        switch (clickButton) {
             case 'btn-like':
-                console.log('btn-like');
-                break;
-            case 'btn-like-chosen':
-                console.log('btn-like-chosen');
+                console.log('좋아요');
+
+                _this.submit_ajax_put(true);
+                _this.setLike_like();
                 break;
             case 'btn-dislike':
-                console.log('btn-dislike');
+                console.log('별로예요');
+
+                _this.submit_ajax_put(false);
+                _this.setLike_dislike();
                 break;
+            case 'btn-like-chosen':
+                console.log('좋아요 취소');
             case 'btn-dislike-chosen':
-                console.log('btn-dislike-chosen');
+                console.log('별로예요 취소');
+            default:
+                _this.submit_ajax_delete();
+                _this.setLike_none();
                 break;
         }
+    },
+    setLike_none : function () {
+        $('button[name=btn-like]').css('display', 'inline-block');
+        $('button[name=btn-like-chosen]').css('display', 'none');
+        $('button[name=btn-dislike]').css('display', 'inline-block');
+        $('button[name=btn-dislike-chosen]').css('display', 'none');
+    },
+    setLike_like : function () {
+        $('button[name=btn-like]').css('display', 'none');
+        $('button[name=btn-like-chosen]').css('display', 'inline-block');
+        $('button[name=btn-dislike]').css('display', 'inline-block');
+        $('button[name=btn-dislike-chosen]').css('display', 'none');
+    },
+    setLike_dislike : function () {
+        $('button[name=btn-like]').css('display', 'inline-block');
+        $('button[name=btn-like-chosen]').css('display', 'none');
+        $('button[name=btn-dislike]').css('display', 'none');
+        $('button[name=btn-dislike-chosen]').css('display', 'inline-block');
+    },
+    submit_ajax_put : function (isLike) {
+        var data = {
+            userCode : $('#userCode').val(),
+            postNo : $('#postNo').val(),
+            isLike : isLike,
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/like/place',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (response) {
+            console.log('제출 완료 - ' + response);
+            $('#likeCount').text(response.likeCount);
+            $('#dislikeCount').text(response.dislikeCount);
+
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    submit_ajax_delete : function () {
+        var userCode = $('#userCode').val();
+        var postNo = $('#postNo').val();
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/like/place/'+ postNo + '/' + userCode,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (response) {
+            console.log('좋아요 혹은 별로예요 취소 - ' + response);
+            $('#likeCount').text(response.likeCount);
+            $('#dislikeCount').text(response.dislikeCount);
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
     }
 };
 

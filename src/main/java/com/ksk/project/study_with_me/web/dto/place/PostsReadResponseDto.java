@@ -21,7 +21,8 @@ public class PostsReadResponseDto {
     private int likeCount;
     private int dislikeCount;
     private int viewCount;
-    private IsLike like;
+    private int existLike;
+    private int like;
 
     public PostsReadResponseDto(BoardPlaceRecommendation entity) {
         this.postNo = entity.getPostNo();
@@ -38,7 +39,12 @@ public class PostsReadResponseDto {
     }
 
     public PostsReadResponseDto setLike(IsLike like) {
-        this.like = like;
+        if(like == null) {
+            return this;
+        }
+
+        this.existLike = 1; //true
+        this.like = like.isLike() ? 1 : 0;
 
         return this;
     }
