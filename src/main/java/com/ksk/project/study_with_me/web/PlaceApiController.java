@@ -8,7 +8,7 @@ import com.ksk.project.study_with_me.service.PlaceService;
 import com.ksk.project.study_with_me.web.dto.place.PostsListResponseDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsSaveRequestDto;
-import com.ksk.project.study_with_me.web.dto.place.PostsSaveResponseDto;
+import com.ksk.project.study_with_me.web.dto.place.PostsUpdateRequestDto;
 import com.ksk.project.study_with_me.web.file.TransferFiles;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,22 +29,40 @@ public class PlaceApiController {
     private final LikeService likeService;
 
     @PostMapping("/posts")
-    public PostsSaveResponseDto save(@RequestBody PostsSaveRequestDto requestDto) {
+    public Long save(PostsSaveRequestDto requestDto, @RequestParam MultipartFile thumbnailFile) {
         Long savedPostNo = placeService.save(requestDto);
+        String boardName = MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName();
+        String savedThumbnailName = requestDto.getThumbnailPath().substring(requestDto.getThumbnailPath().lastIndexOf("/")+1);
 
-        TransferFiles.saveImagesByHtmlCode(requestDto.getContent(), MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), savedPostNo);
+        TransferFiles.saveImagesByHtmlCode(requestDto.getContent(), boardName, savedPostNo);
+        TransferFiles.saveThumbnail(thumbnailFile, boardName, savedThumbnailName);
 
-        return PostsSaveResponseDto.builder()
-                .postNo(savedPostNo)
-                .thumbnailPath(requestDto.getThumbnailPath())
-                .build();
+        return savedPostNo;
     }
 
-    @PostMapping("/posts/upload/{thumbnail}")
-    public boolean upload(@RequestParam("thumbnail") MultipartFile uploadFile, @PathVariable String thumbnail) {
-        //thumbnail 명 받아서 그대로 옮기면 될것같음
+    @PutMapping("/posts/{postNo}")
+    public Long update(@PathVariable Long postNo, PostsUpdateRequestDto requestDto, @RequestParam(required = false) MultipartFile thumbnailFile) {
+        TransferFiles.updateImagesByHtmlCode(requestDto.getContent()
+                , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), postNo);
 
-        return TransferFiles.savedThumbnail(uploadFile, thumbnail);
+        if(thumbnailFile != null) {
+            TransferFiles.updateThumbnail(thumbnailFile, MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName()
+                    , requestDto.getThumbnailPath().substring(requestDto.getThumbnailPath().lastIndexOf("/")+1)
+                    , requestDto.getOldThumbnailPath().substring(requestDto.getOldThumbnailPath().lastIndexOf("/")+1));
+        }
+
+        return placeService.update(postNo, requestDto);
+    }
+
+    @DeleteMapping("/posts/{postNo}")
+    public Long delete(@PathVariable Long postNo) {
+        String thumbnailPath = placeService.delete(postNo);
+
+        TransferFiles.deleteAllImagesInDirectory(MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), postNo);
+        TransferFiles.deleteThumbnail(MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName()
+                , thumbnailPath.substring(thumbnailPath.lastIndexOf("/")+1));
+
+        return postNo;
     }
 
     @GetMapping("/posts/list")
@@ -56,8 +74,8 @@ public class PlaceApiController {
         Page<PostsListResponseDto> list = placeService.findPosts(pageRequest);
 
         mav.addObject("list", list);
-//        TransferFiles.listThumbnails(request.getSession().getServletContext().getRealPath("/")
-//                , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), list.getContent());
+        TransferFiles.listThumbnails(request.getSession().getServletContext().getRealPath("/")
+                , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), list.getContent());
 
         return mav;
     }
@@ -68,6 +86,16 @@ public class PlaceApiController {
         mav.setViewName("board/place/posts-save");
 
         mav.addObject("user", user);
+
+        return mav;
+    }
+
+    @GetMapping("/posts/update")
+    public ModelAndView update(Long postNo) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("board/place/posts-update");
+
+        mav.addObject("post", placeService.findById(postNo));
 
         return mav;
     }
@@ -83,7 +111,8 @@ public class PlaceApiController {
         mav.addObject("user", user);
 
         TransferFiles.readImagesByHtmlCode(responseDto.getContent(), request.getSession().getServletContext().getRealPath("/")
-                , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), postNo);
+                , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), postNo
+                , responseDto.getThumbnailPath().substring(responseDto.getThumbnailPath().lastIndexOf("/")+1));
 
         return mav;
     }

@@ -42,20 +42,46 @@ public class TransferFiles {
             return false;
         }
 
-        String copy_path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;
         String sourcePath = ImageUtils.DEFAULT_PATH + boardName + File.separator + postNo;
+        String copy_path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;
 
+        //content 이미지 복사
         ImageUtils.copyAllImagesInDir(sourcePath, copy_path);
+
+        return true;
+    }
+
+    public static boolean readImagesByHtmlCode(String htmlCode, String defaultPath, String boardName
+            , Long postNo, String thumbnailName) {
+
+        readImagesByHtmlCode(htmlCode, defaultPath, boardName, postNo);
+
+        String source_path = ImageUtils.DEFAULT_PATH + boardName + File.separator + "thumbnail" + File.separator;
+        String copy_path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;
+
+        ImageUtils.makeDirectory(copy_path);
+
+        //thumbnail 이미지 복사
+        ImageUtils.copy(source_path+thumbnailName, copy_path+thumbnailName);
 
         return true;
     }
 
 
     //TODO Util하고 기능 나누기
-    public static boolean savedThumbnail(MultipartFile thumbnail, String thumbnailPath) {
+    public static boolean saveThumbnail(MultipartFile thumbnail, String boardName, String thumbnailName) {
         try {
-            File dest = new File(thumbnailPath);
+            String thumbnailPath = ImageUtils.DEFAULT_PATH + File.separator + boardName + File.separator + "thumbnail" +  File.separator;
+            File file_thumbnailPath = new File(thumbnailPath);
+
+            if(!file_thumbnailPath.exists()) {
+                System.out.println("==============TransferFiles.savedThumbnail(): Thumbnail Path doesn't exist. make directory.");
+                file_thumbnailPath.mkdirs();
+            }
+
+            File dest = new File(thumbnailPath + thumbnailName);
             thumbnail.transferTo(dest);
+            System.out.println("==============TransferFiles.savedThumbnail(): Success Transferring thumbnail file.");
 
             return true;
         } catch (IOException e) {
@@ -63,20 +89,34 @@ public class TransferFiles {
         }
     }
 
+    public static boolean updateThumbnail(MultipartFile newThumbnailFile, String boardName, String newThumbnailName, String oldThumbnailName) {
+        deleteThumbnail(boardName, oldThumbnailName);
+
+        return saveThumbnail(newThumbnailFile, boardName, newThumbnailName);
+    }
+
+    public static boolean deleteThumbnail(String boardName, String thumbnailName) {
+        String thumbnailPath = ImageUtils.DEFAULT_PATH + boardName + File.separator + "thumbnail" + File.separator + thumbnailName;
+
+        ImageUtils.deleteFile(thumbnailPath);
+
+        return true;
+    }
+
     public static boolean listThumbnails(String defaultPath, String boardName, List<PostsListResponseDto> posts) {
         if(posts.size() == 0) {
             return false;
         }
 
+        String source_path = ImageUtils.DEFAULT_PATH + boardName + File.separator + "thumbnail" + File.separator;
+        String copy_path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;
+
+        ImageUtils.makeDirectory(copy_path);
+
         for(PostsListResponseDto post : posts) {
-            String[] paths = post.getThumbnailPath().split("/");
+            String thumbnailName = post.getThumbnailPath().substring(post.getThumbnailPath().lastIndexOf("/")+1);
 
-            if(paths.length > 3) {
-                String copy_path = defaultPath + paths[1] + File.separator + paths[2] + File.separator + paths[3];
-                String sourcePath = ImageUtils.DEFAULT_PATH + boardName + File.separator + post.getPostNo() + File.separator + paths[3];
-
-                ImageUtils.copyAllImagesInDir(sourcePath, copy_path);
-            }
+            ImageUtils.copy(source_path + thumbnailName, copy_path + thumbnailName);
         }
 
         return true;

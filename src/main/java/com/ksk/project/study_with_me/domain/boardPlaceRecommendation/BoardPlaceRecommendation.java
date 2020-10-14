@@ -68,22 +68,30 @@ public class BoardPlaceRecommendation extends BaseTimeEntity {
         this.viewCount++;
     }
 
-    public void updateLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public void updateLikeCount(int updateCount) {
+        if(updateCount < 0 && this.likeCount <= 0) {
+            this.likeCount = 0;
+            return;
+        }
+
+        this.likeCount += updateCount;
     }
-    public void updateDislikeCount(int dislikeCount) {
-        this.dislikeCount = dislikeCount;
+    public void updateDislikeCount(int updateCount) {
+        if(updateCount < 0 && this.dislikeCount <= 0) {
+            this.dislikeCount = 0;
+            return;
+        }
+
+        this.dislikeCount += updateCount;
     }
 
     public void update(String title, String address, String addressDetail, String thumbnailPath,
-                       String content, String links, int likeCount, int dislikeCount) {
+                       String content, String links) {
         this.title = title;
         this.address = address;
         this.addressDetail = addressDetail;
         this.thumbnailPath = thumbnailPath;
         this.content = content;
         this.links = links;
-        this.likeCount = likeCount;
-        this.dislikeCount = dislikeCount;
     }
 }

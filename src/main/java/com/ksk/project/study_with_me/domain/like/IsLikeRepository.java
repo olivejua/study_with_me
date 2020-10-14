@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface IsLikeRepository extends JpaRepository<IsLike, IsLikePK> {
 
     public IsLike findByUserAndBoardPlaceRecommendation(User user, BoardPlaceRecommendation post);
+
+    public void deleteAllByBoardPlaceRecommendation(BoardPlaceRecommendation post);
 }

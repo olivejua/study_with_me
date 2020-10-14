@@ -10,7 +10,7 @@
 </th:block>
 <th:block layout:fragment="custom-header">
     <div class="page-header">
-        <h1>스터디 장소 추천 게시판 <small>게시글 작성</small></h1>
+        <h1>스터디 장소 추천 게시판 <small>게시글 수정</small></h1>
     </div>
 </th:block>
 <th:block layout:fragment="custom-content">
@@ -18,11 +18,11 @@
         <div class="col-md-12">
             <div class="col-md-4">
                 <form id="form-post" enctype="multipart/form-data">
-                    <input type="hidden" id="userCode" th:value="${user.userCode}">
+                    <input type="hidden" id="postNo" th:value="${post.postNo}"/>
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label">제목</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요">
+                            <input type="text" class="form-control" id="title" th:value="${post.title}" placeholder="제목을 입력하세요">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -31,8 +31,8 @@
                             <span class="input-group-btn">
                                 <button type="button" id="postcodify_search_button" class="btn btn-default btn-primary">주소 검색</button>
                             </span>
-                            <input type="text" id="address" class="form-control postcodify_address" readonly>
-                            <input type="text" id="address-detail" class="form-control" placeholder="자세한 주소">
+                            <input type="text" id="address" class="form-control postcodify_address" th:value="${post.address}" readonly>
+                            <input type="text" id="address-detail" class="form-control" th:value="${post.addressDetail}" placeholder="자세한 주소">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -45,6 +45,11 @@
                                 <input type="text" class="form-control" id="add-link" placeholder="add a link...">
                             </div>
                             <div id="div-linksBox">
+                                <th:block th:each="link : ${post.links}">
+                                    <div name="div-link">
+                                        <button type="button" onclick="removeLink(this)">-</button><label name="link">[[${link}]]</label>
+                                    </div>
+                                </th:block>
                             </div>
                         </div>
                     </div>
@@ -53,16 +58,20 @@
                         <div class="col-sm-9">
                             <input type="file" id="thumbnail" name="thumbnail" class="form-control">
                         </div>
+                        <div>
+                            <input type="hidden" id="oldThumbnailPath" th:value="${post.thumbnailPath}" />
+                            <img th:src="${post.thumbnailPath}">
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label for="content" class="col-sm-2 col-form-label"> 설명 </label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" id="content" rows="10" cols="100" placeholder="내용을 입력하세요" ></textarea>
+                            <textarea class="form-control" id="content" rows="10" cols="100" placeholder="내용을 입력하세요" th:utext="${post.content}"></textarea>
                         </div>
                     </div>
                 </form>
-                <a id="btn-cancel" href="/board/study/posts/list" class="btn btn-outline-secondary btn-lg" role="button">취소</a>
-                <button type="submit" class="btn btn-primary btn-lg" id="btn-save">등록</button>
+                <a id="btn-cancel" href="/board/place/posts/list" class="btn btn-outline-secondary btn-lg" role="button">취소</a>
+                <button type="submit" class="btn btn-primary btn-lg" id="btn-update">수정</button>
             </div>
         </div>
     </div>
@@ -71,7 +80,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
     <script type="text/javascript" src="/api/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
-    <script th:src="@{/js/page/board/place/posts-save.js}" th:inline="javascript" type="text/javascript"></script>
+    <script th:src="@{/js/page/board/place/posts-update.js}" th:inline="javascript" type="text/javascript"></script>
     <script th:src="@{/js/page/board/place/posts-api.js}" th:inline="javascript" type="text/javascript"></script>
     <script type="text/javascript">
     </script>

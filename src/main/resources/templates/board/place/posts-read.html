@@ -19,6 +19,7 @@
                 <form id="form-post">
                     <input type="hidden" id="postNo" th:value="${post.postNo}">
                     <input type="hidden" id="boardName" value="place">
+                    <input type="hidden" id="userCode" th:value="${user.userCode}">
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label label-name">제목</label>
                         <div class="col-sm-9">
@@ -49,25 +50,34 @@
                     </div>
                 </form>
                 <div>
-                    <input type="hidden" id="like-status" th:value="${post.like}">
-                    <button type="button" class="btn-like" name="btn-like-chosen" style="display: none;">
-                        <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533913.svg">
+                    <input type="hidden" id="existLike" th:value="${post.existLike}">
+                    <input type="hidden" id="isLike" th:value="${post.like}">
+
+                    <button type="button" class="btn-like" name="btn-like-chosen">
+                        <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533913.svg" name="btn-like-chosen"/>
                     </button>
                     <button type="button" class="btn-like" name="btn-like">
                         <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533907.svg"
                              onmouseover="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533913.svg'"
-                             onmouseout="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533907.svg'">
+                             onmouseout="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533907.svg'" name="btn-like"/>
                     </button>
-                    <label>[[${post.likeCount}]]</label>
-                    <button type="button" class="btn-like" name="btn-dislike-chosen" style="display: none;">
-                        <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533919.svg">
+                    <label id="likeCount">[[${post.likeCount}]]</label>
+                    <label> 명이 이 장소를 추천합니다.</label>
+
+                    <button type="button" class="btn-like" name="btn-dislike-chosen">
+                        <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533919.svg" name="btn-dislike-chosen"/>
                     </button>
                     <button type="button" class="btn-like" name="btn-dislike">
                         <img src="https://www.flaticon.com/svg/static/icons/svg/1533/1533915.svg"
                              onmouseover="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533919.svg'"
-                             onmouseout="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533915.svg'">
+                             onmouseout="this.src='https://www.flaticon.com/svg/static/icons/svg/1533/1533915.svg'" name="btn-dislike"/>
                     </button>
-                    <label>[[${post.dislikeCount}]]</label>
+                    <label id="dislikeCount">[[${post.dislikeCount}]]</label>
+                    <label> 명이 이 장소를 추천하지 않습니다.</label>
+
+                    <div>
+                        <img th:src="${post.thumbnailPath}"/>
+                    </div>
                 </div>
                 <div th:if="${user.userCode} == ${post.user.userCode}" class="div-bottom-line">
                     <a th:href="@{/board/place/posts/update(postNo=${post.postNo})}" class="btn btn-success" role="button">수정</a>
@@ -83,8 +93,11 @@
 <th:block layout:fragment="custom-script">
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d78e00834ae7e7fdc8944152d4767b61&libraries=services"></script>
     <script th:src="@{/js/page/board/place/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
+    <script th:src="@{/js/page/board/place/posts-api.js}" th:inline="javascript" type="text/javascript"></script>
 
-<!--    <script th:src="@{/js/page/board/place/posts-list.js}" th:inline="javascript" type="text/javascript"></script>-->
+    <script type="text/javascript" >
+    </script>
+
 </th:block>
 </html>
 
