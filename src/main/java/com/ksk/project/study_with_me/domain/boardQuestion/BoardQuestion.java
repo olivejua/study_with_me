@@ -1,6 +1,7 @@
 package com.ksk.project.study_with_me.domain.boardQuestion;
 
-import com.ksk.project.study_with_me.config.MatchNames;
+import com.ksk.project.study_with_me.domain.BaseTimeEntity;
+import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,27 +11,21 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class BoardQuestion {
+public class BoardQuestion extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postNo;
 
-    @Column(nullable = false)
-    private String boardName;
-
-    @Column(nullable = false)
-    private Long userCode;
+    @ManyToOne
+    @JoinColumn(name = "userCode")
+    private User user;
 
     @Column(length = 100, nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
-
-    // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경
-    @Column
-    private Long imageCodes;
 
     @Column(nullable = false)
     private int viewCount;
@@ -39,14 +34,22 @@ public class BoardQuestion {
     private int replyCount;
 
     @Builder
-    public BoardQuestion(Long userCode, String title, String content,
-                         Long imageCodes, int viewCount, int replyCount) {
-        this.boardName = MatchNames.Boards.BOARD_QUESTION.getCalledName();
-        this.userCode = userCode;
+    public BoardQuestion(User user, String title, String content,
+                         int viewCount, int replyCount) {
+        this.user = user;
         this.title = title;
         this.content = content;
-        this.imageCodes = imageCodes;
         this.viewCount = viewCount;
         this.replyCount = replyCount;
+    }
+
+    public BoardQuestion updateReplyCount(int replyCount) {
+        this.replyCount = replyCount;
+        return this;
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }
