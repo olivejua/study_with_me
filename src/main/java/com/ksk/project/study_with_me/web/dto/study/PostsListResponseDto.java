@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class StudyPostsListResponseDto {
+public class PostsListResponseDto {
     private Long postNo;
     private User user;
     private String title;
@@ -14,8 +14,8 @@ public class StudyPostsListResponseDto {
     private int commentCount;
     private LocalDateTime createdDate;
 
-    public StudyPostsListResponseDto(Long postNo, User user, String title,
-                                     int viewCount, int commentCount, LocalDateTime createdDate) {
+    public PostsListResponseDto(Long postNo, User user, String title,
+                                int viewCount, int commentCount, LocalDateTime createdDate) {
         this.postNo = postNo;
         this.user = user;
         this.title = title;
