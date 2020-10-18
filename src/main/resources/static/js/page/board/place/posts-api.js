@@ -73,7 +73,7 @@ var main = {
             data: formData
         }).done(function (postNo) {
             alert('글이 수정되었습니다.');
-            window.location.href='/board/study/posts/read?postNo=' + postNo;
+            window.location.href='/board/study/posts?postNo=' + postNo;
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

@@ -22,7 +22,7 @@
                     <div class="card" style="width: 15rem;">
                         <img class="card-img-top" th:src="${post.thumbnailPath}" alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title"><a th:href="@{/board/place/posts/read(postNo=${post.postNo})}">[[${post.title}]]</a></h5>
+                            <h5 class="card-title"><a th:href="@{/board/place/posts(postNo=${post.postNo})}">[[${post.title}]]</a></h5>
                             <p class="card-text">[[${post.address}]]</p>
                             <span class="card-text">추천 수 : [[${post.likeCount}]]</span>
                             <span class="card-text">비추 수 : [[${post.dislikeCount}]]</span>
@@ -63,6 +63,6 @@
         </div>
     </th:block>
     <th:block layout:fragment="custom-script">
-        <script th:src="@{/js/page/board/study/posts-list.js}" th:inline="javascript" type="text/javascript"></script>
+        <script th:src="@{/js/page/board/study/posts-api.js}" th:inline="javascript" type="text/javascript"></script>
     </th:block>
 </html>

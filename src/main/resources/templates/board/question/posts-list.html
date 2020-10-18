@@ -31,8 +31,8 @@
                 <tr th:each="post : ${list.content}">
                     <td th:text="${post.postNo}"></td>
                     <td>
-                        <a th:href="@{/board/study/posts/read(postNo=${post.postNo})}">[[${post.title}]]</a>
-                        <span class="badge badge-primary">[[${post.replyCount}]]</span>
+                        <a th:href="@{/board/question/posts(postNo=${post.postNo})}">[[${post.title}]]</a>
+                        <span class="badge badge-primary">[[${post.commentCount}]]</span>
                     </td>
                     <td th:text="${post.user.nickname}"></td>
                     <td th:text="${post.createdDate}"></td>
@@ -43,7 +43,7 @@
         </div>
     </th:block>
     <th:block layout:fragment="custom-script">
-        <script th:src="@{/js/page/board/question/posts-list.js}" th:inline="javascript" type="text/javascript"></script>
+        <script th:src="@{/js/page/board/question/posts-api.js}" th:inline="javascript" type="text/javascript"></script>
         <script type="text/javascript" th:inline="javascript">
             console.log([[${list}]]);
         </script>

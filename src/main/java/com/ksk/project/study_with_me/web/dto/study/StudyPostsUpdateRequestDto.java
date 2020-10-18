@@ -21,7 +21,7 @@ public class StudyPostsUpdateRequestDto {
     private int conditionCapacity;
     private String conditionExplanation;
     private int viewCount;
-    private int replyCount;
+    private int commentCount;
 
     @Builder
     public StudyPostsUpdateRequestDto(Long userCode, String title, String conditionLanguages, String conditionPlace, Date conditionStartDate
@@ -35,7 +35,7 @@ public class StudyPostsUpdateRequestDto {
         this.conditionCapacity = conditionCapacity;
         this.conditionExplanation = conditionExplanation;
         this.viewCount = setInitialNumber();
-        this.replyCount = setInitialNumber();
+        this.commentCount = setInitialNumber();
     }
 
     private int setInitialNumber() {
@@ -53,7 +53,7 @@ public class StudyPostsUpdateRequestDto {
                 .conditionCapacity(conditionCapacity)
                 .conditionExplanation(conditionExplanation)
                 .viewCount(viewCount)
-                .replyCount(replyCount)
+                .commentCount(commentCount)
                 .build();
     }
 }

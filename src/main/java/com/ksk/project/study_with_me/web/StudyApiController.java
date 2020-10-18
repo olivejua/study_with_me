@@ -3,8 +3,8 @@ package com.ksk.project.study_with_me.web;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
+import com.ksk.project.study_with_me.service.CommentService;
 import com.ksk.project.study_with_me.service.ReplyService;
-import com.ksk.project.study_with_me.service.RereplyService;
 import com.ksk.project.study_with_me.service.StudyService;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 public class StudyApiController {
 
     private final StudyService studyService;
+    private final CommentService commentService;
     private final ReplyService replyService;
-    private final RereplyService rereplyService;
 
     @PostMapping("/posts")
     public Long save(@RequestBody StudyPostsSaveRequestDto requestDto, @LoginUser SessionUser user) {
@@ -89,7 +89,7 @@ public class StudyApiController {
         return mav;
     }
 
-    @GetMapping("/posts/read")
+    @GetMapping("/posts")
     public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/study/posts-read");
@@ -99,8 +99,8 @@ public class StudyApiController {
 
         mav.addObject("user", user);
         mav.addObject("post", responseDto);
+        mav.addObject("commentList", commentService.findAllByPostNoAndBoardName(postNo, boardName));
         mav.addObject("replyList", replyService.findAllByPostNoAndBoardName(postNo, boardName));
-        mav.addObject("rereplyList", rereplyService.findAllByPostNoAndBoardName(postNo, boardName));
 
         TransferFiles.readImagesByHtmlCode(responseDto.getConditionExplanation()
                 , request.getSession().getServletContext().getRealPath("/"), boardName, postNo);

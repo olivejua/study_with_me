@@ -1,5 +1,6 @@
 package com.ksk.project.study_with_me.web.dto.study;
 
+import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitment;
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Getter
 public class StudyPostsReadResponseDto {
     private Long postNo;
+    private String boardName;
     private User user;
     private String title;
     private String conditionLanguages;
@@ -18,7 +20,7 @@ public class StudyPostsReadResponseDto {
     private int conditionCapacity;
     private String conditionExplanation;
     private int viewCount;
-    private int replyCount;
+    private int commentCount;
 
     public StudyPostsReadResponseDto(BoardStudyRecruitment entity) {
         this.postNo = entity.getPostNo();
@@ -31,6 +33,7 @@ public class StudyPostsReadResponseDto {
         this.conditionCapacity = entity.getConditionCapacity();
         this.conditionExplanation = entity.getConditionExplanation();
         this.viewCount = entity.getViewCount();
-        this.replyCount = entity.getReplyCount();
+        this.commentCount = entity.getCommentCount();
+        this.boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
     }
 }

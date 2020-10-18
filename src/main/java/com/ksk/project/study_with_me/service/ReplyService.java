@@ -22,19 +22,9 @@ public class ReplyService {
         return replyRepository.save(requestDto.toEntity()).getReplyNo();
     }
 
-    @Transactional
-    public Long update(Long replyNo, ReplyUpdateRequestDto requestDto) {
-        Reply entity = replyRepository.findById(replyNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다. id=" + replyNo));
-
-        entity.update(requestDto.getContent());
-
-        return replyNo;
-    }
-
     @Transactional(readOnly = true)
     public List<ReplyListResponseDto> findAllByPostNoAndBoardName(Long postNo, String boardName) {
-        return replyRepository.findByPostNoAndBoardNameOrderByReplyNoAsc(postNo, boardName).stream()
+        return replyRepository.findByPostNoAndBoardNameOrderByReplyNo(postNo, boardName).stream()
                 .map(ReplyListResponseDto::new)
                 .collect(Collectors.toList());
     }
@@ -44,11 +34,33 @@ public class ReplyService {
         return replyRepository.countByPostNoAndBoardName(postNo, boardName);
     }
 
+    @Transactional(readOnly = true)
+    public List<ReplyListResponseDto> findAllByCommentNo(Long commentNo) {
+        return replyRepository.findByCommentNoOrderByReplyNoAsc(commentNo).stream()
+                .map(ReplyListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public void delete(Long replyNo) {
         Reply entity = replyRepository.findById(replyNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다. replyNo=" + replyNo));
+                .orElseThrow(() -> new IllegalArgumentException("해당 답글이 없습니다. replyNo=" + replyNo));
 
         replyRepository.delete(entity);
+    }
+
+    @Transactional
+    public void deleteAllByCommentNo(Long commentNo) {
+        replyRepository.deleteAllByCommentNo(commentNo);
+    }
+
+    @Transactional
+    public Long update(Long replyNo, ReplyUpdateRequestDto requestDto) {
+        Reply entity = replyRepository.findById(replyNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 답글이 없습니다. replyNo=" + replyNo));
+
+        entity.update(requestDto.getContent());
+
+        return replyNo;
     }
 }

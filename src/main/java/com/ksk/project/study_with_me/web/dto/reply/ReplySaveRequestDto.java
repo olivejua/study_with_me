@@ -6,15 +6,17 @@ import lombok.Getter;
 
 @Getter
 public class ReplySaveRequestDto {
-    private String boardName;
-    private Long postNo;
+    private Long commentNo;
     private User user;
     private String content;
+    private Long postNo;
+    private String boardName;
 
-    public ReplySaveRequestDto(String boardName, Long postNo, String content) {
-        this.boardName = boardName;
-        this.postNo = postNo;
+    public ReplySaveRequestDto(Long commentNo, String content, Long postNo, String boardName) {
+        this.commentNo = commentNo;
         this.content = content;
+        this.postNo = postNo;
+        this.boardName = boardName;
     }
 
     public ReplySaveRequestDto setUser(User user) {
@@ -24,10 +26,12 @@ public class ReplySaveRequestDto {
 
     public Reply toEntity() {
         return Reply.builder()
-                .boardName(boardName)
-                .postNo(postNo)
+//                .comment(Comment.builder().commentNo(commentNo).build())
+                .commentNo(commentNo)
                 .user(user)
                 .content(content)
+                .postNo(postNo)
+                .boardName(boardName)
                 .build();
     }
 }

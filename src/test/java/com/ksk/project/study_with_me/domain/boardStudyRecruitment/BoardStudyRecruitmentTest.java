@@ -51,7 +51,7 @@ public class BoardStudyRecruitmentTest {
         int conditionCapacity = 5;
         String conditionExplanation = "스터디 설명";
         int viewCount = 7;
-        int replyCount = 2;
+        int commentCount = 2;
 
         userRepository.save(user);
 
@@ -65,7 +65,7 @@ public class BoardStudyRecruitmentTest {
                 .conditionCapacity(conditionCapacity)
                 .conditionExplanation(conditionExplanation)
                 .viewCount(viewCount)
-                .replyCount(replyCount)
+                .commentCount(commentCount)
                 .build());
 
         //when

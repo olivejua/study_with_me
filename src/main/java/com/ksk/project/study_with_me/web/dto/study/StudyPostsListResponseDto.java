@@ -11,16 +11,16 @@ public class StudyPostsListResponseDto {
     private User user;
     private String title;
     private int viewCount;
-    private int replyCount;
+    private int commentCount;
     private LocalDateTime createdDate;
 
     public StudyPostsListResponseDto(Long postNo, User user, String title,
-                                     int viewCount, int replyCount, LocalDateTime createdDate) {
+                                     int viewCount, int commentCount, LocalDateTime createdDate) {
         this.postNo = postNo;
         this.user = user;
         this.title = title;
         this.viewCount = viewCount;
-        this.replyCount = replyCount;
+        this.commentCount = commentCount;
         this.createdDate = createdDate;
     }
 }

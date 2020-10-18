@@ -18,7 +18,8 @@
             <div class="col-md-4">
                 <form id="form-post">
                     <input type="hidden" id="postNo" th:value="${post.postNo}">
-                    <input type="hidden" id="boardName" value="study">
+                    <input type="hidden" id="boardName" th:value="${post.boardName}">
+                    <input type="hidden" id="userCode" th:value="${user.userCode}">
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label label-name">제목</label>
                         <div class="col-sm-9">
@@ -66,67 +67,67 @@
                     <button class="btn btn-danger" id="btn-delete">삭제</button>
                 </div>
 
-                <div class="div-reply">
+                <div class="div-comment">
                     <h4>댓글</h4>
                     <div>
-                        <div th:each="reply : ${replyList}" name="wrapped-each-reply" class="div-reply-list">
-                            <div name="div-one-reply">
-                                <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
-                                <label class="label-reply-info label-reply-name">[[${reply.user.nickname}]]</label>
-                                <label class="label-reply-info">[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
-                                <th:block th:if="${user.userCode}==${reply.user.userCode}">
-                                    <button name="open-reply-modify" class="btn btn-outline-success btn-sm">수정</button>
-                                    <button name="btn-reply-delete" class="btn btn-outline-danger btn-sm">삭제</button>
+                        <div th:each="comment : ${commentList}" name="wrapped-each-comment" class="div-comment-list">
+                            <div name="div-one-comment">
+                                <input type="hidden" name="commentNo" th:value="${comment.commentNo}">
+                                <label class="label-comment-info label-comment-name">[[${comment.user.nickname}]]</label>
+                                <label class="label-comment-info">[[${#dates.format(comment.modifiedDate, 'yy.MM.dd')}]]</label>
+                                <th:block th:if="${user.userCode}==${comment.user.userCode}">
+                                    <button name="open-comment-modify" class="btn btn-outline-success btn-sm">수정</button>
+                                    <button name="btn-comment-delete" class="btn btn-outline-danger btn-sm">삭제</button>
                                 </th:block>
-                                <button name="open-rereply-save" class="btn btn-outline-info btn-sm">답글달기</button>
-                                <p name="p-reply-modify">
-                                    <label>[[${reply.content}]]</label>
+                                <button name="open-reply-save" class="btn btn-outline-info btn-sm">답글달기</button>
+                                <p name="p-comment-modify">
+                                    <label>[[${comment.content}]]</label>
                                 </p>
-                                <div name="div-reply-modify" class="div-reply-content" style="display: none;">
-                                    <textarea name="reply-content-modify" class="form-control reply-content">[[${reply.content}]]</textarea>
-                                    <button name="btn-reply-modify" class="btn btn-outline-success btn-reply-save">수정</button>
+                                <div name="div-comment-modify" class="div-comment-content" style="display: none;">
+                                    <textarea name="comment-content-modify" class="form-control comment-content">[[${comment.content}]]</textarea>
+                                    <button name="btn-comment-modify" class="btn btn-outline-success btn-comment-save">수정</button>
                                 </div>
                             </div>
-                            <div th:each="rereply : ${rereplyList}" th:if="${rereply.reply.replyNo==reply.replyNo}" name="wrapped-each-rereply" class="div-rereply-list row">
-                                <div class="col-md-1 div-img-reply">
-                                    <img th:src="@{/img/reply/sign-reply.png}" class="img-reply">
+                            <div th:each="reply : ${replyList}" th:if="${reply.comment.commentNo==comment.commentNo}" name="wrapped-each-reply" class="div-reply-list row">
+                                <div class="col-md-1 div-img-comment">
+                                    <img th:src="@{/img/reply/sign-comment.png}" class="img-comment">
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="hidden" name="rereplyNo" th:value="${rereply.rereplyNo}">
-                                    <label class="label-reply-info label-reply-name">[[${rereply.user.nickname}]]</label>
-                                    <label class="label-reply-info">[[${#dates.format(rereply.modifiedDate, 'yy.MM.dd')}]]</label>
-                                    <th:block th:if="${user.userCode}==${reply.user.userCode}">
-                                        <button name="open-reply-modify" class="btn btn-outline-success btn-sm">수정</button>
-                                        <button name="btn-rereply-delete" class="btn btn-outline-danger btn-sm">삭제</button>
+                                    <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
+                                    <label class="label-comment-info label-comment-name">[[${reply.user.nickname}]]</label>
+                                    <label class="label-comment-info">[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
+                                    <th:block th:if="${user.userCode}==${comment.user.userCode}">
+                                        <button name="open-comment-modify" class="btn btn-outline-success btn-sm">수정</button>
+                                        <button name="btn-reply-delete" class="btn btn-outline-danger btn-sm">삭제</button>
                                     </th:block>
-                                    <p name="p-reply-modify">
-                                        <label>[[${rereply.content}]]</label>
+                                    <p name="p-comment-modify">
+                                        <label>[[${reply.content}]]</label>
                                     </p>
-                                    <div name="div-reply-modify" class="div-rereply-content" style="display: none;">
-                                        <textarea name="textarea-rereply-modify" class="form-control rereply-content">[[${rereply.content}]]</textarea>
-                                        <button name="btn-rereply-modify" class="btn btn-outline-success btn-sm btn-reply-save">수정</button>
+                                    <div name="div-comment-modify" class="div-reply-content" style="display: none;">
+                                        <textarea name="reply-modify-content" class="form-control reply-content">[[${reply.content}]]</textarea>
+                                        <button name="btn-reply-modify" class="btn btn-outline-success btn-sm btn-comment-save">수정</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="div-rereply-save row" th:id="${reply.replyNo}">
-                                <div class="col-md-1 div-img-reply">
-                                    <img th:src="@{/img/reply/sign-reply.png}" class="img-reply">
+                            <div class="div-reply-save row" th:id="${comment.commentNo}">
+                                <div class="col-md-1 div-img-comment">
+                                    <img th:src="@{/img/reply/sign-comment.png}" class="img-comment">
                                 </div>
                                 <div class="col-md-8">
                                     <label >[[${user.nickname}]]</label>
-                                    <div class="div-rereply-content">
-                                        <textarea name="rereply-content" class="form-control rereply-content"></textarea>
-                                        <button name="btn-rereply-save" class="btn btn-outline-primary btn-sm btn-reply-save">등록</button>
+                                    <div class="div-reply-content">
+                                        <textarea name="reply-content" class="form-control reply-content"></textarea>
+                                        <button name="btn-reply-save" class="btn btn-outline-primary btn-sm btn-comment-save">등록</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="div-reply-save">
-                        <label for="reply-content">[[${user.nickname}]]</label><br>
-                        <div class="div-reply-content">
-                            <textarea id="reply-content" class="form-control reply-content"></textarea>
-                            <button name="btn-reply-save" class="btn btn-outline-primary btn-reply-save">등록</button>
+                    <div class="div-comment-save">
+                        <label for="comment-content">[[${user.nickname}]]</label><br>
+                        <div class="div-comment-content">
+                            <textarea id="comment-content" class="form-control comment-content"></textarea>
+                            <button name="btn-comment-save" class="btn btn-outline-primary btn-comment-save">등록</button>
                         </div>
                     </div>
                 </div>
@@ -139,7 +140,7 @@
 </th:block>
 <th:block layout:fragment="custom-script">
     <script th:src="@{/js/page/board/study/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
-    <script th:src="@{/js/page/board/study/posts-list.js}" th:inline="javascript" type="text/javascript"></script>
+    <script th:src="@{/js/page/board/study/posts-api.js}" th:inline="javascript" type="text/javascript"></script>
 </th:block>
 </html>
 

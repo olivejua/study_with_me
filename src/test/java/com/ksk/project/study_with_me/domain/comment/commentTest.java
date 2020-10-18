@@ -1,4 +1,4 @@
-package com.ksk.project.study_with_me.domain.reply;
+package com.ksk.project.study_with_me.domain.comment;
 
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestion;
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestionRepository;
@@ -11,17 +11,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ReplyTest {
+public class commentTest {
 
     @Autowired
     BoardQuestionRepository boardQuestionRepository;
 
     @Autowired
-    ReplyRepository replyRepository;
+    CommentRepository commentRepository;
 
     @After
     public void cleanup() {
-        replyRepository.deleteAll();
+        commentRepository.deleteAll();
         boardQuestionRepository.deleteAll();
     }
 
@@ -29,17 +29,16 @@ public class ReplyTest {
     public void 댓글등록_불러오기() {
         //given
         boardQuestionRepository.save(BoardQuestion.builder()
-                .userCode(1L)
                 .title("질문 게시글 제목")
                 .content("질문 게시글 내용")
                 .viewCount(8)
-                .replyCount(1)
+                .commentCount(1)
                 .build());
 
         Long postNo = 1L;
         String content = "질문게시판 댓글";
 
-//        replyRepository.save(Reply.builder()
+//        commentRepository.save(Comment.builder()
 //                .boardName(MatchNames.Boards.BOARD_QUESTION.getCalledName())
 //                .user(userCode)
 //                .postNo(postNo)
@@ -47,12 +46,12 @@ public class ReplyTest {
 //                .build());
 //
 //        //when
-//        List<Reply> replyList = replyRepository.findAll();
+//        List<Comment> commentList = commentRepository.findAll();
 //
 //        //then
-//        Reply reply = replyList.get(0);
-//        assertThat(reply.getPostNo()).isEqualTo(postNo);
-//        assertThat(reply.getUserCode()).isEqualTo(userCode);
-//        assertThat(reply.getContent()).isEqualTo(content);
+//        Comment comment = commentList.get(0);
+//        assertThat(comment.getPostNo()).isEqualTo(postNo);
+//        assertThat(comment.getUserCode()).isEqualTo(userCode);
+//        assertThat(comment.getContent()).isEqualTo(content);
     }
 }

@@ -31,20 +31,20 @@ public class BoardQuestion extends BaseTimeEntity {
     private int viewCount;
 
     @Column(nullable = false)
-    private int replyCount;
+    private int commentCount;
 
     @Builder
     public BoardQuestion(User user, String title, String content,
-                         int viewCount, int replyCount) {
+                         int viewCount, int commentCount) {
         this.user = user;
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
-        this.replyCount = replyCount;
+        this.commentCount = commentCount;
     }
 
-    public BoardQuestion updateReplyCount(int replyCount) {
-        this.replyCount = replyCount;
+    public BoardQuestion updateCommentCount(int commentCount) {
+        this.commentCount = commentCount;
         return this;
     }
 
