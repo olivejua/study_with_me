@@ -10,16 +10,14 @@ import java.util.Date;
 @Getter
 public class ReplyListResponseDto {
     private Long replyNo;
-    private String boardName;
-    private Long postNo;
+    private Long commentNo;
     private User user;
     private String content;
     private Date modifiedDate;
 
     public ReplyListResponseDto(Reply entity) {
         this.replyNo = entity.getReplyNo();
-        this.boardName = entity.getBoardName();
-        this.postNo = entity.getPostNo();
+        this.commentNo = entity.getCommentNo();
         this.user = entity.getUser();
         this.content = entity.getContent();
         this.modifiedDate = Date.from(entity.getModifiedDate().atZone(ZoneId.systemDefault()).toInstant());

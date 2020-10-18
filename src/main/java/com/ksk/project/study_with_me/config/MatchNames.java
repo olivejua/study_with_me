@@ -17,13 +17,4 @@ public class MatchNames {
         private final String calledName;
         private final String shortName;
     }
-
-    @Getter
-    @RequiredArgsConstructor
-    public enum MessageType {
-        Message("message"),
-        Reply("reply");
-
-        private final String type;
-    }
 }

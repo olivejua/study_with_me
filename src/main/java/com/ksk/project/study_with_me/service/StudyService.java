@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StudyService {
     private final BoardStudyRecruitmentRepository boardStudyRecruitmentRepository;
+    private final CommentService commentService;
     private final ReplyService replyService;
-    private final RereplyService rereplyService;
 
     @Transactional(readOnly = true)
     public Page<StudyPostsListResponseDto> findPosts(Pageable pageable) {
@@ -26,15 +26,15 @@ public class StudyService {
 
         String boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
         return posts.map(entity -> {
-            int replyCount = replyService.countByPostNoAndBoardName(entity.getPostNo(), boardName) +
-                    rereplyService.countByPostNoAndBoardName(entity.getPostNo(), boardName);
+            int commentCount = commentService.countByPostNoAndBoardName(entity.getPostNo(), boardName) +
+                    replyService.countByPostNoAndBoardName(entity.getPostNo(), boardName);
 
-            entity.updateReplyCount(replyCount);
+            entity.updateCommentCount(commentCount);
 
             return new StudyPostsListResponseDto(
                     entity.getPostNo(), entity.getUser(),
                     entity.getTitle(), entity.getViewCount(),
-                    entity.getReplyCount(), entity.getCreatedDate()
+                    entity.getCommentCount(), entity.getCreatedDate()
             );});
     }
 
@@ -65,7 +65,7 @@ public class StudyService {
         return results.map(entity -> new StudyPostsListResponseDto(
                         entity.getPostNo(), entity.getUser(),
                         entity.getTitle(), entity.getViewCount(),
-                        entity.getReplyCount(), entity.getCreatedDate()
+                        entity.getCommentCount(), entity.getCreatedDate()
                 ));
     }
 

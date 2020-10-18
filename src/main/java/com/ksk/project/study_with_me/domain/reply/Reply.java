@@ -1,15 +1,12 @@
 package com.ksk.project.study_with_me.domain.reply;
 
 import com.ksk.project.study_with_me.domain.BaseTimeEntity;
-import com.ksk.project.study_with_me.domain.rereply.Rereply;
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -20,34 +17,34 @@ public class Reply extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long replyNo;
 
-    @Column(nullable = false)
-    private String boardName;
+    //TODO 테스트 검증 끝나면 지우기
+//    @ManyToOne
+//    @JoinColumn(name = "commentNo")
+//    private Comment comment;
 
     @Column(nullable = false)
-    private Long postNo;
+    private Long commentNo;
 
     @ManyToOne
     @JoinColumn(name = "userCode")
     private User user;
 
-    @Column(nullable = false)
+    @Column
     private String content;
 
-    // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경
-    private Long imageCode;
+    @Column(nullable = false)
+    private Long postNo;
 
-    @OneToMany(mappedBy = "reply", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Rereply> rereplies;
+    @Column(nullable = false)
+    private String boardName;
 
     @Builder
-    public Reply (Long replyNo, String boardName, Long postNo, User user, String content, Long imageCode) {
-        this.replyNo = replyNo;
-        this.boardName = boardName;
-        this.postNo = postNo;
+    public Reply(Long commentNo, User user, String content, Long postNo, String boardName) {
+        this.commentNo = commentNo;
         this.user = user;
         this.content = content;
-        this.imageCode = imageCode;
+        this.postNo = postNo;
+        this.boardName = boardName;
     }
 
     public void update(String content) {

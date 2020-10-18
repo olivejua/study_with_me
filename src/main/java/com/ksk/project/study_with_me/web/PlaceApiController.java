@@ -100,7 +100,7 @@ public class PlaceApiController {
         return mav;
     }
 
-    @GetMapping("/posts/read")
+    @GetMapping("/posts")
     public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/place/posts-read");

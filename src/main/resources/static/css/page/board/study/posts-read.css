@@ -24,7 +24,7 @@
     padding-top: 20px;
 }
 
-.div-reply {
+.div-comment {
     margin-top: 150px;
 }
 
@@ -32,7 +32,7 @@ h4 {
     margin-bottom: 30px;
 }
 
-.reply-content {
+.comment-content {
     display: inline-block;
     width: 70%;
     min-height: 70px;
@@ -43,34 +43,34 @@ h4 {
     margin-top: 20px;
 }
 
-.label-reply-info {
+.label-comment-info {
     margin-right: 7px;
 }
 
-.label-reply-name {
+.label-comment-name {
     font-size: 20px;
     font-weight: 500;
 }
 
-.div-img-reply {
+.div-img-comment {
     margin-top: auto;
     margin-bottom: auto;
     padding-right: 0;
     padding-left: 5%;
 }
 
-.img-reply {
+.img-comment {
     width: auto;
     height: auto;
     max-width: 20px;
     max-height: 20px;
 }
 
-.div-rereply-content {
+.div-reply-content {
     display: flex;
 }
 
-.rereply-content {
+.reply-content {
     display: inline-block;
     width: 100%;
     min-height: 70px;
@@ -78,15 +78,15 @@ h4 {
 }
 
 
-.div-reply-save {
+.div-comment-save {
     margin-top: 50px;
 }
 
-.div-reply-content {
+.div-comment-content {
     display: flex;
 }
 
-.btn-reply-save {
+.btn-comment-save {
     height: 70px;
     margin-left: 10px;
 }

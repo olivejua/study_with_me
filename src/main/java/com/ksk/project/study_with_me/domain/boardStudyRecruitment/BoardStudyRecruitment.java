@@ -48,12 +48,12 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
     private int viewCount;
 
     @Column(nullable = false)
-    private int replyCount;
+    private int commentCount;
 
     @Builder
     public BoardStudyRecruitment(User user, String title, String conditionLanguages,
                                  String conditionPlace, Date conditionStartDate, Date conditionEndDate, int conditionCapacity,
-                                 String conditionExplanation, int viewCount, int replyCount) {
+                                 String conditionExplanation, int viewCount, int commentCount) {
         this.user = user;
         this.title = title;
         this.conditionLanguages = conditionLanguages;
@@ -63,15 +63,15 @@ public class BoardStudyRecruitment extends BaseTimeEntity {
         this.conditionCapacity = conditionCapacity;
         this.conditionExplanation = conditionExplanation;
         this.viewCount = viewCount;
-        this.replyCount = replyCount;
+        this.commentCount = commentCount;
     }
 
     public void addViewCount() {
         this.viewCount += 1;
     }
 
-    public BoardStudyRecruitment updateReplyCount(int replyCount) {
-        this.replyCount = replyCount;
+    public BoardStudyRecruitment updateCommentCount(int commentCount) {
+        this.commentCount = commentCount;
         return this;
     }
 
