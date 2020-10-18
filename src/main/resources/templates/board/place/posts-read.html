@@ -74,10 +74,6 @@
                     </button>
                     <label id="dislikeCount">[[${post.dislikeCount}]]</label>
                     <label> 명이 이 장소를 추천하지 않습니다.</label>
-
-                    <div>
-                        <img th:src="${post.thumbnailPath}"/>
-                    </div>
                 </div>
                 <div th:if="${user.userCode} == ${post.user.userCode}" class="div-bottom-line">
                     <a th:href="@{/board/place/posts/update(postNo=${post.postNo})}" class="btn btn-success" role="button">수정</a>
