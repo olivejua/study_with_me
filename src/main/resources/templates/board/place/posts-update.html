@@ -56,11 +56,11 @@
                     <div class="form-group row">
                         <label for="thumbnail" class="col-sm-2 col-form-label">썸네일</label>
                         <div class="col-sm-9">
-                            <input type="file" id="thumbnail" name="thumbnail" class="form-control">
+                            <input type="file" id="thumbnail" name="thumbnail" class="form-control" accept=".gif, .jpg, .jpeg, .png">
                         </div>
-                        <div>
+                        <div id="preview-thumbnail">
                             <input type="hidden" id="oldThumbnailPath" th:value="${post.thumbnailPath}" />
-                            <img th:src="${post.thumbnailPath}">
+                            <img name="oldThumbnailPath" th:src="${post.thumbnailPath}">
                         </div>
                     </div>
                     <div class="form-group row">
