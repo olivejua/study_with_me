@@ -48,6 +48,10 @@ public class BoardQuestion extends BaseTimeEntity {
         return this;
     }
 
+    public void addViewCount() {
+        this.viewCount += 1;
+    }
+
     public void update(String title, String content) {
         this.title = title;
         this.content = content;

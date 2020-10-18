@@ -1,40 +1,116 @@
-var main = {
+var read_main = {
     init           : function () {
         var _this = this;
 
-        $('button[name=open-comment-modify]').on('click', function (e) {
+        _this.loadComments();
+
+        $(document).on('click', 'button[name=open-comment-modify]', function (e) {
             _this.openCommentModify(e.target);
         });
-        $('button[name=open-reply-save]').on('click', function (e) {
+
+        $(document).on('click', 'button[name=open-reply-save]', function (e) {
             _this.openReplySave(e.target);
         });
 
-
-        $('button[name=btn-comment-save]').on('click', function () {
+        //댓글 CUD
+        $(document).on('click', 'button[name=btn-comment-save]', function () {
             _this.commentSave();
         });
-        $('button[name=btn-comment-modify]').on('click', function (e) {
+
+        $(document).on('click', 'button[name=btn-comment-modify]', function (e) {
             _this.commentModify(e.target);
         });
-        $('button[name=btn-comment-delete]').on('click', function (e) {
+
+        $(document).on('click', 'button[name=btn-comment-delete]', function (e) {
             _this.commentDelete(e.target);
         });
 
 
-        $('button[name=btn-reply-save]').on('click', function (e) {
+        //답글 CUD
+        $(document).on('click', 'button[name=btn-reply-save]', function (e) {
             _this.replySave(e.target);
         });
-        $('button[name=btn-reply-modify]').on('click', function (e) {
+
+        $(document).on('click', 'button[name=btn-reply-modify]', function (e) {
             _this.replyModify(e.target);
         });
-        $('button[name=btn-reply-delete]').on('click', function (e) {
+
+        $(document).on('click', 'button[name=btn-reply-delete]', function (e) {
             _this.replyDelete(e.target);
         });
 
-
         $('.div-reply-save').hide();
     },
+    loadComments : function () {
+        var _this = this;
+        var boardName = $('#boardName').val();
+        var postNo = $('#postNo').val();
+
+        $.ajax({
+            type: 'GET',
+            url: `/board/posts/comment/list?boardName=${boardName}&postNo=${postNo}`,
+            contentType: 'application/json; charset=utf-8',
+        }).done(function (response) {
+            var commentList = JSON.parse(response);
+
+            $('#paste-comments').empty();
+            _this.addElements_allCommentsAndReplies(commentList);
+
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    addElements_allCommentsAndReplies : function (commentList) {
+        const login_userCode = Number($('#userCode').val());
+
+        for(let i=0; i<commentList.length; i++) {
+            let {commentNo, content, modifiedDate, user, replies} = commentList[i];
+            let div_comment = $('#add-comment').children('div[name=wrapped-each-comment]').clone();
+
+            div_comment.find('input[name=commentNo]').val(commentNo);
+            div_comment.find('label[name=comment-user-nickname]').text(user.nickname);
+            div_comment.find('label[name=comment-modifiedDate]').text(modifiedDate);
+
+            if(login_userCode === user.userCode) {
+                div_comment.find('.comment-modify-buttons').css('display', 'inline');
+            } else {
+                div_comment.find('.comment-modify-buttons').css('display', 'none');
+            }
+
+            div_comment.find('label[name=comment-content]').text(content);
+            div_comment.find('textarea[name=comment-content-modify]').text(content);
+            div_comment.find('.div-reply-save').attr('id', commentNo);
+
+            for(let j=0; j<replies.length; j++) {
+                let div_reply = $('#add-comment').children('div[name=wrapped-each-reply]').clone();
+                let reply = replies[j];
+
+                div_reply.find('input[name=replyNo]').val(reply.replyNo);
+                div_reply.find('label[name=reply-user-nickname]').text(reply.user.nickname);
+                div_reply.find('label[name=reply-modifiedDate]').text(reply.modifiedDate);
+
+                if(login_userCode === reply.user.userCode) {
+                    div_reply.find('.reply-modify-buttons').css('display', 'inline');
+                } else {
+                    div_reply.find('.reply-modify-buttons').css('display', 'none');
+                }
+
+                div_reply.find('label[name=reply-content]').text(reply.content);
+                div_reply.find('textarea[name=reply-modify-content]').text(reply.content);
+
+                div_comment.append(div_reply);
+            }
+
+            let div_reply_save = $('#add-comment').children('div[name=div-reply-save]').clone();
+            div_reply_save.find('label[name=comment-user-nickname]').text($('#login-nickname').text());
+            div_comment.append(div_reply_save);
+
+            $('#paste-comments').append(div_comment);
+        }
+    },
     commentSave           : function () {
+        var _this = this;
+
         var data = {
             postNo: $('#postNo').val(),
             boardName: $('#boardName').val(),
@@ -47,16 +123,21 @@ var main = {
         $.ajax({
             type: 'POST',
             url: '/board/posts/comment',
-            dataType: 'json',
+            // dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
-        }).done(function () {
-            window.location.href='/board/study/posts?postNo='+data.postNo;
+        }).done(function (response) {
+            var add_comment = JSON.parse(response);
+            console.log(add_comment);
+            $('#comment-content').val("");
+
+            _this.loadComments();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     commentModify : function (target) {
+        var _this = this;
         var div = $(target).closest('div[name=div-one-comment]')[0];
 
         var data = {
@@ -71,12 +152,13 @@ var main = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            window.location.href='/board/study/posts?postNo='+$('#postNo').val();
+            _this.loadComments();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     commentDelete : function (target) {
+        var _this = this;
         var div = $(target).closest('div[name=div-one-comment]')[0];
         var commentNo = $(div).children('input[name=commentNo]')[0].value;
 
@@ -86,12 +168,13 @@ var main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
         }).done(function () {
-            window.location.href='/board/study/posts?postNo='+$('#postNo').val();
+            _this.loadComments();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     replySave : function (target) {
+        var _this = this;
         var div = $(target).closest('div[name=wrapped-each-comment]');
 
         var data = {
@@ -108,12 +191,13 @@ var main = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            window.location.href='/board/study/posts?postNo='+data.postNo;
+            _this.loadComments();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     replyModify : function (target) {
+        var _this = this;
         var div = $(target).closest('div[name=wrapped-each-reply]');
 
         var data = {
@@ -128,12 +212,13 @@ var main = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            window.location.href='/board/study/posts?postNo='+$('#postNo').val();
+            _this.loadComments();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     replyDelete : function (target) {
+        var _this = this;
         var div = $(target).closest('div[name=wrapped-each-reply]');
         var replyNo = $(div).find('input[name=replyNo]')[0].value;
 
@@ -143,7 +228,7 @@ var main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
         }).done(function () {
-            window.location.href='/board/study/posts?postNo='+$('#postNo').val();
+            _this.loadComments();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -173,4 +258,4 @@ var main = {
     }
 };
 
-main.init();
+read_main.init();

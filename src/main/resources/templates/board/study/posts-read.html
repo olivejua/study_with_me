@@ -66,65 +66,12 @@
                     <a th:href="@{/board/study/posts/update(postNo=${post.postNo})}" class="btn btn-success" role="button">수정</a>
                     <button class="btn btn-danger" id="btn-delete">삭제</button>
                 </div>
-
                 <div class="div-comment">
                     <h4>댓글</h4>
-                    <div>
-                        <div th:each="comment : ${commentList}" name="wrapped-each-comment" class="div-comment-list">
-                            <div name="div-one-comment">
-                                <input type="hidden" name="commentNo" th:value="${comment.commentNo}">
-                                <label class="label-comment-info label-comment-name">[[${comment.user.nickname}]]</label>
-                                <label class="label-comment-info">[[${#dates.format(comment.modifiedDate, 'yy.MM.dd')}]]</label>
-                                <th:block th:if="${user.userCode}==${comment.user.userCode}">
-                                    <button name="open-comment-modify" class="btn btn-outline-success btn-sm">수정</button>
-                                    <button name="btn-comment-delete" class="btn btn-outline-danger btn-sm">삭제</button>
-                                </th:block>
-                                <button name="open-reply-save" class="btn btn-outline-info btn-sm">답글달기</button>
-                                <p name="p-comment-modify">
-                                    <label>[[${comment.content}]]</label>
-                                </p>
-                                <div name="div-comment-modify" class="div-comment-content" style="display: none;">
-                                    <textarea name="comment-content-modify" class="form-control comment-content">[[${comment.content}]]</textarea>
-                                    <button name="btn-comment-modify" class="btn btn-outline-success btn-comment-save">수정</button>
-                                </div>
-                            </div>
-                            <div th:each="reply : ${replyList}" th:if="${reply.comment.commentNo==comment.commentNo}" name="wrapped-each-reply" class="div-reply-list row">
-                                <div class="col-md-1 div-img-comment">
-                                    <img th:src="@{/img/reply/sign-comment.png}" class="img-comment">
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="hidden" name="replyNo" th:value="${reply.replyNo}">
-                                    <label class="label-comment-info label-comment-name">[[${reply.user.nickname}]]</label>
-                                    <label class="label-comment-info">[[${#dates.format(reply.modifiedDate, 'yy.MM.dd')}]]</label>
-                                    <th:block th:if="${user.userCode}==${comment.user.userCode}">
-                                        <button name="open-comment-modify" class="btn btn-outline-success btn-sm">수정</button>
-                                        <button name="btn-reply-delete" class="btn btn-outline-danger btn-sm">삭제</button>
-                                    </th:block>
-                                    <p name="p-comment-modify">
-                                        <label>[[${reply.content}]]</label>
-                                    </p>
-                                    <div name="div-comment-modify" class="div-reply-content" style="display: none;">
-                                        <textarea name="reply-modify-content" class="form-control reply-content">[[${reply.content}]]</textarea>
-                                        <button name="btn-reply-modify" class="btn btn-outline-success btn-sm btn-comment-save">수정</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="div-reply-save row" th:id="${comment.commentNo}">
-                                <div class="col-md-1 div-img-comment">
-                                    <img th:src="@{/img/reply/sign-comment.png}" class="img-comment">
-                                </div>
-                                <div class="col-md-8">
-                                    <label >[[${user.nickname}]]</label>
-                                    <div class="div-reply-content">
-                                        <textarea name="reply-content" class="form-control reply-content"></textarea>
-                                        <button name="btn-reply-save" class="btn btn-outline-primary btn-sm btn-comment-save">등록</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="paste-comments">
                     </div>
                     <div class="div-comment-save">
-                        <label for="comment-content">[[${user.nickname}]]</label><br>
+                        <label id="login-nickname" for="comment-content">[[${user.nickname}]]</label><br>
                         <div class="div-comment-content">
                             <textarea id="comment-content" class="form-control comment-content"></textarea>
                             <button name="btn-comment-save" class="btn btn-outline-primary btn-comment-save">등록</button>
@@ -133,6 +80,57 @@
                 </div>
                 <div class="bottom-line">
                     <a href="/board/study/posts/list" class="btn btn-info btn-lg" id="btn-list" role="button">목록</a>
+                </div>
+            </div>
+
+            <div id="add-comment" style="display: none;">
+                <div name="wrapped-each-comment" class="div-comment-list">
+                    <div name="div-one-comment">
+                        <input type="hidden" name="commentNo">
+                        <label name="comment-user-nickname" class="label-comment-info label-comment-name"></label>
+                        <label name="comment-modifiedDate" class="label-comment-info"></label>
+                        <button name="open-comment-modify" class="btn btn-outline-success btn-sm comment-modify-buttons">수정</button>
+                        <button name="btn-comment-delete" class="btn btn-outline-danger btn-sm comment-modify-buttons">삭제</button>
+                        <button name="open-reply-save" class="btn btn-outline-info btn-sm">답글달기</button>
+                        <p name="p-comment-modify">
+                            <label name="comment-content"></label>
+                        </p>
+                        <div name="div-comment-modify" class="div-comment-content" style="display: none;">
+                            <textarea name="comment-content-modify" class="form-control comment-content"></textarea>
+                            <button name="btn-comment-modify" class="btn btn-outline-success btn-comment-save">수정</button>
+                        </div>
+                    </div>
+                </div>
+                <div name="wrapped-each-reply" class="div-reply-list row">
+                    <div class="col-md-1 div-img-comment">
+                        <img th:src="@{/img/reply/sign-reply.png}" class="img-comment">
+                    </div>
+                    <div class="col-md-8">
+                        <input type="hidden" name="replyNo" >
+                        <label name="reply-user-nickname" class="label-comment-info label-comment-name"></label>
+                        <label name="reply-modifiedDate" class="label-comment-info"></label>
+                        <button name="open-comment-modify" class="btn btn-outline-success btn-sm reply-modify-buttons">수정</button>
+                        <button name="btn-reply-delete" class="btn btn-outline-danger btn-sm reply-modify-buttons">삭제</button>
+                        <p name="p-comment-modify">
+                            <label name="reply-content"></label>
+                        </p>
+                        <div name="div-comment-modify" class="div-reply-content" style="display: none;">
+                            <textarea name="reply-modify-content" class="form-control reply-content"></textarea>
+                            <button name="btn-reply-modify" class="btn btn-outline-success btn-sm btn-comment-save">수정</button>
+                        </div>
+                    </div>
+                </div>
+                <div name="div-reply-save" class="div-reply-save row">
+                    <div class="col-md-1 div-img-comment">
+                        <img th:src="@{/img/reply/sign-reply.png}" class="img-comment">
+                    </div>
+                    <div class="col-md-8">
+                        <label name="comment-user-nickname"></label>
+                        <div class="div-reply-content">
+                            <textarea name="reply-content" class="form-control reply-content"></textarea>
+                            <button name="btn-reply-save" class="btn btn-outline-primary btn-sm btn-comment-save">등록</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

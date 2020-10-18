@@ -44,10 +44,12 @@ public class QuestionService {
         return questionRepository.save(requestDto.toEntity()).getPostNo();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional()
     public PostsReadResponseDto findById(Long postNo) {
         BoardQuestion entity = questionRepository.findById(postNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postNo));
+
+        entity.addViewCount();
 
         return new PostsReadResponseDto(entity);
     }
