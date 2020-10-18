@@ -68,8 +68,8 @@ public class StudyApiController {
         return mav;
     }
 
-    @GetMapping("/search/{searchType}/{keyword}/list")
-    public ModelAndView findPosts( @PathVariable String searchType, @PathVariable String keyword,
+    @GetMapping("/search")
+    public ModelAndView findPosts(String searchType, String keyword,
                              @PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
 
         ModelAndView mav = new ModelAndView();
