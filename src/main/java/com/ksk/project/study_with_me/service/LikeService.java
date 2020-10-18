@@ -1,5 +1,6 @@
 package com.ksk.project.study_with_me.service;
 
+import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
 import com.ksk.project.study_with_me.domain.boardPlaceRecommendation.BoardPlaceRecommendation;
 import com.ksk.project.study_with_me.domain.boardPlaceRecommendation.BoardPlaceRecommendationRepository;
 import com.ksk.project.study_with_me.domain.like.IsLike;
@@ -19,8 +20,8 @@ public class LikeService {
     private final BoardPlaceRecommendationRepository placeRepository;
 
     @Transactional(readOnly = true)
-    public PostsReadResponseDto findByUserAndPost(PostsReadResponseDto dto) {
-        IsLike entity = likeRepository.findByUserAndBoardPlaceRecommendation(dto.getUser(), dto.toEntity());
+    public PostsReadResponseDto findByUserAndPost(PostsReadResponseDto dto, SessionUser user) {
+        IsLike entity = likeRepository.findByUserAndBoardPlaceRecommendation(user.toEntity(), dto.toEntity());
         return dto.setLike(entity);
     }
 

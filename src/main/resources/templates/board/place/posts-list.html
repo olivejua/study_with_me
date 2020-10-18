@@ -36,7 +36,7 @@
                 <ul class="pagination">
                     <li th:class="${list.first} ? 'disabled page-item' : 'page-item'">
                         <th:block th:if="${search}">
-                            <a class="page-link" th:href="${list.first} ? '#' : @{/board/place/search/{searchType}/{keyword}/list(searchType=${search.searchType},keyword=${search.keyword},page=${list.number}-1)}">Previous</a>
+                            <a class="page-link" th:href="${list.first} ? '#' : @{/board/place/search(searchType=${search.searchType},keyword=${search.keyword},page=${list.number}-1)}">Previous</a>
                         </th:block>
                         <th:block th:unless="${search}">
                             <a class="page-link" th:href="${list.first} ? '#' : @{/board/place/posts/list(page=${list.number}-1)}">Previous</a>
@@ -44,7 +44,7 @@
                     </li>
                     <li th:each="page : ${#numbers.sequence(start, last)}" th:class="${page == list.number + 1} ? 'active page-item' : 'page-item'">
                         <th:block th:if="${search}" >
-                            <a class="page-link" th:href="@{/board/place/search/{searchType}/{keyword}/list(searchType=${search.searchType},keyword=${search.keyword},page=${page-1})}">[[${page}]]</a>
+                            <a class="page-link" th:href="@{/board/place/search(searchType=${search.searchType},keyword=${search.keyword},page=${page-1})}">[[${page}]]</a>
                         </th:block>
                         <th:block th:unless="${search}">
                             <a class="page-link" th:href="@{/board/place/posts/list(page=${page-1})}">[[${page}]]</a>
@@ -52,7 +52,7 @@
                     </li>
                     <li th:class="${list.last} ? 'disabled page-item' : 'page-item'">
                         <th:block th:if="${search}">
-                            <a class="page-link" th:href="${list.last} ? '#' : @{/board/place/search/{searchType}/{keyword}/list(searchType=${search.searchType},keyword=${search.keyword},page=${list.number + 1})}">Next</a>
+                            <a class="page-link" th:href="${list.last} ? '#' : @{/board/place/search(searchType=${search.searchType},keyword=${search.keyword},page=${list.number + 1})}">Next</a>
                         </th:block>
                         <th:block th:unless="${search}">
                             <a class="page-link" th:href="${list.last} ? '#' : @{/board/place/posts/list(page=${list.number + 1})}">Next</a>

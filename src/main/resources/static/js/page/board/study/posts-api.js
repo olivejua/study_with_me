@@ -69,7 +69,7 @@ var main = {
         });
     },
     delete : function() {
-        var postNo = $('#postNo').val();
+        const postNo = $('#postNo').val();
 
         $.ajax({
             type: 'DELETE',
@@ -84,11 +84,10 @@ var main = {
         });
     },
     search : function () {
-        var category = $('#search-category option:selected').val();
-        var keyword = $('#search-keyword').val();
+        const searchType = $('#search-category option:selected').val();
+        const keyword = $('#search-keyword').val();
 
-        $('#form-search').attr('action', '/board/study/search/' + category + '/' + keyword + '/list');
-        $('#form-search').submit();
+        window.location.href=`/board/study/search?searchType=${searchType}&keyword=${keyword}`;
     },
 };
 
