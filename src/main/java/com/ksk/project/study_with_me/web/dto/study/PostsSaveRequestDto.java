@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Getter
-public class StudyPostsSaveRequestDto {
+public class PostsSaveRequestDto {
     private User user;
     private String title;
     private String conditionLanguages;
@@ -24,7 +24,7 @@ public class StudyPostsSaveRequestDto {
     private int commentCount;
 
     @Builder
-    public StudyPostsSaveRequestDto(String title, String conditionLanguages, String conditionPlace, Date conditionStartDate
+    public PostsSaveRequestDto(String title, String conditionLanguages, String conditionPlace, Date conditionStartDate
                                     , Date conditionEndDate, int conditionCapacity, String conditionExplanation, User user) {
         this.user = user;
         this.title = title;
@@ -42,7 +42,7 @@ public class StudyPostsSaveRequestDto {
         return 0;
     }
 
-    public StudyPostsSaveRequestDto setUser(User user) {
+    public PostsSaveRequestDto setUser(User user) {
         this.user = user;
         return this;
     }

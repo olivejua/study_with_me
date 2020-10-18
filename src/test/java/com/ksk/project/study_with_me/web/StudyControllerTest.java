@@ -7,8 +7,8 @@ import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecr
 import com.ksk.project.study_with_me.domain.user.Role;
 import com.ksk.project.study_with_me.domain.user.User;
 import com.ksk.project.study_with_me.domain.user.UserRepository;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsUpdateRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.PostsSaveRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.PostsUpdateRequestDto;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,7 +96,7 @@ public class StudyControllerTest {
         Integer conditionCapacity = 5;
         String conditionExplanation = "같이 공부할 분 찾습니다.";
 
-        StudyPostsSaveRequestDto requestDto = StudyPostsSaveRequestDto.builder()
+        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
                 .title(title)
                 .conditionLanguages(conditionLanguages)
                 .conditionPlace(conditionPlace)
@@ -141,7 +141,7 @@ public class StudyControllerTest {
         String expectedTitle = "수정한 샘플제목입니다.";
         int expectedCapacity = 10;
 
-        StudyPostsUpdateRequestDto requestDto = StudyPostsUpdateRequestDto.builder()
+        PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
                 .title(expectedTitle)
                 .conditionLanguages(savedPost.getConditionLanguages())
                 .conditionPlace(savedPost.getConditionPlace())
