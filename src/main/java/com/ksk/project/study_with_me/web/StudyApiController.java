@@ -57,7 +57,6 @@ public class StudyApiController {
         return postNo;
     }
 
-
     @GetMapping("/posts/list")
     public ModelAndView findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
         ModelAndView mav = new ModelAndView();
