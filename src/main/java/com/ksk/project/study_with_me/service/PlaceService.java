@@ -21,7 +21,7 @@ public class PlaceService {
 
     @Transactional(readOnly = true)
     public Page<PostsListResponseDto> findPosts(Pageable pageable) {
-        return placeRepository.findAll(pageable).map(entity -> new PostsListResponseDto(entity));
+        return placeRepository.findAll(pageable).map(PostsListResponseDto::new);
     }
 
     @Transactional

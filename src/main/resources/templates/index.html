@@ -13,9 +13,23 @@
                 padding : 180px 50px;
             }
 
-            .list-board-study {
+            thead {
+                background-color: floralwhite;
+            }
 
+            .list-board {
+                margin-bottom: 70px;
+            }
 
+            .card {
+                width: 25%;
+                display: inline-flex;
+                height: 320px;
+            }
+
+            .card > img {
+                height: 200px;
+                width: 100%;
             }
         </style>
     </th:block>
@@ -27,79 +41,39 @@
 
     <th:block layout:fragment="custom-content">
         <div class="container">
-            <div class="list-board-study">
+            <div class="list-board">
                 <h2>스터디원 모집</h2>
                 <hr/>
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">Column heading</th>
-                        <th scope="col">Column heading</th>
-                        <th scope="col">Column heading</th>
+                        <th scope="col">게시글 번호</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">작성일자</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr class="table-active">
-                        <th scope="row">Active</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
+                    <tbody id="list-study-content">
+                    </tbody>
+                </table>
+            </div>
+            <div class="list-board" id="list-place">
+                <h2>스터디 장소 추천</h2>
+                <hr/>
+            </div>
+            <div class="list-board">
+                <h2>질문 게시판</h2>
+                <hr/>
+                <table class="table table-hover">
+                    <thead>
                     <tr>
-                        <th scope="row">Default</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
+                        <th scope="col">게시글 번호</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">작성일자</th>
                     </tr>
-                    <tr class="table-primary">
-                        <th scope="row">Primary</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
-                    <tr class="table-secondary">
-                        <th scope="row">Secondary</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
-                    <tr class="table-success">
-                        <th scope="row">Success</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
-                    <tr class="table-danger">
-                        <th scope="row">Danger</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
-                    <tr class="table-warning">
-                        <th scope="row">Warning</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
-                    <tr class="table-info">
-                        <th scope="row">Info</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
-                    <tr class="table-light">
-                        <th scope="row">Light</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
-                    <tr class="table-dark">
-                        <th scope="row">Dark</th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                    </tr>
+                    </thead>
+                    <tbody id="list-question-content">
                     </tbody>
                 </table>
             </div>
@@ -109,24 +83,102 @@
     <th:block layout:fragment="custom-script">
         <script type="text/javascript">
             var main = {
-                init : function () {
-                    var _this = this;
+                init              : function () {
+                    const _this = this;
 
+                    _this.load_study_posts();
+                    _this.load_place_posts();
+                    _this.load_question_posts();
                 },
-                load_study_posts : function () {
+                load_study_posts   : function () {
+                    const _this = this;
+
                     $.ajax({
                         type: 'GET',
-                        url: `/board/posts/comment/list?boardName=${boardName}&postNo=${postNo}`,
+                        url: `/board/study/list/index`,
                         contentType: 'application/json; charset=utf-8',
                     }).done(function (response) {
-                        var commentList = JSON.parse(response);
+                        const postList = JSON.parse(response);
+                        console.log(postList);
 
-                        $('#paste-comments').empty();
-                        _this.addElements_allCommentsAndReplies(commentList);
+                        const elements = _this.get_elements('study', postList);
+                        $('#list-study-content').append(elements);
 
                     }).fail(function (error) {
                         alert(JSON.stringify(error));
                     });
+                },
+                load_place_posts   : function () {
+                    const _this = this;
+
+                    $.ajax({
+                        type: 'GET',
+                        url: `/board/place/list/index`,
+                        contentType: 'application/json; charset=utf-8',
+                    }).done(function (response) {
+                        const postList = JSON.parse(response);
+                        console.log(postList);
+
+                        $('#list-place').append(_this.get_cards(postList));
+                    }).fail(function (error) {
+                        alert(JSON.stringify(error));
+                    });
+                },
+                load_question_posts: function () {
+                    const _this = this;
+
+                    $.ajax({
+                        type: 'GET',
+                        url: `/board/question/list/index`,
+                        contentType: 'application/json; charset=utf-8',
+                    }).done(function (response) {
+                        const postList = JSON.parse(response);
+                        console.log(postList);
+                        const elements = _this.get_elements('question', postList);
+                        $('#list-question-content').append(elements);
+
+                    }).fail(function (error) {
+                        alert(JSON.stringify(error));
+                    });
+                },
+                get_elements      : function (boardName, list) {
+                    let elements = '';
+
+                    for(let i=0; i<list.length; i++) {
+                        let post = list[i];
+
+                        let link = `/board/${boardName}/posts?postNo=${post.postNo}&page=0`;
+                        let date = post.createdDate.date;
+                        let time = post.createdDate.time;
+                        elements +=
+                            `<tr class="table-light">
+                                <td><a href="${link}">${post.postNo}</a></th>
+                                <td><a href="${link}">${post.title}</a></td>
+                                <td><a href="${link}">${post.user.nickname}</a></td>
+                                <td><a href="${link}">${date.year}.${date.month}.${date.day} ${time.hour}:${time.minute}</a></td>
+                            </tr>`;
+                    }
+
+                    return elements;
+                },
+                get_cards : function (list) {
+                    let cards = '';
+
+                    for(let i=0; i<list.length; i++) {
+                        let post = list[i];
+
+                        let date = post.createdDate.date;
+                        cards +=
+                            `<div class="card mb-3">
+                                <img src="${post.thumbnailPath}" alt="Card image">
+                                <div class="card-body">
+                                    <h5 class="card-text"><a href="/board/place/posts?postNo=${post.postNo}"> ${post.title}></a></h5>
+                                </div>
+                                <div class="card-footer text-muted">${date.year}.${date.month}.${date.day}</div>
+                            </div>`;
+                    }
+
+                    return cards;
                 }
             };
 

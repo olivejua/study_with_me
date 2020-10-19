@@ -1,5 +1,6 @@
 package com.ksk.project.study_with_me.web;
 
+import com.google.gson.Gson;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
@@ -70,6 +71,12 @@ public class StudyApiController {
         mav.addObject("search", searchDto.existSearch() ? searchDto : null);
 
         return mav;
+    }
+
+    @GetMapping("/list/index")
+    public String findPosts_index(@PageableDefault(size = 5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
+        Gson gson = new Gson();
+        return  gson.toJson(studyService.findPosts(pageRequest).getContent());
     }
 
     @GetMapping("/posts/save")

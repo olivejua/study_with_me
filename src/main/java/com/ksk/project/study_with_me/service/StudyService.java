@@ -28,11 +28,8 @@ public class StudyService {
 
             entity.updateCommentCount(commentCount);
 
-            return new PostsListResponseDto(
-                    entity.getPostNo(), entity.getUser(),
-                    entity.getTitle(), entity.getViewCount(),
-                    entity.getCommentCount(), entity.getCreatedDate()
-            );});
+            return new PostsListResponseDto(entity);
+        });
     }
 
     @Transactional(readOnly = true)
@@ -60,11 +57,7 @@ public class StudyService {
                 break;
         }
 
-        return results.map(entity -> new PostsListResponseDto(
-                        entity.getPostNo(), entity.getUser(),
-                        entity.getTitle(), entity.getViewCount(),
-                        entity.getCommentCount(), entity.getCreatedDate()
-                ));
+        return results.map(PostsListResponseDto::new);
     }
 
     @Transactional

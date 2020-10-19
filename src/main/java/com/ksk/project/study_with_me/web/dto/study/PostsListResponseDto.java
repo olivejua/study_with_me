@@ -1,5 +1,6 @@
 package com.ksk.project.study_with_me.web.dto.study;
 
+import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitment;
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Getter;
 
@@ -14,13 +15,12 @@ public class PostsListResponseDto {
     private int commentCount;
     private LocalDateTime createdDate;
 
-    public PostsListResponseDto(Long postNo, User user, String title,
-                                int viewCount, int commentCount, LocalDateTime createdDate) {
-        this.postNo = postNo;
-        this.user = user;
-        this.title = title;
-        this.viewCount = viewCount;
-        this.commentCount = commentCount;
-        this.createdDate = createdDate;
+    public PostsListResponseDto(BoardStudyRecruitment entity) {
+        this.postNo = entity.getPostNo();
+        this.user = entity.getUser();
+        this.title = entity.getTitle();
+        this.viewCount = entity.getViewCount();
+        this.commentCount = entity.getCommentCount();
+        this.createdDate = entity.getCreatedDate();
     }
 }

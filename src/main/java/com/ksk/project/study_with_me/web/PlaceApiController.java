@@ -1,5 +1,6 @@
 package com.ksk.project.study_with_me.web;
 
+import com.google.gson.Gson;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/board/place")
@@ -78,6 +80,18 @@ public class PlaceApiController {
                 , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), list.getContent());
 
         return mav;
+    }
+
+    @GetMapping("/list/index")
+    public String findPosts_index(@PageableDefault(size = 4, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest
+            , HttpServletRequest request) {
+        Gson gson = new Gson();
+
+        List<PostsListResponseDto> list = placeService.findPosts(pageRequest).getContent();
+        TransferFiles.listThumbnails(request.getSession().getServletContext().getRealPath("/")
+                , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), list);
+
+        return  gson.toJson(list);
     }
 
     @GetMapping("/posts/write")

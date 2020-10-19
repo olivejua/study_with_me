@@ -1,10 +1,11 @@
 package com.ksk.project.study_with_me.web;
 
+import com.google.gson.Gson;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
-import com.ksk.project.study_with_me.service.QuestionService;
 import com.ksk.project.study_with_me.service.CommentService;
+import com.ksk.project.study_with_me.service.QuestionService;
 import com.ksk.project.study_with_me.service.ReplyService;
 import com.ksk.project.study_with_me.web.dto.question.PostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsSaveRequestDto;
@@ -12,10 +13,10 @@ import com.ksk.project.study_with_me.web.dto.question.PostsUpdateRequestDto;
 import com.ksk.project.study_with_me.web.file.TransferFiles;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.data.domain.Sort;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -79,6 +80,12 @@ public class QuestionApiController {
         mav.addObject("list", questionService.findPosts(pageable));
 
         return mav;
+    }
+
+    @GetMapping("/list/index")
+    public String findPosts_index(@PageableDefault(size = 5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
+        Gson gson = new Gson();
+        return  gson.toJson(questionService.findPosts(pageRequest).getContent());
     }
 
     @GetMapping("/posts/save")
