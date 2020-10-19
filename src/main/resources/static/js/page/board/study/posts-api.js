@@ -36,7 +36,7 @@ var main = {
             data: JSON.stringify(data)
         }).done(function () {
             alert('글이 등록되었습니다.');
-            window.location.href='/board/study/posts/list';
+            window.location.href='/board/study/list';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -69,7 +69,7 @@ var main = {
         });
     },
     delete : function() {
-        var postNo = $('#postNo').val();
+        const postNo = $('#postNo').val();
 
         $.ajax({
             type: 'DELETE',
@@ -78,17 +78,20 @@ var main = {
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
             alert('글이 삭제되었습니다.');
-            window.location.href='/board/study/posts/list';
+            window.location.href='/board/study/list';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     search : function () {
-        var category = $('#search-category option:selected').val();
-        var keyword = $('#search-keyword').val();
+        const searchType = $('#search-category option:selected').val();
+        const keyword = $('#search-keyword').val();
 
-        $('#form-search').attr('action', '/board/study/search/' + category + '/' + keyword + '/list');
-        $('#form-search').submit();
+        if(searchType==="none") {
+            window.location.href='/board/study/list';
+        } else {
+            window.location.href=`/board/study/list?searchType=${searchType}&keyword=${keyword}`;
+        }
     },
 };
 

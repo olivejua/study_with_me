@@ -6,12 +6,11 @@ import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
 import com.ksk.project.study_with_me.service.CommentService;
 import com.ksk.project.study_with_me.service.ReplyService;
 import com.ksk.project.study_with_me.service.StudyService;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsUpdateRequestDto;
-import com.ksk.project.study_with_me.web.dto.study.StudySearchResponseDto;
+import com.ksk.project.study_with_me.web.dto.PageDto;
+import com.ksk.project.study_with_me.web.dto.study.*;
 import com.ksk.project.study_with_me.web.file.TransferFiles;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -30,7 +29,7 @@ public class StudyApiController {
     private final ReplyService replyService;
 
     @PostMapping("/posts")
-    public Long save(@RequestBody StudyPostsSaveRequestDto requestDto, @LoginUser SessionUser user) {
+    public Long save(@RequestBody PostsSaveRequestDto requestDto, @LoginUser SessionUser user) {
         Long savedPostNo = studyService.save(requestDto.setUser(user.toEntity()));
 
         TransferFiles.saveImagesByHtmlCode(requestDto.getConditionExplanation()
@@ -40,7 +39,7 @@ public class StudyApiController {
     }
 
     @PutMapping("/posts/{postNo}")
-    public Long update(@PathVariable Long postNo, @RequestBody StudyPostsUpdateRequestDto requestDto) {
+    public Long update(@PathVariable Long postNo, @RequestBody PostsUpdateRequestDto requestDto) {
 
         TransferFiles.updateImagesByHtmlCode(requestDto.getConditionExplanation()
                 , MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName(), postNo);
@@ -57,25 +56,18 @@ public class StudyApiController {
         return postNo;
     }
 
-    @GetMapping("/posts/list")
-    public ModelAndView findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
+
+    @GetMapping("/list")
+    public ModelAndView findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest
+                                  , SearchDto searchDto) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/study/posts-list");
 
-        mav.addObject("list", studyService.findPosts(pageRequest));
+        Page<PostsListResponseDto> postList = searchDto.existSearch() ?
+                studyService.searchPosts(pageRequest, searchDto) : studyService.findPosts(pageRequest);
 
-        return mav;
-    }
-
-    @GetMapping("/search/{searchType}/{keyword}/list")
-    public ModelAndView findPosts( @PathVariable String searchType, @PathVariable String keyword,
-                             @PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest) {
-
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("board/study/posts-list");
-
-        mav.addObject("list", studyService.searchPosts(pageRequest, searchType, keyword));
-        mav.addObject("search", new StudySearchResponseDto(searchType, keyword));
+        mav.addObject("list", postList);
+        mav.addObject("search", searchDto.existSearch() ? searchDto : null);
 
         return mav;
     }
@@ -89,11 +81,11 @@ public class StudyApiController {
     }
 
     @GetMapping("/posts")
-    public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request) {
+    public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request, PageDto pageDto) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/study/posts-read");
 
-        StudyPostsReadResponseDto responseDto = studyService.findById(postNo);
+        PostsReadResponseDto responseDto = studyService.findById(postNo).savePageInfo(pageDto);
         String boardName =  MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
 
         mav.addObject("user", user);

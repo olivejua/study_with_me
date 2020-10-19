@@ -3,12 +3,13 @@ package com.ksk.project.study_with_me.web.dto.study;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitment;
 import com.ksk.project.study_with_me.domain.user.User;
+import com.ksk.project.study_with_me.web.dto.PageDto;
 import lombok.Getter;
 
 import java.util.Date;
 
 @Getter
-public class StudyPostsReadResponseDto {
+public class PostsReadResponseDto {
     private Long postNo;
     private String boardName;
     private User user;
@@ -21,8 +22,9 @@ public class StudyPostsReadResponseDto {
     private String conditionExplanation;
     private int viewCount;
     private int commentCount;
+    private PageDto pageInfo;
 
-    public StudyPostsReadResponseDto(BoardStudyRecruitment entity) {
+    public PostsReadResponseDto(BoardStudyRecruitment entity) {
         this.postNo = entity.getPostNo();
         this.user = entity.getUser();
         this.title = entity.getTitle();
@@ -35,5 +37,10 @@ public class StudyPostsReadResponseDto {
         this.viewCount = entity.getViewCount();
         this.commentCount = entity.getCommentCount();
         this.boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
+    }
+
+    public PostsReadResponseDto savePageInfo(PageDto pageInfo) {
+        this.pageInfo = pageInfo;
+        return this;
     }
 }

@@ -8,6 +8,10 @@ var update_main = {
         $('#btn-add-link').on('click', function () {
             _this.addLink();
         });
+
+        $('#thumbnail').on('change', function (e) {
+            _this.loadNewThumbnail(e);
+        })
      },
     loadEditorFrame : function () {
         //스마트에디터 프레임생성
@@ -35,6 +39,19 @@ var update_main = {
 
         $('#div-linksBox').prepend(addedNode);
         $('#add-link').val("");
+    },
+    loadNewThumbnail : function (event) {
+         var reader = new FileReader();
+
+         $('img[name=oldThumbnailPath]').css('display', 'none');
+
+         reader.onload = function (event) {
+             var img = document.createElement("img");
+             img.setAttribute("src", event.target.result);
+             document.querySelector('div#preview-thumbnail').appendChild(img);
+         };
+
+         reader.readAsDataURL(event.target.files[0]);
     }
 };
 

@@ -3,10 +3,7 @@ package com.ksk.project.study_with_me.service;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitment;
 import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecruitmentRepository;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsListResponseDto;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsReadResponseDto;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsSaveRequestDto;
-import com.ksk.project.study_with_me.web.dto.study.StudyPostsUpdateRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +18,7 @@ public class StudyService {
     private final ReplyService replyService;
 
     @Transactional(readOnly = true)
-    public Page<StudyPostsListResponseDto> findPosts(Pageable pageable) {
+    public Page<PostsListResponseDto> findPosts(Pageable pageable) {
         Page<BoardStudyRecruitment> posts = boardStudyRecruitmentRepository.findAll(pageable);
 
         String boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
@@ -31,7 +28,7 @@ public class StudyService {
 
             entity.updateCommentCount(commentCount);
 
-            return new StudyPostsListResponseDto(
+            return new PostsListResponseDto(
                     entity.getPostNo(), entity.getUser(),
                     entity.getTitle(), entity.getViewCount(),
                     entity.getCommentCount(), entity.getCreatedDate()
@@ -39,9 +36,10 @@ public class StudyService {
     }
 
     @Transactional(readOnly = true)
-    public Page<StudyPostsListResponseDto> searchPosts(Pageable pageable, String searchType, String keyword) {
+    public Page<PostsListResponseDto> searchPosts(Pageable pageable, SearchDto searchDto) {
+        String keyword = searchDto.getKeyword();
         Page<BoardStudyRecruitment> results = null;
-        switch (searchType) {
+        switch (searchDto.getSearchType()) {
             case "title" :
                 results = boardStudyRecruitmentRepository.findByTitleContaining(keyword, pageable);
                 break;
@@ -62,7 +60,7 @@ public class StudyService {
                 break;
         }
 
-        return results.map(entity -> new StudyPostsListResponseDto(
+        return results.map(entity -> new PostsListResponseDto(
                         entity.getPostNo(), entity.getUser(),
                         entity.getTitle(), entity.getViewCount(),
                         entity.getCommentCount(), entity.getCreatedDate()
@@ -70,12 +68,12 @@ public class StudyService {
     }
 
     @Transactional
-    public Long save(StudyPostsSaveRequestDto requestDto) {
+    public Long save(PostsSaveRequestDto requestDto) {
         return boardStudyRecruitmentRepository.save(requestDto.toEntity()).getPostNo();
     }
 
     @Transactional
-    public Long update(Long postNo, StudyPostsUpdateRequestDto requestDto) {
+    public Long update(Long postNo, PostsUpdateRequestDto requestDto) {
         BoardStudyRecruitment entity = boardStudyRecruitmentRepository.findById(postNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postNo));
 
@@ -94,12 +92,12 @@ public class StudyService {
     }
 
     @Transactional
-    public StudyPostsReadResponseDto findById(Long postNo) {
+    public PostsReadResponseDto findById(Long postNo) {
         BoardStudyRecruitment entity = boardStudyRecruitmentRepository.findById(postNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당게시글이 없습니다. postNo=" + postNo));
 
         entity.addViewCount();
 
-        return new StudyPostsReadResponseDto(entity);
+        return new PostsReadResponseDto(entity);
     }
 }
