@@ -1,5 +1,30 @@
 .jumbotron {
-    background-image: url("https://cdn.pixabay.com/photo/2015/04/15/21/31/welcome-sign-724689_1280.jpg");
+    background-image: url("/img/index/sign.jpg");
     background-size: 100%;
     color: #c1e2b3;
+    padding : 180px 50px;
+}
+
+thead {
+    background-color: floralwhite;
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-board {
+    margin-bottom: 70px;
+}
+
+.card {
+    width: 25%;
+    display: inline-flex;
+    height: 320px;
+}
+
+.card > img {
+    height: 200px;
+    width: 100%;
 }

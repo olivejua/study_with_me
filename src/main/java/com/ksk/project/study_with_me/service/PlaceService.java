@@ -7,6 +7,7 @@ import com.ksk.project.study_with_me.web.dto.place.PostsListResponseDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsSaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsUpdateRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.SearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,25 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public Page<PostsListResponseDto> findPosts(Pageable pageable) {
         return placeRepository.findAll(pageable).map(PostsListResponseDto::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostsListResponseDto> searchPosts(Pageable pageable, SearchDto searchDto) {
+        String keyword = searchDto.getKeyword();
+        Page<BoardPlaceRecommendation> results = null;
+        switch (searchDto.getSearchType()) {
+            case "title" :
+                results = placeRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
+                break;
+            case "address" :
+                results = placeRepository.findByAddressContainingOrAddressDetailContaining(keyword, keyword, pageable);
+                break;
+            default:
+                results = placeRepository.findAll(pageable);
+                break;
+        }
+
+        return results.map(PostsListResponseDto::new);
     }
 
     @Transactional

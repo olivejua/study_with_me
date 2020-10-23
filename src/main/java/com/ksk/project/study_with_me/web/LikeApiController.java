@@ -12,12 +12,12 @@ public class LikeApiController {
 
     private final LikeService likeService;
 
-    @PutMapping("/like/place")
+    @PutMapping("/board/place/posts/like")
     public LikePlaceSaveResponseDto saveLike(@RequestBody LikePlaceSaveRequestDto requestDto) {
         return likeService.saveOrUpdate(requestDto);
     }
 
-    @DeleteMapping("/like/place/{postNo}/{userCode}")
+    @DeleteMapping("/board/place/posts/like/{postNo}/{userCode}")
     public LikePlaceSaveResponseDto cancelLike(@PathVariable Long postNo, @PathVariable Long userCode) {
         return likeService.delete(postNo, userCode);
     }

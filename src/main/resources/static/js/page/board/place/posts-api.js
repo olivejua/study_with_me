@@ -1,33 +1,51 @@
 var main = {
     init : function () {
-        var _this = this;
+        const _this = this;
         $('#btn-save').on('click', function () {
             setConditionExplanation();
             _this.save();
         });
+
         $('#btn-update').on('click', function () {
             setConditionExplanation();
             _this.update();
         });
+
         $('#btn-delete').on('click', function () {
             _this.delete();
-        })
+        });
+
+        $('#btn-search').on('click', function () {
+            _this.search();
+        });
     },
     save : function () {
-        var links = [];
+        const _this = this;
+
+        let links = [];
         $('label[name=link]').each(function() {
             links.push($(this).text());
         });
 
-        var formData = new FormData();
-        formData.append("userCode", $('#userCode').val());
-        formData.append("title", $('#title').val());
-        formData.append("address", $('#address').val());
-        formData.append("addressDetail", $('#address-detail').val());
-        formData.append("links", links);
-        formData.append("content", $('#content').val());
-        formData.append("thumbnailPath", $('#thumbnail').val());
-        formData.append("thumbnailFile", $('#thumbnail')[0].files[0]);
+        const save_data = {
+            userCode : $('#userCode').val(),
+            title : $('#title').val(),
+            address : $('#address').val(),
+            addressDetail : $('#address-detail').val(),
+            links : links,
+            content : $('#content').val(),
+            thumbnailPath : $('#thumbnail').val(),
+            thumbnailFile : $('#thumbnail')[0].files[0]
+        };
+
+        if(!_this.validation_data(save_data, "save")) {
+            return;
+        }
+
+        const formData = new FormData();
+        for(const key in save_data) {
+            formData.append(`${key}`, save_data[key]);
+        }
 
         $.ajax({
             type: 'POST',
@@ -38,30 +56,44 @@ var main = {
             data: formData
         }).done(function (data) {
             alert('글이 등록되었습니다.');
-            window.location.href='/board/place/posts/list';
+            window.location.href='/board/place/list';
         }).fail(function (error) {
             alert("save error : ");
             alert(JSON.stringify(error));
         });
     },
     update : function () {
-        var links = [];
+        const _this = this;
+
+        const links = [];
         $('label[name=link]').each(function() {
             links.push($(this).text());
         });
 
-        var formData = new FormData();
-        formData.append("title", $('#title').val());
-        formData.append("address", $('#address').val());
-        formData.append("addressDetail", $('#address-detail').val());
-        formData.append("content", $('#content').val());
-        formData.append("links", links);
-        formData.append("oldThumbnailPath", $('#oldThumbnailPath').val());
-
+        let update_data = {
+            title : $('#title').val(),
+            address : $('#address').val(),
+            addressDetail : $('#address-detail').val(),
+            links : links,
+            content : $('#content').val(),
+            oldThumbnailPath : $('#oldThumbnailPath').val(),
+        };
 
         if($('#thumbnail')[0].files[0] !== undefined) {
-            formData.append("thumbnailPath", $('#thumbnail').val());
-            formData.append("thumbnailFile", $('#thumbnail')[0].files[0]);
+            update_data = {
+                ...update_data,
+                thumbnailPath : $('#thumbnail').val(),
+                thumbnailFile : $('#thumbnail')[0].files[0]
+            };
+        }
+
+        if(!_this.validation_data(update_data, "update")) {
+            return;
+        }
+
+        const formData = new FormData();
+        for(const key in update_data) {
+            formData.append(`${key}`, update_data[key]);
         }
 
         $.ajax({
@@ -73,7 +105,7 @@ var main = {
             data: formData
         }).done(function (postNo) {
             alert('글이 수정되었습니다.');
-            window.location.href='/board/study/posts?postNo=' + postNo;
+            window.location.href=`/board/place/posts?postNo=${postNo}&page=0`;
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -88,10 +120,44 @@ var main = {
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
             alert('글이 삭제되었습니다.');
-            window.location.href='/board/place/posts/list';
+            window.location.href='/board/place/list';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
+    },
+    search : function () {
+        const searchType = $('#search-category option:selected').val();
+        const keyword = $('#search-keyword').val();
+
+        if(searchType === "none") {
+            window.location.href='/board/place/list';
+        } else {
+            window.location.href=`/board/place/list?searchType=${searchType}&keyword=${keyword}`;
+        }
+    },
+    validation_data : function (data, validKind) {
+        const isEmptyTitle = data.title === "";
+        const isEmptyAddress = data.address === "";
+        const isEmptyAddressDetail = data.addressDetail === "";
+        const isEmptyLinks = data.links.length === 0;
+
+        let isEmptyData = isEmptyTitle || isEmptyAddress || isEmptyAddressDetail || isEmptyLinks;
+
+        if(validKind === "save") {
+            const isEmptyThumbnailPath = data.thumbnailPath === "";
+            const isEmptyThumbnailFile = data.thumbnailFile === undefined;
+
+            isEmptyData = isEmptyData || isEmptyThumbnailPath || isEmptyThumbnailFile;
+        }
+
+        if(isEmptyData) {
+            $('#modal-validation').find('h5').text('입력란을 모두 채워주세요');
+            $('#modal-validation').modal();
+
+            return false;
+        }
+
+        return true;
     }
 };
 

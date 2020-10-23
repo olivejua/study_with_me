@@ -1,5 +1,17 @@
 .jumbotron {
-    background-image: url("https://cdn.pixabay.com/photo/2014/01/05/16/56/group-239251_960_720.jpg");
+    background-color: darkturquoise;
     background-size: 100%;
-    color: #c1e2b3;
+    color: aliceblue;
+    padding: 30px;
+    height: 200px;
+}
+.jumbotron>h1 {
+    display: inline-flex;
+    margin-top: 4.5%;
+}
+
+#header-icon {
+    height: 150px;
+    float: right;
+    margin-right: 3rem;
 }

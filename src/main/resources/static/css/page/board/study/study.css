@@ -1,5 +1,17 @@
 .jumbotron {
-    background-image: url("https://cdn.pixabay.com/photo/2017/07/31/11/21/people-2557396_960_720.jpg");
+    background-color: coral;
     background-size: 100%;
-    color: #c1e2b3;
+    color: aliceblue;
+    padding: 30px;
+    height: 200px;
+}
+.jumbotron>h1 {
+    display: inline-flex;
+    margin-top: 4.5%;
+}
+
+img {
+    height: 150px;
+    float: right;
+    margin-right: 3rem;
 }

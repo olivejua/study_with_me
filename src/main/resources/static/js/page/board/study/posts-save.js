@@ -9,6 +9,14 @@ var save_main = {
         _this.setConditionPeriod();
         _this.setConditionCapacity();
 
+         $('#btn-add-language').on('click', function () {
+            _this.add_language_lumps();
+         });
+
+         $(document).on('click', '.delete-lumps', function (e) {
+            _this.delete_lumps(e.target);
+         });
+
          $('#checkbox-nolimit').on('click', function () {
             _this.click_isLimit();
          });
@@ -71,6 +79,15 @@ var save_main = {
             $('#conditionCapacity').prop('disabled', false);
         }
     },
+    add_language_lumps : function () {
+        const language = $('input[name=input-add-language]').val();
+
+        $('#languages-box').append(`<span class="language-lumps">${language}<button type="button" class="delete-lumps">X</button></span>`);
+        $('input[name=input-add-language]').val("");
+    },
+    delete_lumps : function (target) {
+        $(target).closest('.language-lumps').remove();
+    }
 };
 
 var setConditionExplanation = function () {

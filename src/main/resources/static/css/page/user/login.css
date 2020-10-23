@@ -1,6 +1,22 @@
-body {
-    background-color: lightgray;
+.jumbotron {
+    background-color: rosybrown;
+    background-size: 100%;
+    color: black;
+    padding: 30px;
+    height: 200px;
 }
+.jumbotron>h1 {
+    display: inline-flex;
+    margin-top: 4.5%;
+    margin-left: 7%;
+}
+
+img {
+    height: 150px;
+    float: right;
+    margin-right: 3rem;
+}
+
 
 .form-signin {
     text-align: center;
@@ -10,21 +26,24 @@ body {
     left: 0;
     font-size: 50px;
     background-image: url("img/study/study_header.jpg");
-    opacity: 50%;
+    margin-top: 10%;
 }
 
-.form-signin .login-btn #login-google {
-    display: inline-block;
-    vertical-align: middle;
+.form-signin > h2 {
+    margin-bottom: 5%;
 }
 
-.form-signin .login-btn #login-naver {
-    display: inline-block;
-    vertical-align: middle;
+.login-btn {
+    margin: 3% 10%;
+}
+
+.login-btn > a {
+    display: block;
+    font-size: 20px;
 }
 
 #login-google {
-    background-color: #BD0F0F;
+    background-color: orangered;
     color: whitesmoke;
     margin: 20px;
 }

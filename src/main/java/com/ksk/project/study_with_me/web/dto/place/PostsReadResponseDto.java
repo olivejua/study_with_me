@@ -3,8 +3,10 @@ package com.ksk.project.study_with_me.web.dto.place;
 import com.ksk.project.study_with_me.domain.boardPlaceRecommendation.BoardPlaceRecommendation;
 import com.ksk.project.study_with_me.domain.like.IsLike;
 import com.ksk.project.study_with_me.domain.user.User;
+import com.ksk.project.study_with_me.web.dto.PageDto;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +25,8 @@ public class PostsReadResponseDto {
     private int viewCount;
     private int existLike;
     private int like;
+    private String createdDate;
+    private PageDto pageInfo;
 
     public PostsReadResponseDto(BoardPlaceRecommendation entity) {
         this.postNo = entity.getPostNo();
@@ -36,6 +40,13 @@ public class PostsReadResponseDto {
         this.likeCount = entity.getLikeCount();
         this.dislikeCount = entity.getDislikeCount();
         this.viewCount = entity.getViewCount();
+        this.createdDate = entity.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+    }
+
+    public PostsReadResponseDto savePageInfo(PageDto pageInfo) {
+        this.pageInfo = pageInfo;
+        return this;
     }
 
     public PostsReadResponseDto setLike(IsLike like) {

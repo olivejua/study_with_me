@@ -1,6 +1,6 @@
 var main = {
     init : function () {
-        var _this = this;
+        const _this = this;
         $('#btn-save').on('click', function () {
             setConditionExplanation();
             _this.save();
@@ -18,15 +18,27 @@ var main = {
         });
     },
     save : function () {
-        var data = {
+        const _this = this;
+
+        let languageList = [];
+        $('.language-lumps').each(function () {
+            let language = $(this).text().replace('X', '');
+            languageList.push(language);
+        });
+
+        let data = {
             title: $('#title').val(),
-            conditionLanguages: $('#conditionLanguages').val(),
+            conditionLanguages: languageList,
             conditionPlace: $('#conditionPlace').val(),
             conditionStartDate: $('#startDate').val(),
             conditionEndDate: $('#endDate').val(),
             conditionCapacity: $('#checkbox-nolimit').is(':checked') ? 0 : $('#conditionCapacity').val(),
             conditionExplanation: $('#conditionExplanation').val()
         };
+
+        if(!(_this.validation_saveData(data))) {
+            return;
+        }
 
         $.ajax({
             type: 'POST',
@@ -42,10 +54,18 @@ var main = {
         });
     },
     update : function() {
+        const _this = this;
+
+        let languageList = [];
+        $('.language-lumps').each(function () {
+            let language = $(this).text().replace('X', '');
+            languageList.push(language);
+        });
+
         var data = {
             userCode: $('#userCode').val(),
             title: $('#title').val(),
-            conditionLanguages: $('#conditionLanguages').val(),
+            conditionLanguages: languageList,
             conditionPlace: $('#conditionPlace').val(),
             conditionStartDate: $('#startDate').val(),
             conditionEndDate: $('#endDate').val(),
@@ -53,7 +73,11 @@ var main = {
             conditionExplanation: $('#conditionExplanation').val()
         };
 
-        var postNo = $('#postNo').val();
+        if(!(_this.validation_saveData(data))) {
+            return;
+        }
+
+        const postNo = $('#postNo').val();
 
         $.ajax({
             type: 'PUT',
@@ -63,7 +87,7 @@ var main = {
             data: JSON.stringify(data)
         }).done(function () {
             alert('글이 수정되었습니다.');
-            window.location.href='/board/study/posts?postNo=' + postNo;
+            window.location.href=`/board/study/posts?postNo=${postNo}&page=0`;
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -93,6 +117,27 @@ var main = {
             window.location.href=`/board/study/list?searchType=${searchType}&keyword=${keyword}`;
         }
     },
+    validation_saveData : function (data) {
+        const isFilledTitle = data.title !== "";
+        const isFilledLanguages = data.conditionLanguages.length > 0;
+        const isFilledPlace = data.conditionPlace !== "";
+        const isFilledCapacity = data.conditionCapacity !== "";
+        const isFilledExplanation = data.conditionExplanation !== "";
+
+        if(!isFilledTitle || !isFilledLanguages || !isFilledPlace || !isFilledCapacity || !isFilledExplanation) {
+            $('#modal-validation').find('h5').text('입력란을 모두 채워주세요');
+            $('#modal-validation').modal();
+
+            return false;
+        } else if(data.conditionStartDate > data.conditionEndDate) {
+            $('#modal-validation').find('h5').text('시작일을 다시 입력해주세요.');
+            $('#modal-validation').modal();
+
+            return false;
+        }
+
+        return true;
+    }
 };
 
 main.init();

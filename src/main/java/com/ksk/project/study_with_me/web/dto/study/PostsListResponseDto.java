@@ -4,7 +4,7 @@ import com.ksk.project.study_with_me.domain.boardStudyRecruitment.BoardStudyRecr
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 public class PostsListResponseDto {
@@ -13,7 +13,7 @@ public class PostsListResponseDto {
     private String title;
     private int viewCount;
     private int commentCount;
-    private LocalDateTime createdDate;
+    private String createdDate;
 
     public PostsListResponseDto(BoardStudyRecruitment entity) {
         this.postNo = entity.getPostNo();
@@ -21,6 +21,6 @@ public class PostsListResponseDto {
         this.title = entity.getTitle();
         this.viewCount = entity.getViewCount();
         this.commentCount = entity.getCommentCount();
-        this.createdDate = entity.getCreatedDate();
+        this.createdDate = entity.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }

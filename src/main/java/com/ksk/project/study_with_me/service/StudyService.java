@@ -16,12 +16,12 @@ public class StudyService {
     private final BoardStudyRecruitmentRepository boardStudyRecruitmentRepository;
     private final CommentService commentService;
     private final ReplyService replyService;
+    private final String boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
 
     @Transactional(readOnly = true)
     public Page<PostsListResponseDto> findPosts(Pageable pageable) {
         Page<BoardStudyRecruitment> posts = boardStudyRecruitmentRepository.findAll(pageable);
 
-        String boardName = MatchNames.Boards.BOARD_STUDY_RECRUITMENT.getShortName();
         return posts.map(entity -> {
             int commentCount = commentService.countByPostNoAndBoardName(entity.getPostNo(), boardName) +
                     replyService.countByPostNoAndBoardName(entity.getPostNo(), boardName);
@@ -57,7 +57,14 @@ public class StudyService {
                 break;
         }
 
-        return results.map(PostsListResponseDto::new);
+        return results.map(entity -> {
+            int commentCount = commentService.countByPostNoAndBoardName(entity.getPostNo(), boardName) +
+                    replyService.countByPostNoAndBoardName(entity.getPostNo(), boardName);
+
+            entity.updateCommentCount(commentCount);
+
+            return new PostsListResponseDto(entity);
+        });
     }
 
     @Transactional

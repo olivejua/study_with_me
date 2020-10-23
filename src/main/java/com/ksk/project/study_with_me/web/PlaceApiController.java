@@ -6,10 +6,12 @@ import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
 import com.ksk.project.study_with_me.service.LikeService;
 import com.ksk.project.study_with_me.service.PlaceService;
+import com.ksk.project.study_with_me.web.dto.PageDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsListResponseDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsSaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.place.PostsUpdateRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.SearchDto;
 import com.ksk.project.study_with_me.web.file.TransferFiles;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -67,17 +69,20 @@ public class PlaceApiController {
         return postNo;
     }
 
-    @GetMapping("/posts/list")
+    @GetMapping("/list")
     public ModelAndView findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest
-            , HttpServletRequest request) {
+            , SearchDto searchDto, HttpServletRequest request, @LoginUser SessionUser user) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/place/posts-list");
 
-        Page<PostsListResponseDto> list = placeService.findPosts(pageRequest);
+        Page<PostsListResponseDto> list = searchDto.existSearch() ?
+                placeService.searchPosts(pageRequest, searchDto) : placeService.findPosts(pageRequest);
 
         mav.addObject("list", list);
+        mav.addObject("search", searchDto.existSearch() ? searchDto : null);
         TransferFiles.listThumbnails(request.getSession().getServletContext().getRealPath("/")
                 , MatchNames.Boards.BOARD_PLACE_RECOMMENDATION.getShortName(), list.getContent());
+        mav.addObject("user", user);
 
         return mav;
     }
@@ -105,23 +110,24 @@ public class PlaceApiController {
     }
 
     @GetMapping("/posts/update")
-    public ModelAndView update(Long postNo) {
+    public ModelAndView update(Long postNo, @LoginUser SessionUser user) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/place/posts-update");
 
         mav.addObject("post", placeService.findById(postNo));
+        mav.addObject("user", user);
 
         return mav;
     }
 
     @GetMapping("/posts")
-    public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request) {
+    public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request, PageDto pageDto) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/place/posts-read");
 
         PostsReadResponseDto responseDto = likeService.findByUserAndPost(placeService.findById(postNo), user);
 
-        mav.addObject("post", responseDto);
+        mav.addObject("post", responseDto.savePageInfo(pageDto));
         mav.addObject("user", user);
 
         TransferFiles.readImagesByHtmlCode(responseDto.getContent(), request.getSession().getServletContext().getRealPath("/")

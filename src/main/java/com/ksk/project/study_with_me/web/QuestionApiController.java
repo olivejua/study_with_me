@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
-import com.ksk.project.study_with_me.service.CommentService;
 import com.ksk.project.study_with_me.service.QuestionService;
-import com.ksk.project.study_with_me.service.ReplyService;
 import com.ksk.project.study_with_me.web.dto.question.PostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsSaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsUpdateRequestDto;
@@ -26,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 public class QuestionApiController {
 
     private final QuestionService questionService;
-    private final CommentService commentService;
-    private final ReplyService replyService;
 
     @PostMapping("/posts")
     public Long save(@RequestBody PostsSaveRequestDto requestDto) {
@@ -49,8 +45,6 @@ public class QuestionApiController {
 
         mav.addObject("user", user);
         mav.addObject("post", responseDto);
-//        mav.addObject("commentList", commentService.findAllByPostNoAndBoardName(postNo, boardName));
-//        mav.addObject("replyList", replyService.findAllByPostNoAndBoardName(postNo, boardName));
 
         TransferFiles.readImagesByHtmlCode(responseDto.getContent()
                 , request.getSession().getServletContext().getRealPath("/"), boardName, postNo);
@@ -72,12 +66,14 @@ public class QuestionApiController {
         return questionService.delete(postNo);
     }
 
-    @GetMapping("/posts/list")
-    public ModelAndView findPosts(@PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("/list")
+    public ModelAndView findPosts(@PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable
+                                  , @LoginUser SessionUser user) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/question/posts-list");
 
         mav.addObject("list", questionService.findPosts(pageable));
+        mav.addObject("user", user);
 
         return mav;
     }
@@ -98,11 +94,12 @@ public class QuestionApiController {
     }
 
     @GetMapping("/posts/update")
-    public ModelAndView update(Long postNo) {
+    public ModelAndView update(Long postNo, @LoginUser SessionUser user) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/question/posts-update");
 
         mav.addObject("post", questionService.findById(postNo));
+        mav.addObject("user", user);
 
         return mav;
     }

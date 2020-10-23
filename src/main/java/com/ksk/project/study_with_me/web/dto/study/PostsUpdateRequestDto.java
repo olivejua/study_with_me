@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 public class PostsUpdateRequestDto {
@@ -24,11 +25,11 @@ public class PostsUpdateRequestDto {
     private int commentCount;
 
     @Builder
-    public PostsUpdateRequestDto(Long userCode, String title, String conditionLanguages, String conditionPlace, Date conditionStartDate
+    public PostsUpdateRequestDto(Long userCode, String title, List<String> conditionLanguages, String conditionPlace, Date conditionStartDate
                                     , Date conditionEndDate, int conditionCapacity, String conditionExplanation) {
         this.userCode = userCode;
         this.title = title;
-        this.conditionLanguages = conditionLanguages;
+        this.conditionLanguages = conditionLanguages.toString();
         this.conditionPlace = conditionPlace;
         this.conditionStartDate = conditionStartDate;
         this.conditionEndDate = conditionEndDate;

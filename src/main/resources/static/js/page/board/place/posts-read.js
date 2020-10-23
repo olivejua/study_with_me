@@ -42,10 +42,10 @@ var read_main = {
         });
     },
     loadLikeStatus : function () {
-        var _this = this;
+        const _this = this;
 
-        var existLike = $('#existLike').val();
-        var isLike = $('#isLike').val();
+        const existLike = $('#existLike').val();
+        const isLike = $('#isLike').val();
 
         if(parseInt(existLike)) {
             if(parseInt(isLike)) {
@@ -110,7 +110,7 @@ var read_main = {
 
         $.ajax({
             type: 'PUT',
-            url: '/like/place',
+            url: '/board/place/posts/like',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
@@ -129,7 +129,7 @@ var read_main = {
 
         $.ajax({
             type: 'DELETE',
-            url: '/like/place/'+ postNo + '/' + userCode,
+            url: '/board/place/posts/like/'+ postNo + '/' + userCode,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function (response) {

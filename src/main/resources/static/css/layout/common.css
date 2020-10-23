@@ -1,0 +1,29 @@
+.modal-header {
+    display: block;
+    text-align: center;
+}
+
+#loginModalLabel {
+    font-size: 25px;
+}
+
+.modal-body>a {
+    display: block;
+    margin: 2%;
+    padding: 2%;
+    font-size: 18px;
+}
+
+#login-google {
+    background: orangered;
+    border: orangered;
+}
+
+#login-naver {
+    background: #2DB400;
+    border: #2DB400;
+}
+
+.modal-footer>button {
+    font-size: 15px;
+}

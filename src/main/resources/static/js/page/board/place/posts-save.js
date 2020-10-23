@@ -8,6 +8,10 @@ var save_main = {
         $('#btn-add-link').on('click', function () {
             _this.addLink();
         });
+
+         $('#thumbnail').on('change', function (e) {
+            _this.createdPreviewThumbnail(e);
+         });
      },
     loadEditorFrame : function () {
         //스마트에디터 프레임생성
@@ -30,19 +34,39 @@ var save_main = {
         $("#postcodify_search_button").postcodifyPopUp();
     },
     addLink : function () {
-        var addedLink = $('#add-link').val();
-        var addedNode = $('<div name="div-link"><button type="button" onclick="removeLink(this)">-</button><label name="link">'+ addedLink +'</label></div>');
+        const addedLink = $('#add-link').val();
+        const addedElements =
+            `<div name="div-link">
+                <button type="button" class="btn btn-default" onclick="removeLink(this)">
+                    <img class="add-icon" src="/img/place/minus-icon.png" />
+                </button>
+                <label name="link">${addedLink}</label>
+            </div>`;
 
-        $('#div-linksBox').prepend(addedNode);
+        $('#div-linksBox').prepend($(addedElements));
         $('#add-link').val("");
+    },
+    createdPreviewThumbnail : function (e) {
+        const reader = new FileReader();
+
+        $('#preview-thumbnail').empty();
+
+        reader.onload = function (event) {
+            const img = document.createElement('img');
+            img.setAttribute('src', event.target.result);
+            document.querySelector('div#preview-thumbnail').appendChild(img);
+        };
+
+        reader.readAsDataURL(e.target.files[0]);
+        $('#preview-thumbnail').css('display', 'block');
     }
 };
 
-var setConditionExplanation = function () {
+const setConditionExplanation = function () {
     oEditor.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
 };
 
-var removeLink = function (target) {
+const removeLink = function (target) {
     $(target).closest('div[name=div-link]').remove();
 };
 

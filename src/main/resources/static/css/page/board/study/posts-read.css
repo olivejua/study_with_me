@@ -1,31 +1,10 @@
-.page-header {
-    margin: 20px 0 50px 0;
-}
-
 .col-md-4 {
     max-width: 100%;
 }
 
-.col-sm-4 {
-    max-width: 100%;
-}
-
-.form-group>label, .form-group>label>div>label{
-    font-size: 20px;
-}
-
-.label-name {
-    font-weight: 500;
-}
-
-.div-bottom-line {
+.modify-btn {
     float: right;
-    margin: 10px 20% 10px 0;
-    padding-top: 20px;
-}
-
-.div-comment {
-    margin-top: 150px;
+    margin-bottom: 5px;
 }
 
 h4 {
@@ -34,13 +13,14 @@ h4 {
 
 .comment-content {
     display: inline-block;
-    width: 70%;
+    width: 85%;
     min-height: 70px;
     margin-bottom: 10px;
 }
 
 .bottom-line {
     margin-top: 20px;
+    margin-bottom: 20%;
 }
 
 .label-comment-info {
@@ -79,7 +59,9 @@ h4 {
 
 
 .div-comment-save {
-    margin-top: 50px;
+    margin-top: 40px;
+    margin-left: 3%;
+    font-size: medium;
 }
 
 .div-comment-content {
@@ -89,10 +71,66 @@ h4 {
 .btn-comment-save {
     height: 70px;
     margin-left: 10px;
+    width: 7%;
+    font-size: medium;
 }
 
 #btn-list {
     float: right;
-    margin-top: 50px;
-    margin-right: 20%;
+    margin-top: 35px;
+    margin-right: 5%;
+}
+
+.languages-lumps {
+    margin: 3% 0.5% 3% 0.5%;
+    padding: 0.5% 1.5%;
+    border-radius: 15px;
+    background-color: dimgrey;
+    color: aliceblue;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+#createdDate {
+    margin-left: 25px;
+}
+
+#hr-top {
+    margin-bottom: 5%;
+}
+
+form {
+    font-size: medium;
+    margin-bottom: 20%;
+}
+
+.top-line {
+    display: inline-block;
+    margin-top: 1.5%;
+    margin-left: 1%;
+}
+
+#comment-content {
+    font-size: medium;
+}
+
+#hr-bottom {
+    margin-bottom: 4%;
+}
+
+.div-comment-list {
+    margin-left: 3%;
+}
+
+.img-comment {
+    margin-right: 1rem;
+    margin-bottom: 70%;
+}
+
+label[name=comment-user-nickname] {
+    font-size: medium;
+}
+
+textarea[name=reply-content] {
+    font-size: medium;
 }

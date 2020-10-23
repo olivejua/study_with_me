@@ -60,7 +60,7 @@ public class StudyApiController {
 
     @GetMapping("/list")
     public ModelAndView findPosts(@PageableDefault(size = 10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageRequest
-                                  , SearchDto searchDto) {
+                                  , SearchDto searchDto, @LoginUser SessionUser user) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/study/posts-list");
 
@@ -69,6 +69,7 @@ public class StudyApiController {
 
         mav.addObject("list", postList);
         mav.addObject("search", searchDto.existSearch() ? searchDto : null);
+        mav.addObject("user", user);
 
         return mav;
     }
@@ -80,9 +81,11 @@ public class StudyApiController {
     }
 
     @GetMapping("/posts/save")
-    public ModelAndView save() {
+    public ModelAndView save(@LoginUser SessionUser user) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/study/posts-save");
+
+        mav.addObject("user", user);
 
         return mav;
     }
@@ -107,11 +110,12 @@ public class StudyApiController {
     }
 
     @GetMapping("/posts/update")
-    public ModelAndView update(Long postNo) {
+    public ModelAndView update(Long postNo, @LoginUser SessionUser user) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/study/posts-update");
 
         mav.addObject("post", studyService.findById(postNo));
+        mav.addObject("user", user);
 
         return mav;
     }

@@ -8,4 +8,8 @@ public interface BoardPlaceRecommendationRepository
         extends JpaRepository<BoardPlaceRecommendation, Long> {
 
     Page<BoardPlaceRecommendation> findAll(Pageable pageable);
+
+    Page<BoardPlaceRecommendation> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
+
+    Page<BoardPlaceRecommendation> findByAddressContainingOrAddressDetailContaining(String address, String addressDetail, Pageable pageable);
 }

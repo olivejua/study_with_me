@@ -4,34 +4,7 @@
       layout:decorate="layouts/default_layout">
 >
     <th:block layout:fragment="custom-css">
-<!--        <link rel="stylesheet" type="text/css" th:href="@{/css/page/index.css}">-->
-        <style>
-            .jumbotron {
-                background-image: url("/img/index/sign.jpg");
-                background-size: 100%;
-                color: #c1e2b3;
-                padding : 180px 50px;
-            }
-
-            thead {
-                background-color: floralwhite;
-            }
-
-            .list-board {
-                margin-bottom: 70px;
-            }
-
-            .card {
-                width: 25%;
-                display: inline-flex;
-                height: 320px;
-            }
-
-            .card > img {
-                height: 200px;
-                width: 100%;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/page/index.css}">
     </th:block>
 
     <th:block layout:fragment="custom-header">
@@ -148,14 +121,12 @@
                         let post = list[i];
 
                         let link = `/board/${boardName}/posts?postNo=${post.postNo}&page=0`;
-                        let date = post.createdDate.date;
-                        let time = post.createdDate.time;
                         elements +=
                             `<tr class="table-light">
                                 <td><a href="${link}">${post.postNo}</a></th>
                                 <td><a href="${link}">${post.title}</a></td>
                                 <td><a href="${link}">${post.user.nickname}</a></td>
-                                <td><a href="${link}">${date.year}.${date.month}.${date.day} ${time.hour}:${time.minute}</a></td>
+                                <td><a href="${link}">${post.createdDate}</a></td>
                             </tr>`;
                     }
 

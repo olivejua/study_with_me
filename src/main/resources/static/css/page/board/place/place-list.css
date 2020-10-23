@@ -1,0 +1,12 @@
+.form-control {
+    margin-right: 0.5rem;
+}
+
+#search-keyword {
+    width: 300px;
+}
+
+.pagination {
+    justify-content: center;
+    margin-top: 5%;
+}

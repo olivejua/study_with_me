@@ -7,24 +7,24 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/board/study/list">스터디원 모집</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/board/place/posts/list">스터디 장소 추천</a>
+                        <a class="nav-link" href="/board/place/list">스터디 장소 추천</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/board/question/posts/list">질문 게시판</a>
+                        <a class="nav-link" href="/board/question/list">질문 게시판</a>
                     </li>
                 </ul>
                 <span class="dropdown">
                     <th:block th:if="${user}">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">[[${user.nickname}]]</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/">Logout</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Another action</a>
                             <a class="dropdown-item" href="#">Something else here</a>
@@ -32,9 +32,29 @@
                         </div>
                     </th:block>
                     <th:block th:unless="${user}">
-                        <a class="nav-link" href="/user/login">Login</a>
+<!--                        <a class="nav-link" href="/user/login">Login</a>-->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+                            Login
+                        </button>
                     </th:block>
                 </span>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="loginModalLabel">로그인</h5>
+                        </div>
+                        <div class="modal-body">
+                            <a href="/oauth2/authorization/google" id="login-google" class="btn btn-lg btn-primary" role="button">Google Login</a>
+                            <a href="/oauth2/authorization/naver" id="login-naver" class="btn btn-lg btn-primary" role="button">Naver Login</a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
         <div layout:fragment="custom-header"></div>
