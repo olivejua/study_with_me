@@ -4,40 +4,40 @@
       layout:decorate="layouts/default_layout">
 >
 <th:block layout:fragment="custom-css">
-    <link rel="stylesheet" th:href="@{/css/page/board/study/study.css}">
-    <link rel="stylesheet" th:href="@{/css/page/board/study/posts-read.css}">
+    <link rel="stylesheet" th:href="@{/css/page/board/question/question.css}">
+    <link rel="stylesheet" th:href="@{/css/page/board/question/posts-read.css}">
 </th:block>
 <th:block layout:fragment="custom-header">
-    <div class="page-header">
-        <h1>질문 게시판 <small>게시글 읽기</small></h1>
+    <div class="jumbotron">
+        <h1>질문 게시판</h1>
+        <img src="/img/question/answer.png">
     </div>
 </th:block>
 <th:block layout:fragment="custom-content">
     <div class="container">
         <div class="col-md-12">
             <div class="col-md-4">
-                <form id="form-post">
-                    <input type="hidden" id="postNo" th:value="${post.postNo}">
-                    <input type="hidden" id="boardName" th:value="${post.boardName}">
-                    <input type="hidden" id="userCode" th:value="${user.userCode}"/>
-                    <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label label-name">제목</label>
-                        <div class="col-sm-9">
-                            <label id="title">[[${post.title}]]</label>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="content" class="col-sm-2 col-form-label label-name">설명</label>
-                        <div class="col-sm-9">
-                            <p id="content" th:utext="${post.content}"></p>
-                        </div>
-                    </div>
-                </form>
-                <div th:if="${user.userCode} == ${post.user.userCode}" class="div-bottom-line">
+                <h2>[[${post.title}]]</h2>
+                <h5 id="writer-text" class="top-line">[[${post.user.nickname}]] <span id="createdDate">[[${post.createdDate}]]</span></h5>
+                <span th:if="${user.userCode} == ${post.user.userCode}" class="modify-btn top-line">
                     <a th:href="@{/board/question/posts/update(postNo=${post.postNo})}" class="btn btn-success" role="button">수정</a>
                     <button class="btn btn-danger" id="btn-delete">삭제</button>
-                </div>
+                </span>
 
+                <hr id="hr-top"/>
+
+                <form id="form-post">
+                    <fieldset>
+                        <input type="hidden" id="postNo" th:value="${post.postNo}">
+                        <input type="hidden" id="boardName" th:value="${post.boardName}">
+                        <input type="hidden" id="userCode" th:value="${user.userCode}"/>
+                            <div class="col-sm-9">
+                                <p id="content" th:utext="${post.content}"></p>
+                            </div>
+                    </fieldset>
+                </form>
+
+                <hr id="hr-bottom"/>
                 <div class="div-comment">
                     <h4>댓글</h4>
                     <div id="paste-comments">
@@ -51,7 +51,12 @@
                     </div>
                 </div>
                 <div class="bottom-line">
-                    <a href="/board/question/list" class="btn btn-info btn-lg" id="btn-list" role="button">목록</a>
+                    <a th:if="${post.pageInfo.search.searchType}==null"
+                       th:href="@{/board/question/list(page=${post.pageInfo.page})}"
+                       class="btn btn-info btn-lg" id="btn-list" role="button">목록</a>
+                    <a th:unless="${post.pageInfo.search.searchType}==null"
+                       th:href="@{/board/question/list(page=${post.pageInfo.page},searchType=${post.pageInfo.search.searchType},keyword=${post.pageInfo.search.keyword})}"
+                       class="btn btn-info btn-lg" id="btn-list" role="button">목록</a>
                 </div>
             </div>
 
@@ -77,7 +82,7 @@
                     <div class="col-md-1 div-img-comment">
                         <img th:src="@{/img/reply/sign-reply.png}" class="img-comment">
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <input type="hidden" name="replyNo" >
                         <label name="reply-user-nickname" class="label-comment-info label-comment-name"></label>
                         <label name="reply-modifiedDate" class="label-comment-info"></label>
@@ -96,7 +101,7 @@
                     <div class="col-md-1 div-img-comment">
                         <img th:src="@{/img/reply/sign-reply.png}" class="img-comment">
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <label name="comment-user-nickname"></label>
                         <div class="div-reply-content">
                             <textarea name="reply-content" class="form-control reply-content"></textarea>
@@ -109,10 +114,6 @@
     </div>
 </th:block>
 <th:block layout:fragment="custom-script">
-
-    <script type="text/javascript">
-
-    </script>
     <script th:src="@{/js/page/board/question/posts-read.js}" th:inline="javascript" type="text/javascript"></script>
     <script th:src="@{/js/page/board/question/posts-api.js}" th:inline="javascript" type="text/javascript"></script>
 </th:block>

@@ -119,6 +119,7 @@ public class TransferFiles {
             ImageUtils.copy(source_path + thumbnailName, copy_path + thumbnailName);
         }
 
+
         return true;
     }
 }

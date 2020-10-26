@@ -3,10 +3,12 @@ package com.ksk.project.study_with_me.service;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestion;
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestionRepository;
+import com.ksk.project.study_with_me.domain.user.User;
 import com.ksk.project.study_with_me.web.dto.question.PostsListResponseDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsSaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsUpdateRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.SearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,12 +33,28 @@ public class QuestionService {
 
             entity.updateCommentCount(commentCount);
 
-            return new PostsListResponseDto(
-                    entity.getPostNo(), entity.getUser()
-                    , entity.getTitle(), entity.getViewCount()
-                    , entity.getCommentCount(), entity.getCreatedDate()
-            );
+            return new PostsListResponseDto(entity);
         });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostsListResponseDto> searchPosts(Pageable pageable, SearchDto searchDto) {
+        String keyword = searchDto.getKeyword();
+        Page<BoardQuestion> results = null;
+        switch (searchDto.getSearchType()) {
+            case "title" :
+                results = questionRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
+                break;
+            case "writer" :
+                User user = User.builder().nickname(keyword).build();
+                results = questionRepository.findByUserContaining(user, pageable);
+                break;
+            default:
+                results = questionRepository.findAll(pageable);
+                break;
+        }
+
+        return results.map(PostsListResponseDto::new);
     }
 
     @Transactional

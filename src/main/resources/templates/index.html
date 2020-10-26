@@ -51,10 +51,28 @@
                 </table>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">로그인</h5>
+                    </div>
+                    <div class="modal-body">
+                        <a href="/oauth2/authorization/google" id="login-google" class="btn btn-lg btn-primary" role="button">Google Login</a>
+                        <a href="/oauth2/authorization/naver" id="login-naver" class="btn btn-lg btn-primary" role="button">Naver Login</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </th:block>
 
     <th:block layout:fragment="custom-script">
-        <script type="text/javascript">
+        <script type="text/javascript" th:inline="javascript">
             var main = {
                 init              : function () {
                     const _this = this;
@@ -62,6 +80,8 @@
                     _this.load_study_posts();
                     _this.load_place_posts();
                     _this.load_question_posts();
+
+                    [[${login}]] && _this.open_loginModal();
                 },
                 load_study_posts   : function () {
                     const _this = this;
@@ -150,6 +170,10 @@
                     }
 
                     return cards;
+                },
+                open_loginModal : function () {
+                    console.log('login');
+                    $('#loginModal').modal();
                 }
             };
 

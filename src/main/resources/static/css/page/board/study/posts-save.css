@@ -80,3 +80,30 @@ col-form-label {
     float: right;
     margin: 3% 0;
 }
+
+.modal-title {
+    font-size: large;
+}
+
+.modal-header > button {
+    display: block;
+    width: 25%;
+    margin-left: 35%;
+    margin-top: 15px;
+}
+
+form {
+    font-size: medium;
+}
+
+input[type=text] {
+    font-size: medium;
+}
+
+input[type=date] {
+    font-size: medium;
+}
+
+#btn-add-language {
+    font-size: medium;
+}

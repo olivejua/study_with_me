@@ -46,9 +46,6 @@ public class StudyService {
             case "conditionPlace" :
                 results = boardStudyRecruitmentRepository.findByConditionPlaceContaining(keyword, pageable);
                 break;
-            case "conditionCapacity" :
-                results = boardStudyRecruitmentRepository.findByConditionCapacityContaining(keyword, pageable);
-                break;
             case "conditionExplanation" :
                 results = boardStudyRecruitmentRepository.findByConditionExplanationContaining(keyword, pageable);
                 break;

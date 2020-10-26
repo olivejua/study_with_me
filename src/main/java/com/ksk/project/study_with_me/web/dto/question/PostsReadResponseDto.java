@@ -3,6 +3,7 @@ package com.ksk.project.study_with_me.web.dto.question;
 import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestion;
 import com.ksk.project.study_with_me.domain.user.User;
+import com.ksk.project.study_with_me.web.dto.PageDto;
 import lombok.Getter;
 
 import java.time.format.DateTimeFormatter;
@@ -17,6 +18,7 @@ public class PostsReadResponseDto {
     private int viewCount;
     private int commentCount;
     private String createdDate;
+    private PageDto pageInfo;
 
     public PostsReadResponseDto(BoardQuestion entity) {
         this.postNo = entity.getPostNo();
@@ -27,5 +29,10 @@ public class PostsReadResponseDto {
         this.commentCount = entity.getCommentCount();
         this.boardName = MatchNames.Boards.BOARD_QUESTION.getShortName();
         this.createdDate = entity.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
+
+    public PostsReadResponseDto savePageInfo(PageDto pageInfo) {
+        this.pageInfo = pageInfo;
+        return this;
     }
 }

@@ -11,14 +11,22 @@ var main = {
         });
         $('#btn-delete').on('click', function () {
             _this.delete();
-        })
+        });
+        $('#btn-search').on('click', function (e) {
+            _this.search();
+        });
     },
     save : function () {
-        var data = {
+        const _this = this;
+        const data = {
             title : $('#title').val(),
             content : $('#content').val(),
             userCode : $('#userCode').val()
         };
+
+        if(!(_this.validation_data(data))) {
+            return;
+        }
 
         $.ajax({
             type: 'POST',
@@ -34,12 +42,18 @@ var main = {
         });
     },
     update : function () {
-        var data = {
+        const _this = this;
+
+        const data = {
             title : $('#title').val(),
             content : $('#content').val()
         };
 
-        var postNo = $('#postNo').val();
+        if(!(_this.validation_data(data))) {
+            return;
+        }
+
+        const postNo = $('#postNo').val();
 
         $.ajax({
             type: 'PUT',
@@ -49,7 +63,7 @@ var main = {
             data: JSON.stringify(data)
         }).done(function () {
             alert('글이 수정되었습니다.');
-            window.location.href='/board/question/posts?postNo=' + postNo;
+            window.location.href=`/board/question/posts?postNo=${postNo}&page=0`;
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -66,6 +80,28 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
+    },
+    search : function () {
+        const searchType = $('#search-category option:selected').val();
+        const keyword = $('#search-keyword').val();
+
+        if(searchType==="none") {
+            window.location.href='/board/question/list';
+        } else {
+            window.location.href=`/board/question/list?searchType=${searchType}&keyword=${keyword}`;
+        }
+    },
+    validation_data : function (data) {
+        const isFilledTitle = data.title !== "";
+
+        if(!isFilledTitle) {
+            $('#modal-validation').find('h5').text('제목을 입력해주세요.');
+            $('#modal-validation').modal();
+
+            return false;
+        }
+
+        return true;
     }
 };
 

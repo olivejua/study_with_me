@@ -13,7 +13,6 @@ var main = {
             _this.delete();
         });
         $('#btn-search').on('click', function (e) {
-            e.preventDefault();
             _this.search();
         });
     },
@@ -62,7 +61,7 @@ var main = {
             languageList.push(language);
         });
 
-        var data = {
+        const data = {
             userCode: $('#userCode').val(),
             title: $('#title').val(),
             conditionLanguages: languageList,

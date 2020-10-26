@@ -23,7 +23,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public void login() {}
+    public String login(Model model) {
+        model.addAttribute("login", true);
+
+        return "index";
+    }
 
     @GetMapping("/processLogin")
     public String processLogin(Model model, @LoginUser SessionUser user) {

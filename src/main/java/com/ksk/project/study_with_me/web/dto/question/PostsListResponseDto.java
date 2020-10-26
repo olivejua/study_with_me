@@ -1,9 +1,10 @@
 package com.ksk.project.study_with_me.web.dto.question;
 
+import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestion;
 import com.ksk.project.study_with_me.domain.user.User;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 public class PostsListResponseDto {
@@ -12,15 +13,14 @@ public class PostsListResponseDto {
     private String title;
     private int viewCount;
     private int commentCount;
-    private LocalDateTime createdDate;
+    private String createdDate;
 
-    public PostsListResponseDto(Long postNo, User user, String title,
-                                int viewCount, int commentCount, LocalDateTime createdDate) {
-        this.postNo = postNo;
-        this.user = user;
-        this.title = title;
-        this.viewCount = viewCount;
-        this.commentCount = commentCount;
-        this.createdDate = createdDate;
+    public PostsListResponseDto(BoardQuestion entity) {
+        this.postNo = entity.getPostNo();
+        this.user = entity.getUser();
+        this.title = entity.getTitle();
+        this.viewCount = entity.getViewCount();
+        this.commentCount = entity.getCommentCount();
+        this.createdDate = entity.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }

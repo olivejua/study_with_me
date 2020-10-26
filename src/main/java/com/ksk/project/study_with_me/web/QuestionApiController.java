@@ -5,11 +5,15 @@ import com.ksk.project.study_with_me.config.MatchNames;
 import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
 import com.ksk.project.study_with_me.service.QuestionService;
+import com.ksk.project.study_with_me.web.dto.PageDto;
+import com.ksk.project.study_with_me.web.dto.question.PostsListResponseDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsReadResponseDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsSaveRequestDto;
 import com.ksk.project.study_with_me.web.dto.question.PostsUpdateRequestDto;
+import com.ksk.project.study_with_me.web.dto.study.SearchDto;
 import com.ksk.project.study_with_me.web.file.TransferFiles;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -36,11 +40,11 @@ public class QuestionApiController {
     }
 
     @GetMapping("/posts")
-    public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request) {
+    public ModelAndView read(Long postNo, @LoginUser SessionUser user, HttpServletRequest request, PageDto pageDto) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/question/posts-read");
 
-        PostsReadResponseDto responseDto = questionService.findById(postNo);
+        PostsReadResponseDto responseDto = questionService.findById(postNo).savePageInfo(pageDto);
         String boardName = MatchNames.Boards.BOARD_QUESTION.getShortName();
 
         mav.addObject("user", user);
@@ -67,12 +71,16 @@ public class QuestionApiController {
     }
 
     @GetMapping("/list")
-    public ModelAndView findPosts(@PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable
-                                  , @LoginUser SessionUser user) {
+    public ModelAndView findPosts(@PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageRequest
+                                  , SearchDto searchDto, @LoginUser SessionUser user) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/question/posts-list");
 
-        mav.addObject("list", questionService.findPosts(pageable));
+        Page<PostsListResponseDto> postList = searchDto.existSearch() ?
+                questionService.searchPosts(pageRequest, searchDto) : questionService.findPosts(pageRequest);
+
+        mav.addObject("list", postList);
+        mav.addObject("search", searchDto.existSearch() ? searchDto : null);
         mav.addObject("user", user);
 
         return mav;

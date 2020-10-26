@@ -59,3 +59,14 @@ div[name=div-link] {
     max-height: 365px;
     max-width: 800px;
 }
+
+.modal-title {
+    font-size: large;
+}
+
+.modal-header > button {
+    display: block;
+    width: 25%;
+    margin-left: 35%;
+    margin-top: 15px;
+}
