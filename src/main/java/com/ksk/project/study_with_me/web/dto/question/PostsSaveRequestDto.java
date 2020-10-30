@@ -2,6 +2,7 @@ package com.ksk.project.study_with_me.web.dto.question;
 
 import com.ksk.project.study_with_me.domain.boardQuestion.BoardQuestion;
 import com.ksk.project.study_with_me.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +13,7 @@ public class PostsSaveRequestDto {
     private int viewCount;
     private int commentCount;
 
+    @Builder
     public PostsSaveRequestDto(Long userCode, String title, String content) {
         this.userCode = userCode;
         this.title = title;

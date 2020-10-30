@@ -3,6 +3,7 @@ package com.ksk.project.study_with_me.web.dto.like;
 import com.ksk.project.study_with_me.domain.boardPlaceRecommendation.BoardPlaceRecommendation;
 import com.ksk.project.study_with_me.domain.like.IsLike;
 import com.ksk.project.study_with_me.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -11,6 +12,7 @@ public class LikePlaceSaveRequestDto {
     private Long postNo;
     private boolean isLike;
 
+    @Builder
     public LikePlaceSaveRequestDto(Long userCode, Long postNo, boolean isLike) {
         this.userCode = userCode;
         this.postNo = postNo;

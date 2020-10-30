@@ -125,7 +125,7 @@ public class PlaceApiController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/place/posts-read");
 
-        PostsReadResponseDto responseDto = likeService.findByUserAndPost(placeService.findById(postNo), user);
+        PostsReadResponseDto responseDto = likeService.findByUserAndPost(placeService.findById(postNo), user.toEntity());
 
         mav.addObject("post", responseDto.savePageInfo(pageDto));
         mav.addObject("user", user);

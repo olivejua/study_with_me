@@ -2,6 +2,7 @@ package com.ksk.project.study_with_me.web.dto.place;
 
 import com.ksk.project.study_with_me.domain.boardPlaceRecommendation.BoardPlaceRecommendation;
 import com.ksk.project.study_with_me.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class PostsSaveRequestDto {
     private int dislikeCount;
     private int viewCount;
 
+    @Builder
     public PostsSaveRequestDto(Long userCode, String title, String address, String addressDetail,
                                List<String> links, String thumbnailPath, String content) {
         this.userCode = userCode;

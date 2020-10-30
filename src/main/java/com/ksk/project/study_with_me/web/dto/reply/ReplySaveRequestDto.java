@@ -2,6 +2,7 @@ package com.ksk.project.study_with_me.web.dto.reply;
 
 import com.ksk.project.study_with_me.domain.reply.Reply;
 import com.ksk.project.study_with_me.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +13,7 @@ public class ReplySaveRequestDto {
     private Long postNo;
     private String boardName;
 
+    @Builder
     public ReplySaveRequestDto(Long commentNo, String content, Long postNo, String boardName) {
         this.commentNo = commentNo;
         this.content = content;

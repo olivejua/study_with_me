@@ -1,6 +1,7 @@
 package com.ksk.project.study_with_me.web.dto.place;
 
 import com.ksk.project.study_with_me.domain.boardPlaceRecommendation.BoardPlaceRecommendation;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class PostsUpdateRequestDto {
     private String oldThumbnailPath;
     private String thumbnailPath;
 
+    @Builder
     public PostsUpdateRequestDto(String title, String address, String addressDetail, List<String> links
             , String content, String oldThumbnailPath, String thumbnailPath) {
         this.title = title;

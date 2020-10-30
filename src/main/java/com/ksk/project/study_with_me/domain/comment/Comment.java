@@ -30,21 +30,17 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    // TODO: Image 와 board 의 Entity관계 설정 : 필드 타입 변경
-    private Long imageCode;
-
     //TODO 테스트 검증 끝나면 지우기
 //    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
 //    private List<Reply> replies;
 
     @Builder
-    public Comment(Long commentNo, String boardName, Long postNo, User user, String content, Long imageCode) {
+    public Comment(Long commentNo, String boardName, Long postNo, User user, String content) {
         this.commentNo = commentNo;
         this.boardName = boardName;
         this.postNo = postNo;
         this.user = user;
         this.content = content;
-        this.imageCode = imageCode;
     }
 
     public void update(String content) {

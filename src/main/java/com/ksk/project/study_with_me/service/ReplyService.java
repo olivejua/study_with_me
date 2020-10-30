@@ -22,23 +22,14 @@ public class ReplyService {
         return replyRepository.save(requestDto.toEntity()).getReplyNo();
     }
 
-    @Transactional(readOnly = true)
-    public List<ReplyListResponseDto> findAllByPostNoAndBoardName(Long postNo, String boardName) {
-        return replyRepository.findByPostNoAndBoardNameOrderByReplyNo(postNo, boardName).stream()
-                .map(ReplyListResponseDto::new)
-                .collect(Collectors.toList());
-    }
+    @Transactional
+    public Long update(Long replyNo, ReplyUpdateRequestDto requestDto) {
+        Reply entity = replyRepository.findById(replyNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 답글이 없습니다. replyNo=" + replyNo));
 
-    @Transactional(readOnly = true)
-    public int countByPostNoAndBoardName(Long postNo, String boardName) {
-        return replyRepository.countByPostNoAndBoardName(postNo, boardName);
-    }
+        entity.update(requestDto.getContent());
 
-    @Transactional(readOnly = true)
-    public List<ReplyListResponseDto> findAllByCommentNo(Long commentNo) {
-        return replyRepository.findByCommentNoOrderByReplyNoAsc(commentNo).stream()
-                .map(ReplyListResponseDto::new)
-                .collect(Collectors.toList());
+        return replyNo;
     }
 
     @Transactional
@@ -54,13 +45,22 @@ public class ReplyService {
         replyRepository.deleteAllByCommentNo(commentNo);
     }
 
-    @Transactional
-    public Long update(Long replyNo, ReplyUpdateRequestDto requestDto) {
-        Reply entity = replyRepository.findById(replyNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 답글이 없습니다. replyNo=" + replyNo));
+    @Transactional(readOnly = true)
+    public List<ReplyListResponseDto> findAllByPostNoAndBoardName(Long postNo, String boardName) {
+        return replyRepository.findByPostNoAndBoardNameOrderByReplyNo(postNo, boardName).stream()
+                .map(ReplyListResponseDto::new)
+                .collect(Collectors.toList());
+    }
 
-        entity.update(requestDto.getContent());
+    @Transactional(readOnly = true)
+    public List<ReplyListResponseDto> findAllByCommentNo(Long commentNo) {
+        return replyRepository.findByCommentNoOrderByReplyNoAsc(commentNo).stream()
+                .map(ReplyListResponseDto::new)
+                .collect(Collectors.toList());
+    }
 
-        return replyNo;
+    @Transactional(readOnly = true)
+    public int countByPostNoAndBoardName(Long postNo, String boardName) {
+        return replyRepository.countByPostNoAndBoardName(postNo, boardName);
     }
 }
