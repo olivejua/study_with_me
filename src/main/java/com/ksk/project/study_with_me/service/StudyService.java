@@ -74,7 +74,7 @@ public class StudyService {
         BoardStudyRecruitment entity = boardStudyRecruitmentRepository.findById(postNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postNo));
 
-        entity.update(requestDto.getTitle(), requestDto.getConditionLanguages(), requestDto.getConditionPlace(), requestDto.getConditionStartDate(),
+        entity.update(requestDto.getTitle(), requestDto.getConditionLanguages().toString(), requestDto.getConditionPlace(), requestDto.getConditionStartDate(),
                 requestDto.getConditionEndDate(), requestDto.getConditionCapacity(), requestDto.getConditionExplanation());
 
         return postNo;

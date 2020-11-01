@@ -13,7 +13,7 @@ import java.util.List;
 public class PostsSaveRequestDto {
     private User user;
     private String title;
-    private String conditionLanguages;
+    private List<String> conditionLanguages;
     private String conditionPlace;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date conditionStartDate;
@@ -29,7 +29,7 @@ public class PostsSaveRequestDto {
                                     , Date conditionEndDate, int conditionCapacity, String conditionExplanation, User user) {
         this.user = user;
         this.title = title;
-        this.conditionLanguages = conditionLanguages.toString();
+        this.conditionLanguages = conditionLanguages;
         this.conditionPlace = conditionPlace;
         this.conditionStartDate = conditionStartDate;
         this.conditionEndDate = conditionEndDate;
@@ -52,7 +52,7 @@ public class PostsSaveRequestDto {
         return BoardStudyRecruitment.builder()
                 .user(user)
                 .title(title)
-                .conditionLanguages(conditionLanguages)
+                .conditionLanguages(conditionLanguages.toString())
                 .conditionPlace(conditionPlace)
                 .conditionStartDate(conditionStartDate)
                 .conditionEndDate(conditionEndDate)

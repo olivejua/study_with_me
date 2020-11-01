@@ -7,10 +7,7 @@ import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
 import com.ksk.project.study_with_me.service.LikeService;
 import com.ksk.project.study_with_me.service.PlaceService;
 import com.ksk.project.study_with_me.web.dto.PageDto;
-import com.ksk.project.study_with_me.web.dto.place.PostsListResponseDto;
-import com.ksk.project.study_with_me.web.dto.place.PostsReadResponseDto;
-import com.ksk.project.study_with_me.web.dto.place.PostsSaveRequestDto;
-import com.ksk.project.study_with_me.web.dto.place.PostsUpdateRequestDto;
+import com.ksk.project.study_with_me.web.dto.place.*;
 import com.ksk.project.study_with_me.web.dto.study.SearchDto;
 import com.ksk.project.study_with_me.web.file.TransferFiles;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +29,11 @@ public class PlaceApiController {
     private final PlaceService placeService;
     private final LikeService likeService;
 
+    @PostMapping("/test")
+    public Long test(TestDto requestDto, @RequestParam MultipartFile file) {
+        return 0L;
+    }
+
     @PostMapping("/posts")
     public Long save(PostsSaveRequestDto requestDto, @RequestParam MultipartFile thumbnailFile) {
         Long savedPostNo = placeService.save(requestDto);
@@ -42,7 +44,7 @@ public class PlaceApiController {
         TransferFiles.saveThumbnail(thumbnailFile, boardName, savedThumbnailName);
 
         return savedPostNo;
-    }
+}
 
     @PutMapping("/posts/{postNo}")
     public Long update(@PathVariable Long postNo, PostsUpdateRequestDto requestDto, @RequestParam(required = false) MultipartFile thumbnailFile) {
@@ -56,7 +58,7 @@ public class PlaceApiController {
         }
 
         return placeService.update(postNo, requestDto);
-    }
+         }
 
     @DeleteMapping("/posts/{postNo}")
     public Long delete(@PathVariable Long postNo) {

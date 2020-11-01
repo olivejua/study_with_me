@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-public class PostsSaveRequestDto {
+public class TestDto {
     private String title;
     private Long userCode;
     private String address;
@@ -22,8 +22,8 @@ public class PostsSaveRequestDto {
     private int viewCount;
 
     @Builder
-    public PostsSaveRequestDto(Long userCode, String title, String address, String addressDetail,
-                               List<String> links, String thumbnailPath, String content) {
+    public TestDto(Long userCode, String title, String address, String addressDetail,
+                   List<String> links, String thumbnailPath, String content) {
         this.userCode = userCode;
         this.title = title;
         this.address = address;

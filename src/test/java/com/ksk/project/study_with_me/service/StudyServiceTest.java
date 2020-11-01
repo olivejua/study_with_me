@@ -83,7 +83,7 @@ public class StudyServiceTest {
         BoardStudyRecruitment post = studyRepository.findAll().get(0);
         assertThat(post.getUser().getUserCode()).isEqualTo(dto.getUser().getUserCode());
         assertThat(post.getTitle()).isEqualTo(dto.getTitle());
-        assertThat(post.getConditionLanguages()).isEqualTo(dto.getConditionLanguages());
+        assertThat(post.getConditionLanguages()).isEqualTo(dto.getConditionLanguages().toString());
         assertThat(post.getConditionPlace()).isEqualTo(dto.getConditionPlace());
         assertThat(post.getConditionStartDate()).isEqualTo(new Timestamp(dto.getConditionStartDate().getTime()));
         assertThat(post.getConditionEndDate()).isEqualTo(new Timestamp(dto.getConditionEndDate().getTime()));
@@ -97,7 +97,6 @@ public class StudyServiceTest {
         BoardStudyRecruitment savedPost = this.save_post_in_repository();
 
         PostsUpdateRequestDto updateDto = PostsUpdateRequestDto.builder()
-                .userCode(savedPost.getUser().getUserCode())
                 .title("제목 수정")
                 .conditionLanguages(Arrays.asList(savedPost.getConditionLanguages().split(",")))
                 .conditionPlace("경기도 군포시")
@@ -112,7 +111,6 @@ public class StudyServiceTest {
 
         //then
         BoardStudyRecruitment post = studyRepository.findAll().get(0);
-        assertThat(post.getUser().getUserCode()).isEqualTo(updateDto.getUserCode());
         assertThat(post.getTitle()).isEqualTo(updateDto.getTitle());
         assertThat(post.getConditionLanguages()).isEqualTo(updateDto.getConditionLanguages());
         assertThat(post.getConditionPlace()).isEqualTo(updateDto.getConditionPlace());
