@@ -112,7 +112,7 @@ public class StudyServiceTest {
         //then
         BoardStudyRecruitment post = studyRepository.findAll().get(0);
         assertThat(post.getTitle()).isEqualTo(updateDto.getTitle());
-        assertThat(post.getConditionLanguages()).isEqualTo(updateDto.getConditionLanguages());
+        assertThat(post.getConditionLanguages()).isEqualTo(updateDto.getConditionLanguages().toString());
         assertThat(post.getConditionPlace()).isEqualTo(updateDto.getConditionPlace());
         assertThat(post.getConditionStartDate()).isEqualTo(new Timestamp(updateDto.getConditionStartDate().getTime()));
         assertThat(post.getConditionEndDate()).isEqualTo(new Timestamp(updateDto.getConditionEndDate().getTime()));
