@@ -81,9 +81,8 @@ public class PlaceServiceTest {
         assertThat(post.getTitle()).isEqualTo(dto.getTitle());
         assertThat(post.getAddress()).isEqualTo(dto.getAddress());
         assertThat(post.getAddressDetail()).isEqualTo(dto.getAddressDetail());
-        assertThat(post.getThumbnailPath()).isEqualTo(dto.getThumbnailPath());
         assertThat(post.getContent()).isEqualTo(dto.getContent());
-        assertThat(post.getLinks()).isEqualTo(dto.getLinks());
+        assertThat(post.getLinks()).isEqualTo(dto.getLinks().toString());
     }
 
     @Test
