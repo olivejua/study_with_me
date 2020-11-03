@@ -78,12 +78,11 @@ public class PlaceControllerTest {
     @WithMockUser(roles = "USER")
     public void test() throws Exception {
         /**
-        * 일단  File, dto 둘다 한번에 전송이 안된다.
-        * 첫번째 방법 . 하나씩 둘다 한다.
-        * 두번째 방법 . 둘 중 하나 선택해서 전송 테스트한다.
+         * 일단  File, dto 둘다 한번에 전송이 안된다.
+         * 첫번째 방법 . 하나씩 둘다 한다.
+         * 두번째 방법 . 둘 중 하나 선택해서 전송 테스트한다.
          * 세번째 방법 . 그냥 작성해놓고 얼렁뚱땅 진짜 테스트는 안하고 넘어간다.
-        * */
-
+         * */
 
         //given
         String title = "스터디 장소 추천합니다.";
