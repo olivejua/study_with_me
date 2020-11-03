@@ -18,14 +18,13 @@
                     </form>
                     <label for="nickname" id="label-nickname" class="col-sm-3">닉네임</label>
                     <div class="col-sm-9">
-                        <input type="text" id="nickname" class="form-control"
-                               th:oninput="validation_nickname(this.value)" autocomplete="off">
+                        <input type="text" id="nickname" class="form-control" autocomplete="off">
                         <div id="div-valid" class="valid-feedback">사용가능한 닉네임입니다.</div>
                         <div id="div-invalid" class="invalid-feedback">사용불가한 닉네임입니다. 다시 설정해주세요.</div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a id="btn-signup" class="btn btn-primary btn-become-user-modal disabled">
+                    <a id="processSignup" class="btn btn-primary btn-become-user-modal disabled">
                         내가 정한 닉네임으로 마음껏 이용하기 😎
                     </a>
                     <a class="btn btn-outline-secondary btn-become-user-modal" data-dismiss="modal">
@@ -36,47 +35,5 @@
         </div>
         </div>
     </div>
-
-    <script type="text/javascript" th:inline="javascript">
-
-        $(document).on('click', '#btn-signup', function (e) {
-            $('input[name=nickname]').val($('#nickname').val());
-            $('#form-signup').submit();
-        });
-
-        const validation_nickname = function (value) {
-            if(value === "") {
-                $('#nickname').removeClass('is-valid');
-                $('#nickname').removeClass('is-invalid');
-                $('#div-valid').css('display', 'none');
-                $('#div-invalid').css('display', 'none');
-                $('#btn-signup').addClass('disabled');
-                return;
-            }
-
-            const nicknames = [[${existedNicknameList}]];
-            let isDuplicated = false;
-
-            nicknames.forEach(nickname => {
-                if(nickname===value) {
-                    isDuplicated = true;
-                }
-            });
-
-            if(!isDuplicated) {
-                $('#nickname').addClass('is-valid');
-                $('#div-valid').css('display', 'block');
-                $('#div-invalid').css('display', 'none');
-                $('#btn-signup').attr('disabled', false);
-                $('#btn-signup').removeClass('disabled');
-            } else {
-                $('#nickname').addClass('is-invalid');
-                $('#div-valid').css('display', 'none');
-                $('#div-invalid').css('display', 'block');
-                $('#btn-signup').attr('disabled', true);
-                $('#btn-signup').addClass('disabled');
-            }
-        }
-    </script>
 </div>
 </th:block>

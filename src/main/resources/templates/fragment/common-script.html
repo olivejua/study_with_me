@@ -14,5 +14,48 @@
             }
         });
 
+        $(document).on('click', '#processSignup', function () {
+            $('input[name=nickname]').val($('#nickname').val());
+            $('#form-signup').submit();
+        });
+
+        $(document).on('input', '#nickname', function (e) {
+            const value = e.target.value;
+
+            if(value === "") {
+                $('#nickname').removeClass('is-valid');
+                $('#nickname').removeClass('is-invalid');
+                $('#div-valid').css('display', 'none');
+                $('#div-invalid').css('display', 'none');
+                $('#processSignup').addClass('disabled');
+                return;
+            }
+
+            const nicknames = [[${existedNicknameList}]];
+            let isDuplicated = false;
+
+            nicknames.forEach(nickname => {
+                if(nickname===value) {
+                    isDuplicated = true;
+                }
+            });
+
+            if(!isDuplicated) {
+                $('#nickname').addClass('is-valid');
+                $('#nickname').removeClass('is-invalid');
+                $('#div-valid').css('display', 'block');
+                $('#div-invalid').css('display', 'none');
+                $('#processSignup').attr('disabled', false);
+                $('#processSignup').removeClass('disabled');
+            } else {
+                $('#nickname').addClass('is-invalid');
+                $('#nickname').removeClass('is-valid');
+                $('#div-valid').css('display', 'none');
+                $('#div-invalid').css('display', 'block');
+                $('#processSignup').attr('disabled', true);
+                $('#processSignup').addClass('disabled');
+            }
+        });
+
     </script>
 </div>
