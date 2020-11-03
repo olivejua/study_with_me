@@ -1,5 +1,6 @@
 package com.ksk.project.study_with_me.service;
 
+import com.ksk.project.study_with_me.domain.user.User;
 import com.ksk.project.study_with_me.domain.user.UserRepository;
 import com.ksk.project.study_with_me.web.dto.user.UserResponseDto;
 import com.ksk.project.study_with_me.web.dto.user.UserSignupRequestDto;
@@ -16,9 +17,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<UserResponseDto> findAllNickname() {
+    public List<String> findAllNickname() {
         return userRepository.findAll().stream()
-                .map(UserResponseDto::new)
+                .map(User::getNickname)
                 .collect(Collectors.toList());
     }
 

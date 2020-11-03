@@ -1,8 +1,6 @@
 package com.ksk.project.study_with_me.web;
 
-import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
-import com.ksk.project.study_with_me.domain.user.Role;
 import com.ksk.project.study_with_me.service.UserService;
 import com.ksk.project.study_with_me.web.dto.user.UserResponseDto;
 import com.ksk.project.study_with_me.web.dto.user.UserSignupRequestDto;
@@ -24,28 +22,24 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("login", true);
+        model.addAttribute("login", "login");
 
         return "index";
     }
 
     @GetMapping("/processLogin")
-    public String processLogin(Model model, @LoginUser SessionUser user) {
+    public String processLogin(Model model, HttpSession httpSession) {
 
-        if(user.getRole().equals(Role.GUEST.getKey())) {
+        if(httpSession.getAttribute("guest") != null) {
             model.addAttribute("messageToGuest", "손님이시군요. 회원이 되시겠습니까?");
+
+            model.addAttribute("existedNicknameList", userService.findAllNickname());
+            model.addAttribute("guest", httpSession.getAttribute("guest"));
+
             return "index";
         }
 
         return "redirect:/";
-    }
-
-    @GetMapping("/signup")
-    public void signup(Model model, @LoginUser SessionUser user, HttpSession httpSession) {
-        model.addAttribute("existedNicknameList", userService.findAllNickname());
-        model.addAttribute("user", user);
-
-        httpSession.removeAttribute("user");
     }
 
     @PostMapping("/signup")

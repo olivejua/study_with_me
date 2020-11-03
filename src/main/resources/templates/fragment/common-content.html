@@ -1,19 +1,35 @@
 <div th:fragment="common-content" xmlns:th="http://www.thymeleaf.org">
 
     <!--  회원가입 요청 모달  -->
-    <div class="modal" id="modal-messageToGuest" tabindex="-1" role="dialog"
+    <div th:if="${messageToGuest}" class="modal" id="modal-messageToGuest" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog"><div class="modal-dialog modal-sm">
             <div class="modal-content">
-                <div class="modal-body">
-                    손님이시네요. 회원이 되시겠습니까?
+                <div class="modal-header">
+                    <h4>손님이시네요. 회원이 되시겠습니까?</h4>
+                </div>
+                <div class="modal-body row div-nickname-become-user-modal">
+                    <form id="form-signup" th:action="@{/user/signup}" method="post">
+                        <input type="hidden" name="name" th:value="${guest.name}">
+                        <input type="hidden" name="email" th:value="${guest.email}">
+                        <input type="hidden" name="role" th:value="${guest.role}">
+                        <input type="hidden" name="socialCode" th:value="${guest.socialCode}">
+                        <input type="hidden" name="nickname" />
+                    </form>
+                    <label for="nickname" id="label-nickname" class="col-sm-3">닉네임</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="nickname" class="form-control"
+                               th:oninput="validation_nickname(this.value)" autocomplete="off">
+                        <div id="div-valid" class="valid-feedback">사용가능한 닉네임입니다.</div>
+                        <div id="div-invalid" class="invalid-feedback">사용불가한 닉네임입니다. 다시 설정해주세요.</div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        아니요.
-                    </button>
-                    <a href="/user/signup" id="button-answer-yes" class="btn btn-primary active">
-                        네, 될래요!
+                    <a id="btn-signup" class="btn btn-primary btn-become-user-modal disabled">
+                        내가 정한 닉네임으로 마음껏 이용하기 😎
+                    </a>
+                    <a class="btn btn-outline-secondary btn-become-user-modal" data-dismiss="modal">
+                        아니요, 그냥 게시판 목록만 구경하겠습니다 😌
                     </a>
                 </div>
             </div>
@@ -21,5 +37,46 @@
         </div>
     </div>
 
+    <script type="text/javascript" th:inline="javascript">
+
+        $(document).on('click', '#btn-signup', function (e) {
+            $('input[name=nickname]').val($('#nickname').val());
+            $('#form-signup').submit();
+        });
+
+        const validation_nickname = function (value) {
+            if(value === "") {
+                $('#nickname').removeClass('is-valid');
+                $('#nickname').removeClass('is-invalid');
+                $('#div-valid').css('display', 'none');
+                $('#div-invalid').css('display', 'none');
+                $('#btn-signup').addClass('disabled');
+                return;
+            }
+
+            const nicknames = [[${existedNicknameList}]];
+            let isDuplicated = false;
+
+            nicknames.forEach(nickname => {
+                if(nickname===value) {
+                    isDuplicated = true;
+                }
+            });
+
+            if(!isDuplicated) {
+                $('#nickname').addClass('is-valid');
+                $('#div-valid').css('display', 'block');
+                $('#div-invalid').css('display', 'none');
+                $('#btn-signup').attr('disabled', false);
+                $('#btn-signup').removeClass('disabled');
+            } else {
+                $('#nickname').addClass('is-invalid');
+                $('#div-valid').css('display', 'none');
+                $('#div-invalid').css('display', 'block');
+                $('#btn-signup').attr('disabled', true);
+                $('#btn-signup').addClass('disabled');
+            }
+        }
+    </script>
 </div>
 </th:block>

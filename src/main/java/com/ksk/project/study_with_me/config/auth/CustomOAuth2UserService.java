@@ -2,6 +2,7 @@ package com.ksk.project.study_with_me.config.auth;
 
 import com.ksk.project.study_with_me.config.auth.dto.OAuthAttributes;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
+import com.ksk.project.study_with_me.domain.user.Role;
 import com.ksk.project.study_with_me.domain.user.User;
 import com.ksk.project.study_with_me.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         User user = verifyUser(attributes);
 
-        httpSession.setAttribute("user", new SessionUser(user));
+        httpSession.removeAttribute("guest");
+        httpSession.removeAttribute("user");
+
+        if(user.getRole().getKey().equals(Role.USER.getKey())) {
+            httpSession.setAttribute("user", new SessionUser(user));
+        } else {
+            httpSession.setAttribute("guest", new SessionUser(user));
+        }
+
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
