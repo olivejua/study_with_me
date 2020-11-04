@@ -16,11 +16,11 @@
                         <input type="hidden" name="socialCode" th:value="${guest.socialCode}">
                         <input type="hidden" name="nickname" />
                     </form>
-                    <label for="nickname" id="label-nickname" class="col-sm-3">닉네임</label>
+                    <label for="nickname" id="label-nickname" class="col-sm-3 label-nickname">닉네임</label>
                     <div class="col-sm-9">
                         <input type="text" id="nickname" class="form-control" autocomplete="off">
-                        <div id="div-valid" class="valid-feedback">사용가능한 닉네임입니다.</div>
-                        <div id="div-invalid" class="invalid-feedback">사용불가한 닉네임입니다. 다시 설정해주세요.</div>
+                        <div name="div-valid" class="valid-feedback">사용가능한 닉네임입니다.</div>
+                        <div name="div-invalid" class="invalid-feedback">사용불가한 닉네임입니다. 다시 설정해주세요.</div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -34,6 +34,45 @@
             </div>
         </div>
         </div>
+    </div>
+
+    <!--  닉네임 변경 모달  -->
+    <div th:if="${user}" class="modal" id="modal-changeNickname" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog"><div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>닉네임 변경</h4>
+                </div>
+                <div class="modal-body row div-nickname-become-user-modal">
+                    <label for="nickname" class="col-sm-3 label-nickname">닉네임</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="change-nickname" class="form-control" autocomplete="off" th:value="${user.nickname}">
+                        <div name="div-valid" class="valid-feedback">사용가능한 닉네임입니다.</div>
+                        <div name="div-invalid" class="invalid-feedback">사용불가한 닉네임입니다. 다시 설정해주세요.</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="processChange" class="btn btn-success disabled">
+                        변경하기
+                    </a>
+                    <a class="btn btn-outline-secondary" data-dismiss="modal">
+                        취소
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!--  닉네임 변경 완료 창  -->
+    <div th:if="${user}" class="modal" id="modal-changeNickname-complete" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog"><div class="modal-dialog modal-sm">
+            <div class="alert alert-dismissible alert-success">
+                <strong>닉네임이 변경되었습니다.</strong>
+            </div>
+        </div></div>
     </div>
 </div>
 </th:block>

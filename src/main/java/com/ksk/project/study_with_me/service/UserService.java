@@ -27,4 +27,14 @@ public class UserService {
     public UserResponseDto save(UserSignupRequestDto requestDto) {
         return new UserResponseDto(userRepository.save(requestDto.toEntity()));
     }
+
+    @Transactional
+    public UserResponseDto changeNickname(Long userCode, String nickname) {
+        User entity = userRepository.findById(userCode)
+                .orElseThrow(() -> new IllegalArgumentException("해당 User가 없습니다. id=" + userCode));
+
+        entity.changeNickname(nickname);
+
+        return new UserResponseDto(entity);
+    }
 }

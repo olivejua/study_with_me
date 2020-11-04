@@ -32,11 +32,15 @@
     max-width: 72%;
 }
 
+#modal-changeNickname > .modal-dialog > .modal-sm {
+    max-width: 72%;
+}
+
 .btn-become-user-modal {
     width: 100%;
 }
 
-#label-nickname {
+.label-nickname {
     max-width: 20%;
     padding-top: 8px;
 }

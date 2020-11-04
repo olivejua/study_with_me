@@ -26,12 +26,8 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
-    //TODO 프로필 기능 추가 여부 : 필드 추가
     @Column(length = 50, nullable = false)
     private String nickname;
-
-/*  @Column
-    private String picture;*/
 
     private String socialCode;
 
@@ -45,21 +41,19 @@ public class User extends BaseTimeEntity {
         this.socialCode = socialCode;
     }
 
-    //TODO 프로필 기능 추가 여부 : Update() 수정
     public User update(String name) {
         this.name = name;
 
         return this;
     }
 
-    public User becomeUser(Role role) {
-        this.role = role;
+    public User changeNickname(String nickname) {
+        this.nickname = nickname;
 
         return this;
     }
 
     public String getRoleKey() {
         return this.role.getKey();
-//        return "ROLE_USER";
     }
 }

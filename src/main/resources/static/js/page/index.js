@@ -63,11 +63,11 @@ const main = {
             let link = `/board/${boardName}/posts?postNo=${post.postNo}&page=0`;
             elements +=
                 `<tr class="table-light">
-                                <td><a href="${link}">${post.postNo}</a></th>
-                                <td><a href="${link}">${post.title}</a></td>
-                                <td><a href="${link}">${post.user.nickname}</a></td>
-                                <td><a href="${link}">${post.createdDate}</a></td>
-                            </tr>`;
+                    <td><a href="${link}">${post.postNo}</a></th>
+                    <td><a href="${link}">${post.title}</a></td>
+                    <td><a href="${link}">${post.user.nickname}</a></td>
+                    <td><a href="${link}">${post.createdDate}</a></td>
+                </tr>`;
         }
 
         return elements;
@@ -81,12 +81,12 @@ const main = {
             let date = post.createdDate.date;
             cards +=
                 `<div class="card mb-3">
-                                <img src="${post.thumbnailPath}" alt="Card image">
-                                <div class="card-body">
-                                    <h5 class="card-text"><a href="/board/place/posts?postNo=${post.postNo}&page=0"> ${post.title}</a></h5>
-                                </div>
-                                <div class="card-footer text-muted">${date.year}.${date.month}.${date.day}</div>
-                            </div>`;
+                    <img src="${post.thumbnailPath}" alt="Card image">
+                    <div class="card-body">
+                        <h5 class="card-text"><a href="/board/place/posts?postNo=${post.postNo}&page=0"> ${post.title}</a></h5>
+                    </div>
+                    <div class="card-footer text-muted">${date.year}.${date.month}.${date.day}</div>
+                </div>`;
         }
 
         return cards;

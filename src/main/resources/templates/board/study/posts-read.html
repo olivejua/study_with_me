@@ -56,9 +56,12 @@
                         </div>
                         <div class="form-group row">
                             <label for="conditionCapacity" class="col-sm-2 col-form-label label-name">정원 수</label>
-                            <div class="col-sm-9">
-                                <label id="conditionCapacity">
-                                    [[${post.conditionCapacity}==0 ? '정원 수 제한 없음' : ${post.conditionCapacity}]] 명
+                            <div class="col-sm-9" id="conditionCapacity">
+                                <label th:if="${post.conditionCapacity}==0">
+                                    정원 수 제한 없음
+                                </label>
+                                <label th:unless="${post.conditionCapacity}==0">
+                                    ${post.conditionCapacity}]] 명
                                 </label>
                             </div>
                         </div>
