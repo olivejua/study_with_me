@@ -29,7 +29,7 @@ public class PostsSaveRequestDto {
         this.address = address;
         this.addressDetail = addressDetail;
         this.links = links;
-        this.thumbnailPath = thumbnailPath;
+        this.thumbnailPath = this.renameThumbnail(thumbnailPath);
         this.content = content;
         this.likeCount = this.initialCount();
         this.dislikeCount = this.initialCount();
@@ -51,7 +51,7 @@ public class PostsSaveRequestDto {
                 .address(address)
                 .addressDetail(addressDetail)
                 .content(content)
-                .thumbnailPath(this.renameThumbnail(thumbnailPath))
+                .thumbnailPath(thumbnailPath)
                 .links(links.toString())
                 .likeCount(likeCount)
                 .dislikeCount(dislikeCount)

@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .logoutSuccessUrl("/")
                 .and()
                     .exceptionHandling()
-                        .accessDeniedPage("/user/login")
+                        .accessDeniedPage("/user/processLogin")
                 .and()
                     .oauth2Login()
                         .loginPage("/user/login")

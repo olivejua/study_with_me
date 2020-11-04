@@ -6,8 +6,15 @@
         $(document).ready(function(){
             const messageToGuest = [[${messageToGuest}]];
             if (messageToGuest) {
-                console.log('messageToGuest exists.');
-                console.log($('#modal-messageToGuest'));
+                $.ajax({
+                    type: 'GET',
+                    url: `/logout`,
+                }).done(function () {
+                    console.log('logout complete.')
+                }).fail(function (error) {
+                    alert(JSON.stringify(error));
+                });
+
                 $('#modal-messageToGuest').modal('show');
             } else {
                 $('#modal-messageToGuest').modal('hide');

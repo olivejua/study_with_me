@@ -71,7 +71,7 @@ public class TransferFiles {
     //TODO Util하고 기능 나누기
     public static boolean saveThumbnail(MultipartFile thumbnail, String boardName, String thumbnailName) {
         try {
-            String thumbnailPath = ImageUtils.DEFAULT_PATH + File.separator + boardName + File.separator + "thumbnail" +  File.separator;
+            String thumbnailPath = ImageUtils.DEFAULT_PATH + boardName + File.separator + "thumbnail" +  File.separator;
             File file_thumbnailPath = new File(thumbnailPath);
 
             if(!file_thumbnailPath.exists()) {

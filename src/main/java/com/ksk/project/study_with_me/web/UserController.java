@@ -1,6 +1,8 @@
 package com.ksk.project.study_with_me.web;
 
+import com.ksk.project.study_with_me.config.auth.LoginUser;
 import com.ksk.project.study_with_me.config.auth.dto.SessionUser;
+import com.ksk.project.study_with_me.domain.user.Role;
 import com.ksk.project.study_with_me.service.UserService;
 import com.ksk.project.study_with_me.web.dto.user.UserResponseDto;
 import com.ksk.project.study_with_me.web.dto.user.UserSignupRequestDto;
@@ -28,13 +30,14 @@ public class UserController {
     }
 
     @GetMapping("/processLogin")
-    public String processLogin(Model model, HttpSession httpSession) {
+    public String processLogin(Model model, @LoginUser SessionUser user, HttpSession httpSession) {
 
-        if(httpSession.getAttribute("guest") != null) {
+        if(user.getRole().equals(Role.GUEST.getKey())) {
             model.addAttribute("messageToGuest", "손님이시군요. 회원이 되시겠습니까?");
 
             model.addAttribute("existedNicknameList", userService.findAllNickname());
-            model.addAttribute("guest", httpSession.getAttribute("guest"));
+            model.addAttribute("guest", user);
+            httpSession.removeAttribute("user");
 
             return "index";
         }
@@ -43,9 +46,12 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(UserSignupRequestDto requestDto, HttpSession httpSession) {
+    public String signup(Model model, UserSignupRequestDto requestDto, HttpSession httpSession) {
         UserResponseDto responseDto = userService.save(requestDto);
         httpSession.setAttribute("user", new SessionUser(responseDto.toEntity()));
-        return "redirect:/";
+
+        model.addAttribute("login", "login");
+        model.addAttribute("signup", "complete");
+        return "index";
     }
 }
