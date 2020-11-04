@@ -82,13 +82,14 @@ h4 {
 }
 
 .languages-lumps {
-    margin: 3% 0.5% 3% 0.5%;
-    padding: 0.5% 1.5%;
+    margin: 3px 0.5% 3px 0.5%;
+    padding: 0.3% 1.5%;
     border-radius: 15px;
-    background-color: dimgrey;
-    color: aliceblue;
+    background-color: lightgray;
+    color: darkslategray;
     font-weight: bold;
     white-space: nowrap;
+    display: inline-block;
 }
 
 #createdDate {
