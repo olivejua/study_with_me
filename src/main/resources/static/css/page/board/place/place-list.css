@@ -10,3 +10,7 @@
     justify-content: center;
     margin-top: 5%;
 }
+
+.card-img-top {
+    height: 200px;
+}

@@ -52,11 +52,18 @@
             </div>
         </div>
 
+        <input type="hidden" id="isOpenLogin" th:value="${login}"/>
+        <input type="hidden" id="isShowSignupMessage" value="false"/>
         <!-- Modal -->
         <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <div id="message-complete-signup" style="display: none;">
+                            <h5>회원가입이 완료되었습니다. 로그인해주세요.</h5>
+                            <hr/>
+                        </div>
+
                         <h5 class="modal-title" id="loginModalLabel">로그인</h5>
                     </div>
                     <div class="modal-body">
@@ -64,7 +71,7 @@
                         <a href="/oauth2/authorization/naver" id="login-naver" class="btn btn-lg btn-primary" role="button">Naver Login</a>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        <button type="button" id="btn-login-close" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                     </div>
                 </div>
             </div>
@@ -72,113 +79,6 @@
     </th:block>
 
     <th:block layout:fragment="custom-script">
-        <script type="text/javascript" th:inline="javascript">
-            var main = {
-                init              : function () {
-                    const _this = this;
-
-                    _this.load_study_posts();
-                    _this.load_place_posts();
-                    _this.load_question_posts();
-
-                    [[${login}]] && _this.open_loginModal();
-                },
-                load_study_posts   : function () {
-                    const _this = this;
-
-                    $.ajax({
-                        type: 'GET',
-                        url: `/board/study/list/index`,
-                        contentType: 'application/json; charset=utf-8',
-                    }).done(function (response) {
-                        const postList = JSON.parse(response);
-                        console.log(postList);
-
-                        const elements = _this.get_elements('study', postList);
-                        $('#list-study-content').append(elements);
-
-                    }).fail(function (error) {
-                        alert(JSON.stringify(error));
-                    });
-                },
-                load_place_posts   : function () {
-                    const _this = this;
-
-                    $.ajax({
-                        type: 'GET',
-                        url: `/board/place/list/index`,
-                        contentType: 'application/json; charset=utf-8',
-                    }).done(function (response) {
-                        const postList = JSON.parse(response);
-                        console.log(postList);
-
-                        $('#list-place').append(_this.get_cards(postList));
-                    }).fail(function (error) {
-                        alert(JSON.stringify(error));
-                    });
-                },
-                load_question_posts: function () {
-                    const _this = this;
-
-                    $.ajax({
-                        type: 'GET',
-                        url: `/board/question/list/index`,
-                        contentType: 'application/json; charset=utf-8',
-                    }).done(function (response) {
-                        const postList = JSON.parse(response);
-                        console.log(postList);
-                        const elements = _this.get_elements('question', postList);
-                        $('#list-question-content').append(elements);
-
-                    }).fail(function (error) {
-                        alert(JSON.stringify(error));
-                    });
-                },
-                get_elements      : function (boardName, list) {
-                    let elements = '';
-
-                    for(let i=0; i<list.length; i++) {
-                        let post = list[i];
-
-                        let link = `/board/${boardName}/posts?postNo=${post.postNo}&page=0`;
-                        elements +=
-                            `<tr class="table-light">
-                                <td><a href="${link}">${post.postNo}</a></th>
-                                <td><a href="${link}">${post.title}</a></td>
-                                <td><a href="${link}">${post.user.nickname}</a></td>
-                                <td><a href="${link}">${post.createdDate}</a></td>
-                            </tr>`;
-                    }
-
-                    return elements;
-                },
-                get_cards : function (list) {
-                    let cards = '';
-
-                    for(let i=0; i<list.length; i++) {
-                        let post = list[i];
-
-                        let date = post.createdDate.date;
-                        cards +=
-                            `<div class="card mb-3">
-                                <img src="${post.thumbnailPath}" alt="Card image">
-                                <div class="card-body">
-                                    <h5 class="card-text"><a href="/board/place/posts?postNo=${post.postNo}"> ${post.title}</a></h5>
-                                </div>
-                                <div class="card-footer text-muted">${date.year}.${date.month}.${date.day}</div>
-                            </div>`;
-                    }
-
-                    return cards;
-                },
-                open_loginModal : function () {
-                    console.log('login');
-                    $('#loginModal').modal();
-                }
-            };
-
-            main.init();
-
-        </script>
+        <script th:src="@{/js/page/index.js}" th:inline="javascript" type="text/javascript"></script>
     </th:block>
 </html>

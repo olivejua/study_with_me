@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    private final StudyApiController studyController;
-
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user) {
         if(user != null) {

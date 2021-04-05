@@ -24,6 +24,23 @@
     border: #2DB400;
 }
 
-.modal-footer>button {
+#btn-login-close {
     font-size: 15px;
+}
+
+#modal-messageToGuest > .modal-dialog > .modal-sm {
+    max-width: 72%;
+}
+
+#modal-changeNickname > .modal-dialog > .modal-sm {
+    max-width: 72%;
+}
+
+.btn-become-user-modal {
+    width: 100%;
+}
+
+.label-nickname {
+    max-width: 20%;
+    padding-top: 8px;
 }
