@@ -1,15 +1,16 @@
 package com.ksk.project.study_with_me.domain.user;
 
 import com.ksk.project.study_with_me.domain.BaseTimeEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Getter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class User extends BaseTimeEntity {
 
     @Id
@@ -46,12 +47,15 @@ public class User extends BaseTimeEntity {
     }
 
     //TODO 프로필 기능 추가 여부 : Update() 수정
-    public User update(String name) {
+    public User changeName(String name) {
         this.name = name;
 
         return this;
     }
 
+    /**
+     * 회원 가입
+     */
     public User becomeUser(Role role) {
         this.role = role;
 
@@ -60,6 +64,5 @@ public class User extends BaseTimeEntity {
 
     public String getRoleKey() {
         return this.role.getKey();
-//        return "ROLE_USER";
     }
 }
